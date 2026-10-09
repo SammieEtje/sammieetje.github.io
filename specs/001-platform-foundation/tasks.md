@@ -163,8 +163,8 @@ and MUST be seen failing before the implementation task that makes them pass.
 - [ ] T042 [P] Rewrite `README.md`: purpose, the golden path (`npm ci && npm run check`), pipeline, Spec Kit workflow, and the roadmap of upcoming specs
 - [ ] T043 Run `npm run trace` and the full `npm run check`; fix any finding
 - [ ] T044 Enable GitHub Pages with source "GitHub Actions" for the repository
-- [ ] T045 Open the pull request, confirm the `quality-gate` check passes in CI, then apply branch protection on `main` requiring `quality-gate` (FR-015)
-- [ ] T046 Verify SC-006: push a deliberately failing commit to a throw-away branch PR, confirm merge is blocked, then close it
+- [ ] T045 Open the pull request, confirm the `quality-gate` check passes in CI, then apply branch protection on `main` requiring `quality-gate`, an up-to-date branch, and enforcement for administrators (FR-015)
+- [ ] T046 Verify SC-006 without extra commits or pull requests: read the protection rule back through the API, and confirm the pull request reports a blocked merge state while `quality-gate` has not succeeded
 - [ ] T047 Run the quickstart.md manual scenarios that can be run before merge and record the results in `specs/001-platform-foundation/quickstart.md`
 
 ---

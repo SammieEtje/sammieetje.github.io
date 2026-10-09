@@ -34,7 +34,8 @@ Expected: every step passes; `quality-report.json` exists with `"passed": true`.
 ## Pipeline validation
 
 1. Open the pull request for this branch: the `quality-gate` check runs and posts a summary.
-2. Push a commit that breaks a unit test: the check fails and the merge button is blocked
-   (SC-006). Revert it.
+2. Read the branch protection on `main` back through the API: `quality-gate` is a required
+   check, enforced for administrators; while it has not succeeded the pull request's merge
+   state is `BLOCKED` (SC-006).
 3. Merge: the `deploy` job runs and the site is live at `https://sammieetje.github.io/` within
    10 minutes (SC-005); the footer shows the merge commit's short SHA.

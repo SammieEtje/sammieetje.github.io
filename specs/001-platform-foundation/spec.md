@@ -172,7 +172,7 @@ links to the source repository and the specifications, and confirm they lead to 
 
 - A visitor whose browser prefers Dutch opens the site root: the English page is shown (no
   automatic redirect); the language switch is visible without scrolling.
-- A page exists in one language only: the build fails, so this cannot reach production.
+- A page exists in one language only: the quality gate fails, so this cannot reach production.
 - The page is opened with JavaScript disabled: every requirement in this feature still works.
 - A section listed in the navigation does not exist yet: it is not listed; the navigation only
   contains pages that exist.
@@ -212,7 +212,7 @@ links to the source repository and the specifications, and confirm they lead to 
   marks the current language.
 - **FR-009**: Every page MUST declare its language and reference both language versions and its
   own canonical address in its metadata.
-- **FR-010**: The build MUST fail when an interface string or page is missing in either
+- **FR-010**: The quality gate MUST fail when an interface string or page is missing in either
   language.
 
 **Not found**
