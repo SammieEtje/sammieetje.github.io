@@ -30,7 +30,7 @@ seen failing before the implementation task that makes them pass.
 ## Phase 2: Foundational
 
 - [ ] T003 [P] Write failing unit tests for locale number formatting (`10,000`/`10.000`, `5×`, `2.5×`/`2,5×`) in `tests/unit/format.test.ts`
-- [ ] T004 [P] Write failing unit tests for the image metadata guarantee (every image in `src/assets/` and every raster image in `dist/` when present has no EXIF, XMP or IPTC) in `tests/unit/image-metadata.test.ts`
+- [ ] T004 [P] Write failing tests for the image metadata guarantee: every image in `src/assets/` has no EXIF, XMP or IPTC in `tests/unit/image-metadata.test.ts`, and every raster image in the built `dist/` (which must contain at least one) has none in `tests/e2e/image-metadata.spec.ts` (runs after the build)
 - [ ] T005 Implement `src/site/format.ts` (makes T003 pass)
 - [ ] T006 Create `src/components/PortalCard.astro` (card shell: `section` with `h2` title, optional mono kind label) and add new dictionary keys for card titles, photo alt and sharing alt in `src/i18n/ui.ts`
 
@@ -75,7 +75,7 @@ seen failing before the implementation task that makes them pass.
 ## Phase 8: User Story 5 — Share a link that looks right (P2)
 
 - [ ] T018 [P] [US5] Extend `tests/unit/meta.test.ts` with failing tests for `image` (absolute `/og/<locale>.png`, 1200 × 630, alt per locale)
-- [ ] T019 [P] [US5] Write failing e2e tests in `tests/e2e/sharing.spec.ts`: og:image / width / height / alt and twitter tags on every page; `/og/en.png` and `/og/nl.png` respond as PNG of 1200 × 630
+- [ ] T019 [P] [US5] Write failing e2e tests in `tests/e2e/sharing.spec.ts`: og:image / width / height / alt and twitter tags on every page; `/og/en.png` and `/og/nl.png` respond as PNG of 1200 × 630 and differ from each other; no sharing image is committed under `public/` (FR-011)
 - [ ] T020 [US5] Extend `src/site/meta.ts` and `src/layouts/PortalLayout.astro` with image tags (makes T018 pass)
 - [ ] T021 [US5] Implement `src/site/og-image.ts` (Satori tree + resvg render) and the endpoint `src/pages/og/[locale].png.ts` (makes T019 pass)
 

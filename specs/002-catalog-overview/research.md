@@ -18,8 +18,9 @@ Versions checked against the npm registry on 2026-10-09.
 
 - **Decision**: the committed source is written by sharp without metadata; sharp's default
   output (used by Astro and by the sharing-image renderer) drops EXIF/XMP/IPTC. A unit test reads
-  every image in `src/assets/` and every raster image in `dist/` with sharp and asserts no EXIF,
-  XMP or IPTC block (FR-003, SC-006).
+  every image in `src/assets/`; a post-build test (in the e2e suite, which runs after `build`)
+  reads every raster image in `dist/` and requires at least one. Both assert no EXIF, XMP or IPTC
+  block (FR-003, SC-006).
 - **Alternatives**: exiftool in CI (extra system dependency).
 
 ## R3. Sharing image (Open Graph)
