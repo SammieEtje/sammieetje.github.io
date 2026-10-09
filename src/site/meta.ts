@@ -55,7 +55,7 @@ export function buildPageMeta({
     description,
     canonical,
     image: {
-      url: `${siteUrl}/og/${locale}.png`,
+      url: `${siteUrl}/og/${locale}.jpg`, // 003:T013 JPEG (003:FR-011)
       width: 1200,
       height: 630,
       alt: t(locale, 'og.alt'),

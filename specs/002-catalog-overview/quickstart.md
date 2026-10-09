@@ -27,7 +27,7 @@ npm run dev            # http://localhost:4321 and /nl/
 | 2 | Pass | `shell.spec.ts`, `overview.spec.ts` (single column at 360 px); screenshot at 390 px |
 | 3 | Pass | `overview.spec.ts` on `/nl/` |
 | 4 | Pass | `sharing.spec.ts` (PNG, 1200 × 630, different per language); both cards reviewed visually |
-| 5 | Pending | LinkedIn Post Inspector needs the deployed site; checked after merge |
+| 5 | Pass (2026-10-09, after merge) | LinkedIn Post Inspector showed photo, name, headline and page title; the card rendered soft after LinkedIn's re-encoding, followed up in 003 (US5) |
 | 6 | Pass | `photo.spec.ts`: CLS < 0.001 on both home pages |
 
 `quality-gate` passed on pull request #3. Lighthouse on every page: 100 / 100 / 100 / 100 with

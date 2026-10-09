@@ -1,0 +1,91 @@
+---
+// 003:T009 Legend for the four recurring phases (003:FR-007)
+import type { Locale } from '../i18n/ui.ts';
+import { t } from '../i18n/utils.ts';
+import { patterns } from '../site/patterns.ts';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+---
+
+<section aria-labelledby="legend-title" data-spec="003:FR-007">
+  <h2 id="legend-title">{t(locale, 'legend.title')}</h2>
+  <dl>
+    {patterns.map((p) => (
+      <div class={`phase phase-${p.id}`}>
+        <dt>{p.name[locale]}</dt>
+        <dd>{p.explanation[locale]}</dd>
+      </div>
+    ))}
+  </dl>
+</section>
+
+<style>
+  section {
+    display: grid;
+    gap: var(--space-3);
+  }
+
+  h2 {
+    font-size: var(--text-base);
+  }
+
+  dl {
+    display: grid;
+    gap: var(--space-3);
+    margin: 0;
+    counter-reset: phase;
+  }
+
+  .phase {
+    display: grid;
+    gap: var(--space-1);
+    padding: var(--space-3) var(--space-4);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: calc(var(--radius) * 1.5);
+  }
+
+  dt {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-weight: 650;
+  }
+
+  dt::before {
+    counter-increment: phase;
+    content: counter(phase);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    display: grid;
+    place-items: center;
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 50%;
+    background: var(--color-accent-soft);
+    color: var(--color-text);
+    font-weight: 700;
+  }
+
+  dd {
+    margin: 0;
+    color: var(--color-text-muted);
+    font-size: var(--text-sm);
+  }
+
+  @media (min-width: 48rem) {
+    dl {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 80rem) {
+    dl {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+</style>

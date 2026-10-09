@@ -66,9 +66,9 @@ nowhere.
 
 | Spec | Section                                   | Status  |
 | ---- | ----------------------------------------- | ------- |
-| 001  | Platform foundation: shell, i18n, gate    | this PR |
-| 002  | Catalog overview: photo, key numbers      | planned |
-| 003  | Deployment history: career as release log | planned |
+| 001  | Platform foundation: shell, i18n, gate    | live    |
+| 002  | Catalog overview: photo, key numbers      | live    |
+| 003  | Deployment history: career as release log | this PR |
 | 004  | Golden paths: the method                  | planned |
 | 005  | API docs: "How I lead" manager README     | planned |
 | 006  | TechDocs: writing, by content pillar      | planned |
