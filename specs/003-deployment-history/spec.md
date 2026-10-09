@@ -173,8 +173,8 @@ fewer elements; the page metadata points to them.
 - **FR-005**: Each release MUST offer full release notes (context, approach, result) that open
   and close in place, operable by keyboard and without scripting, with their open state exposed
   to assistive technology.
-- **FR-006**: Education MUST appear as the first entry in the log (the oldest), visually distinct
-  from roles.
+- **FR-006**: Education MUST appear as the last entry in the log (it is the oldest), visually
+  distinct from roles.
 
 **Pattern**
 
