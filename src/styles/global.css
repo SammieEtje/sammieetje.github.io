@@ -29,6 +29,9 @@ h3 {
   line-height: 1.15;
   letter-spacing: -0.02em;
   margin: 0;
+  /* 003:T011 Long Dutch compounds ("Releasegeschiedenis") must never force sideways scrolling */
+  hyphens: auto;
+  overflow-wrap: break-word;
 }
 
 p {

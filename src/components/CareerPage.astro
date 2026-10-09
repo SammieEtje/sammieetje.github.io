@@ -1,0 +1,52 @@
+---
+// 003:T007 Deployment history page body, shared by both languages (003:FR-001)
+import type { Locale } from '../i18n/ui.ts';
+import { t } from '../i18n/utils.ts';
+import ReleaseLog from './ReleaseLog.astro';
+import PatternLegend from './PatternLegend.astro';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+---
+
+<div class="career">
+  <header>
+    <p class="kind mono">changelog</p>
+    <h1>{t(locale, 'career.heading')}</h1>
+    <p class="intro">{t(locale, 'career.intro')}</p>
+  </header>
+  <PatternLegend locale={locale} />
+  <ReleaseLog locale={locale} />
+</div>
+
+<style>
+  .career {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-6);
+  }
+
+  header {
+    display: grid;
+    gap: var(--space-2);
+  }
+
+  .kind {
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  h1 {
+    font-size: clamp(2rem, 1.6rem + 2vw, 2.75rem);
+  }
+
+  .intro {
+    max-width: 60ch;
+    color: var(--color-text-muted);
+    font-size: var(--text-lg);
+  }
+</style>

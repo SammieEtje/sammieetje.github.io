@@ -18,6 +18,14 @@ export const routes: readonly Route[] = [
     descriptionKey: 'page.overview.description',
     nav: { termKey: 'nav.overview.term', subtitleKey: 'nav.overview.subtitle' },
   },
+  // 003:T007 Deployment history (003:FR-008)
+  {
+    id: 'career',
+    paths: { en: '/career/', nl: '/nl/loopbaan/' },
+    titleKey: 'page.career.title',
+    descriptionKey: 'page.career.description',
+    nav: { termKey: 'nav.career.term', subtitleKey: 'nav.career.subtitle' },
+  },
 ];
 
 const withSlash = (path: string) => (path.endsWith('/') ? path : `${path}/`);

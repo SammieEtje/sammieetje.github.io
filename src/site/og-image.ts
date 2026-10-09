@@ -4,6 +4,7 @@ import { createRequire } from 'node:module';
 import { join } from 'node:path';
 import { Resvg } from '@resvg/resvg-js';
 import satori from 'satori';
+import sharp from 'sharp';
 import type { Locale } from '../i18n/ui.ts';
 import { t } from '../i18n/utils.ts';
 import { profile } from './profile.ts';
@@ -31,6 +32,7 @@ const el = (
   props: { style, children, ...extra },
 });
 
+// 003:T013 Fewer, larger elements survive LinkedIn's re-encoding: photo, name, headline (003:FR-010)
 export function ogTree(locale: Locale, photoDataUri: string): Node {
   return el(
     'div',
@@ -43,56 +45,37 @@ export function ogTree(locale: Locale, photoDataUri: string): Node {
       color: colors.ink,
     },
     [
-      el('div', { width: 18, height: '100%', background: colors.accent }),
-      el('div', { display: 'flex', flexDirection: 'column', flex: 1, padding: '64px 72px 56px' }, [
-        el('div', { display: 'flex', alignItems: 'center', gap: 56, flex: 1 }, [
-          el(
-            'img',
-            { width: 300, height: 300, borderRadius: 48, border: `2px solid ${colors.line}` },
-            undefined,
-            {
-              src: photoDataUri,
-              width: 300,
-              height: 300,
-            },
-          ),
-          el('div', { display: 'flex', flexDirection: 'column', flex: 1, gap: 18 }, [
-            el(
-              'div',
-              { fontSize: 68, fontWeight: 700, letterSpacing: -2, lineHeight: 1 },
-              profile.name,
-            ),
-            el('div', { fontSize: 26, color: colors.muted }, t(locale, 'profile.role')),
-            el(
-              'div',
-              {
-                fontSize: 34,
-                lineHeight: 1.3,
-                marginTop: 12,
-                paddingLeft: 24,
-                borderLeft: `5px solid ${colors.accent}`,
-              },
-              t(locale, 'profile.headline'),
-            ),
-          ]),
-        ]),
+      el('div', { width: 24, height: '100%', background: colors.accent }),
+      el('div', { display: 'flex', alignItems: 'center', gap: 64, flex: 1, padding: '0 80px' }, [
         el(
-          'div',
-          {
-            display: 'flex',
-            justifyContent: 'space-between',
-            paddingTop: 24,
-            borderTop: `2px solid ${colors.line}`,
-            fontSize: 24,
-            color: colors.muted,
-          },
-          [el('div', {}, 'sammieetje.github.io'), el('div', {}, t(locale, 'profile.positioning'))],
+          'img',
+          { width: 340, height: 340, borderRadius: 56, border: `3px solid ${colors.line}` },
+          undefined,
+          { src: photoDataUri, width: 340, height: 340 },
         ),
+        el('div', { display: 'flex', flexDirection: 'column', flex: 1, gap: 28 }, [
+          el(
+            'div',
+            { fontSize: 76, fontWeight: 700, letterSpacing: -2, lineHeight: 1 },
+            profile.name,
+          ),
+          el(
+            'div',
+            {
+              fontSize: 44,
+              lineHeight: 1.25,
+              paddingLeft: 28,
+              borderLeft: `6px solid ${colors.accent}`,
+            },
+            t(locale, 'profile.headline'),
+          ),
+        ]),
       ]),
     ],
   );
 }
 
+// 003:T013 High-quality JPEG, full chroma so text edges stay sharp (003:FR-010)
 export async function renderOgImage(locale: Locale): Promise<Uint8Array<ArrayBuffer>> {
   const photo = readFileSync(join(process.cwd(), 'src/assets/profile.jpg')).toString('base64');
   const svg = await satori(ogTree(locale, `data:image/jpeg;base64,${photo}`) as never, {
@@ -103,5 +86,9 @@ export async function renderOgImage(locale: Locale): Promise<Uint8Array<ArrayBuf
       { name: 'Inter', data: font(700), weight: 700, style: 'normal' },
     ],
   });
-  return new Uint8Array(new Resvg(svg, { fitTo: { mode: 'width', value: 1200 } }).render().asPng());
+  const png = new Resvg(svg, { fitTo: { mode: 'width', value: 1200 } }).render().asPng();
+  const jpeg = await sharp(png)
+    .jpeg({ quality: 90, mozjpeg: true, chromaSubsampling: '4:4:4' })
+    .toBuffer();
+  return new Uint8Array(jpeg);
 }

@@ -5,6 +5,7 @@ import { t } from '../i18n/utils.ts';
 import { formatNumber } from '../site/format.ts';
 import { keyNumbers } from '../site/key-numbers.ts';
 import PortalCard from './PortalCard.astro';
+import { routes } from '../site/routes.ts';
 
 interface Props {
   locale: Locale;
@@ -12,6 +13,7 @@ interface Props {
 }
 
 const { locale, class: className } = Astro.props;
+const history = routes.find((r) => r.id === 'career')!.paths[locale];
 ---
 
 <PortalCard
@@ -34,6 +36,11 @@ const { locale, class: className } = Astro.props;
       </li>
     ))}
   </ul>
+  <!-- 003:T011 Link to the full deployment history (003:FR-009) -->
+  <a class="more" href={history} data-spec="003:FR-009">
+    {t(locale, 'numbers.history')}
+    <span aria-hidden="true"> →</span>
+  </a>
 </PortalCard>
 
 <style>
@@ -66,6 +73,12 @@ const { locale, class: className } = Astro.props;
   }
 
   .label {
+    font-size: var(--text-sm);
+  }
+
+  .more {
+    justify-self: start;
+    font-weight: 600;
     font-size: var(--text-sm);
   }
 
