@@ -226,7 +226,9 @@ as a large-image card.
 
 - **SC-001**: On a 1280 × 800 screen, photo, name, headline and at least the first key number are
   visible without scrolling.
-- **SC-002**: The photo causes no layout shift (cumulative layout shift of the page stays 0).
+- **SC-002**: The photo causes no layout shift: cumulative layout shift of the page stays below
+  0.001. (A sub-pixel shift of about 0.00001 from the web-font swap introduced in 001 already
+  exists; the photo must not add to it.)
 - **SC-003**: The home pages keep the constitution budgets; the photo adds at most 60 KB transfer
   per page at 2× density.
 - **SC-004**: Sharing `/` or `/nl/` produces a preview with photo, name and headline in that

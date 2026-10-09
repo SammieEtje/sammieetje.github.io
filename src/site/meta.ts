@@ -12,6 +12,8 @@ export interface PageMeta {
   title: string;
   description: string;
   canonical: string;
+  // 002:T020 Sharing image in the page language (002:FR-010)
+  image: { url: string; width: number; height: number; alt: string };
   alternates: { hreflang: string; href: string }[];
   og: {
     title: string;
@@ -52,6 +54,12 @@ export function buildPageMeta({
     title: fullTitle,
     description,
     canonical,
+    image: {
+      url: `${siteUrl}/og/${locale}.png`,
+      width: 1200,
+      height: 630,
+      alt: t(locale, 'og.alt'),
+    },
     alternates,
     og: {
       title: fullTitle,

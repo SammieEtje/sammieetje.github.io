@@ -29,7 +29,10 @@ test.describe('on a 360 px wide screen', () => {
     await page.goto('/');
     await expect(page.getByRole('heading', { level: 1 })).toBeInViewport();
     await expect(page.getByText('People take the path of least resistance.')).toBeInViewport();
-    await expect(page.getByRole('link', { name: /LinkedIn/ })).toBeInViewport();
+    // 002:T017 Scoped to the identity card: the Links card adds a second LinkedIn link.
+    await expect(
+      page.locator('[data-spec="001:FR-001"]').getByRole('link', { name: /LinkedIn/ }),
+    ).toBeInViewport();
   });
 
   test('does not scroll horizontally', async ({ page }) => {

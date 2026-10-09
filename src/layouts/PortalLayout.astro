@@ -11,6 +11,9 @@ import PrimaryNav from '../components/PrimaryNav.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 import LanguageSwitch from '../components/LanguageSwitch.astro';
 import SkipLink from '../components/SkipLink.astro';
+// 002:T017 Preload the Latin font files so text does not re-wrap after first paint (002:SC-002)
+import interLatin from '@fontsource-variable/inter/files/inter-latin-wght-normal.woff2?url';
+import monoLatin from '@fontsource-variable/jetbrains-mono/files/jetbrains-mono-latin-wght-normal.woff2?url';
 
 interface Props {
   locale: Locale;
@@ -37,9 +40,17 @@ const { locale, path, meta } = Astro.props;
     <meta property="og:type" content={meta.og.type} />
     <meta property="og:url" content={meta.og.url} />
     <meta property="og:locale" content={meta.og.locale} />
+    <meta property="og:image" content={meta.image.url} />
+    <meta property="og:image:width" content={String(meta.image.width)} />
+    <meta property="og:image:height" content={String(meta.image.height)} />
+    <meta property="og:image:alt" content={meta.image.alt} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content={meta.image.url} />
     {meta.og.localeAlternate.map((l) => (
       <meta property="og:locale:alternate" content={l} />
     ))}
+    <link rel="preload" href={interLatin} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={monoLatin} as="font" type="font/woff2" crossorigin />
     <meta name="color-scheme" content="light dark" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="sitemap" href="/sitemap-index.xml" />

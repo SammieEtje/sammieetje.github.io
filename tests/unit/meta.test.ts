@@ -47,3 +47,19 @@ describe('routeMeta()', () => {
     });
   });
 });
+
+// 002:T018 Sharing image per language (002:FR-010)
+describe('routeMeta() sharing image', () => {
+  it('points every page to the 1200 × 630 card in its own language', () => {
+    expect(routeMeta(routes[0]!, 'en').image).toEqual({
+      url: `${siteUrl}/og/en.png`,
+      width: 1200,
+      height: 630,
+      alt: 'Sharing card with a portrait of Sander Ettema and his headline',
+    });
+    expect(routeMeta(routes[0]!, 'nl').image).toMatchObject({
+      url: `${siteUrl}/og/nl.png`,
+      alt: 'Deelkaart met een portret van Sander Ettema en zijn kernboodschap',
+    });
+  });
+});
