@@ -1,0 +1,42 @@
+// 001:T023 Portal shell and small-screen layout (001:FR-002, 001:FR-004, 001:SC-001)
+import { expect, test } from '@playwright/test';
+
+test.describe('portal shell', () => {
+  test('has banner, primary navigation, one main region and a footer', async ({ page }) => {
+    await page.goto('/');
+    await expect(page.getByRole('banner')).toBeVisible();
+    await expect(page.getByRole('main')).toHaveCount(1);
+    await expect(page.getByRole('contentinfo')).toBeVisible();
+    await expect(page.locator('[data-spec="001:FR-002"]')).not.toHaveCount(0);
+  });
+
+  test('navigation shows portal term and plain subtitle, and marks the current page', async ({
+    page,
+  }) => {
+    await page.goto('/');
+    const nav = page.getByRole('navigation', { name: 'Primary' });
+    await expect(nav).toHaveAttribute('data-spec', '001:FR-004');
+    const overview = nav.getByRole('link', { name: /Overview/ });
+    await expect(overview).toContainText('who I am');
+    await expect(overview).toHaveAttribute('aria-current', 'page');
+  });
+});
+
+test.describe('on a 360 px wide screen', () => {
+  test.use({ viewport: { width: 360, height: 740 } });
+
+  test('name, headline and LinkedIn link are visible without scrolling', async ({ page }) => {
+    await page.goto('/');
+    await expect(page.getByRole('heading', { level: 1 })).toBeInViewport();
+    await expect(page.getByText('People take the path of least resistance.')).toBeInViewport();
+    await expect(page.getByRole('link', { name: /LinkedIn/ })).toBeInViewport();
+  });
+
+  test('does not scroll horizontally', async ({ page }) => {
+    await page.goto('/');
+    const overflow = await page.evaluate(
+      () => document.documentElement.scrollWidth - document.documentElement.clientWidth,
+    );
+    expect(overflow).toBeLessThanOrEqual(0);
+  });
+});

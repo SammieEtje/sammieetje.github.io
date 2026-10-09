@@ -1,0 +1,80 @@
+---
+// 001:T027 Top bar with site identity (001:FR-002)
+import type { Locale } from '../i18n/ui.ts';
+import { t } from '../i18n/utils.ts';
+import { routes } from '../site/routes.ts';
+import { profile } from '../site/profile.ts';
+
+interface Props {
+  locale: Locale;
+  path: string;
+}
+
+const { locale } = Astro.props;
+const home = routes[0]!.paths[locale];
+---
+
+<header class="topbar" data-spec="001:FR-002">
+  <div class="inner">
+    <a class="identity" href={home} aria-label={t(locale, 'site.home')}>
+      <span class="mark mono" aria-hidden="true">
+        {profile.initials}
+      </span>
+      <span class="name">{profile.name}</span>
+      <span class="crumb mono" aria-hidden="true">
+        / catalog
+      </span>
+    </a>
+    <slot />
+  </div>
+</header>
+
+<style>
+  .topbar {
+    background: var(--color-surface);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+    max-width: calc(var(--sidebar) + var(--content) + 3 * var(--gutter));
+    margin: 0 auto;
+    padding: var(--space-3) var(--gutter);
+  }
+
+  .identity {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-3);
+    color: var(--color-text);
+    text-decoration: none;
+    font-weight: 600;
+    min-width: 0;
+  }
+
+  .mark {
+    display: grid;
+    place-items: center;
+    width: 2rem;
+    height: 2rem;
+    border-radius: var(--radius);
+    background: var(--color-text);
+    color: var(--color-bg);
+    font-weight: 700;
+    flex: none;
+  }
+
+  .crumb {
+    color: var(--color-text-muted);
+    font-weight: 400;
+  }
+
+  @media (max-width: 30rem) {
+    .crumb {
+      display: none;
+    }
+  }
+</style>
