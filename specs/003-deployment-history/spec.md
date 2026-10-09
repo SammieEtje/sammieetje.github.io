@@ -25,6 +25,28 @@ re-compresses it. The card gets larger text, fewer elements and a high-quality J
 
 Out of scope: method in depth (004), "How I lead" (005), writing (006).
 
+## Clarifications
+
+### Session 2026-10-10
+
+- Q: What is the public description of the current role (TenneT, Manager Data & Analytics
+  Platform, since 2026-05)? → A: As drafted. Summary: "Leading the team behind TenneT's Data &
+  Analytics Platform: data and AI for the energy transition, with the least possible friction."
+  Context: "The energy transition makes data, analytics and AI pivotal for a grid operator. Teams
+  across TenneT need a platform they can trust and use without waiting." Approach: "Run the
+  platform as a product: self-service by default, security and compliance built in, and a team
+  that works close to its users. First: a stable team and clear ownership." Result: "In progress.
+  This release is still being written." No team size.
+- Q: How much detail does the release log show? → A: Group the early years. Releases:
+  TenneT — Manager Data & Analytics Platform (2026-05 – present); TenneT — Manager Infrastructure,
+  Integration & Cloud (2023-05 – 2026-04); TenneT — Lead Infrastructure Services (2022-01 –
+  2023-04); TenneT — Lead Platform Services (2020-09 – 2022-01); Rabobank — Manager Development
+  Automation (2016-10 – 2020-08); Rabobank — Manager Unix/Linux (2011-10 – 2016-10); Rabobank —
+  Manager Campus LAN (2010-03 – 2011-10); Rabobank — ORMIT management trainee and IT Customer
+  Services management team, grouped (2007-02 – 2010-03); NOC\*NSF — policy and knowledge
+  management, grouped (2000-05 – 2007-01). Plus education: University of Twente, Public
+  Governance (1993 – 2000).
+
 ## User Scenarios & Testing *(mandatory)*
 
 ### User Story 1 - Scan the track record (Priority: P1)
@@ -129,8 +151,8 @@ fewer elements; the page metadata points to them.
 
 ### Edge Cases
 
-- A role spans a period that overlaps another (NOC\*NSF 2005): both are shown as stated in the
-  public profile; ordering uses the start date.
+- Roles that overlapped in the public profile (NOC\*NSF, 2005) are grouped into one release, so
+  periods never overlap; ordering uses the start date.
 - Very long role titles wrap on 320 px without horizontal scrolling.
 - Release notes that are opened then printed: all text remains readable.
 - A future role is added: only the data changes; labels, ordering and "current" marking follow.
@@ -142,7 +164,7 @@ fewer elements; the page metadata points to them.
 **Release log**
 
 - **FR-001**: The site MUST have a deployment history page at `/career/` (EN) and
-  `/nl/loopbaan/` (NL) listing every role from the approved career content, newest first.
+  `/nl/loopbaan/` (NL) listing exactly the nine releases from Clarifications, newest first.
 - **FR-002**: Each release MUST show period (start – end or "present"), role title, organisation,
   location and a one-line summary in the page language.
 - **FR-003**: Each release MUST show a release label `vYYYY.MM` derived from its start date.
@@ -182,8 +204,8 @@ fewer elements; the page metadata points to them.
 
 ### Measurable Outcomes
 
-- **SC-001**: 100% of roles from the approved career content appear, in reverse chronological
-  order, in both languages.
+- **SC-001**: All nine releases and the education entry appear, in reverse chronological order,
+  in both languages, with no overlapping periods.
 - **SC-002**: A visitor can reach the deployment history from any page in one action.
 - **SC-003**: Every release has at least one pattern tag; the legend covers all four phases.
 - **SC-004**: The page meets all constitution budgets with zero client-side JavaScript.
