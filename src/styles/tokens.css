@@ -1,0 +1,50 @@
+/* 001:T025 Design tokens: own identity, light and dark from the first paint (001:FR-005) */
+:root {
+  color-scheme: light dark;
+
+  /* Surfaces: warm paper by day, graphite by night */
+  --color-bg: light-dark(#f6f5f2, #0f1115);
+  --color-surface: light-dark(#ffffff, #171a21);
+  --color-surface-muted: light-dark(#efede8, #1d212a);
+  --color-border: light-dark(#dedad2, #2b303b);
+
+  /* Ink */
+  --color-text: light-dark(#1b1d22, #e9e7e2);
+  --color-text-muted: light-dark(#555b69, #a5abb8);
+
+  /* The path: one warm accent, used sparingly */
+  --color-accent: light-dark(#b93d0b, #fb923c);
+  --color-accent-contrast: light-dark(#ffffff, #1b1d22);
+  --color-accent-soft: light-dark(#fbe7dc, #3a2418);
+  --color-focus: light-dark(#1d4ed8, #93c5fd);
+
+  /* Type */
+  --font-sans: 'Inter Variable', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono Variable', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+  --text-xs: 0.8125rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.25rem;
+  --text-xl: clamp(1.375rem, 1.1rem + 1.2vw, 1.75rem);
+  --text-display: clamp(2.25rem, 1.6rem + 3vw, 3.5rem);
+
+  /* Space, shape */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-12: 3rem;
+  --radius: 0.5rem;
+  --radius-pill: 999px;
+  --gutter: 1rem;
+  --sidebar: 15rem;
+  --content: 52rem;
+}
+
+@media (min-width: 48rem) {
+  :root {
+    --gutter: 2rem;
+  }
+}

@@ -1,0 +1,14 @@
+---
+// 001:T032 Dutch home page (001:FR-007)
+import PortalLayout from '../../layouts/PortalLayout.astro';
+import EntityHeader from '../../components/EntityHeader.astro';
+import { routes } from '../../site/routes.ts';
+import { routeMeta } from '../../site/meta.ts';
+
+const route = routes[0]!;
+const locale = 'nl';
+---
+
+<PortalLayout locale={locale} path={route.paths[locale]} meta={routeMeta(route, locale)}>
+  <EntityHeader locale={locale} />
+</PortalLayout>

@@ -1,0 +1,89 @@
+---
+// 001:T027 The portal shell every page uses (001:FR-002, 001:FR-006, 001:FR-009)
+import '@fontsource-variable/inter/wght.css';
+import '@fontsource-variable/jetbrains-mono';
+import '../styles/tokens.css';
+import '../styles/global.css';
+import type { Locale } from '../i18n/ui.ts';
+import type { PageMeta } from '../site/meta.ts';
+import SiteHeader from '../components/SiteHeader.astro';
+import PrimaryNav from '../components/PrimaryNav.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import LanguageSwitch from '../components/LanguageSwitch.astro';
+import SkipLink from '../components/SkipLink.astro';
+
+interface Props {
+  locale: Locale;
+  path: string;
+  meta: PageMeta;
+}
+
+const { locale, path, meta } = Astro.props;
+---
+
+<!doctype html>
+<html lang={meta.lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{meta.title}</title>
+    <meta name="description" content={meta.description} />
+    <link rel="canonical" href={meta.canonical} />
+    {meta.alternates.map((alt) => (
+      <link rel="alternate" hreflang={alt.hreflang} href={alt.href} />
+    ))}
+    <meta property="og:title" content={meta.og.title} />
+    <meta property="og:description" content={meta.og.description} />
+    <meta property="og:type" content={meta.og.type} />
+    <meta property="og:url" content={meta.og.url} />
+    <meta property="og:locale" content={meta.og.locale} />
+    {meta.og.localeAlternate.map((l) => (
+      <meta property="og:locale:alternate" content={l} />
+    ))}
+    <meta name="color-scheme" content="light dark" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+  </head>
+  <body>
+    <SkipLink locale={locale} />
+    <SiteHeader locale={locale} path={path}>
+      <LanguageSwitch locale={locale} path={path} />
+    </SiteHeader>
+    <div class="shell">
+      <PrimaryNav locale={locale} path={path} />
+      <main id="main" tabindex="-1" data-spec="001:FR-002">
+        <slot />
+      </main>
+    </div>
+    <SiteFooter locale={locale} />
+  </body>
+</html>
+
+<style>
+  .shell {
+    flex: 1 0 auto;
+    width: 100%;
+    display: grid;
+    align-content: start;
+    gap: var(--space-6);
+    max-width: calc(var(--sidebar) + var(--content) + 3 * var(--gutter));
+    margin: 0 auto;
+    padding: var(--space-6) var(--gutter) var(--space-12);
+  }
+
+  main {
+    min-width: 0;
+  }
+
+  main:focus {
+    outline: none;
+  }
+
+  @media (min-width: 64rem) {
+    .shell {
+      grid-template-columns: var(--sidebar) minmax(0, 1fr);
+      gap: var(--space-8);
+      padding-top: var(--space-8);
+    }
+  }
+</style>

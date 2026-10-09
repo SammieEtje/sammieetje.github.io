@@ -1,0 +1,64 @@
+---
+// 001:T037 Bilingual not-found page, served by GitHub Pages for unknown addresses (001:FR-011)
+import PortalLayout from '../layouts/PortalLayout.astro';
+import { locales } from '../i18n/ui.ts';
+import { t } from '../i18n/utils.ts';
+import { routes } from '../site/routes.ts';
+import { buildPageMeta } from '../site/meta.ts';
+
+const path = '/404.html';
+const meta = buildPageMeta({
+  locale: 'en',
+  path,
+  title: `${t('en', 'notfound.title')} / ${t('nl', 'notfound.title')}`,
+  description: t('en', 'notfound.description'),
+  paths: null,
+});
+const home = routes[0]!;
+---
+
+<PortalLayout locale="en" path={path} meta={meta}>
+  <div class="notfound" data-spec="001:FR-011">
+    <p class="code mono" aria-hidden="true">
+      404 · entity not found
+    </p>
+    {locales.map((locale) => (
+      <section lang={locale} aria-labelledby={`nf-${locale}`}>
+        <h1 id={`nf-${locale}`}>{t(locale, 'notfound.heading')}</h1>
+        <p>{t(locale, 'notfound.body')}</p>
+        <p>
+          <a href={home.paths[locale]}>{t(locale, 'notfound.home')}</a>
+        </p>
+      </section>
+    ))}
+  </div>
+</PortalLayout>
+
+<style>
+  .notfound {
+    display: grid;
+    gap: var(--space-6);
+    padding: var(--space-6);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: calc(var(--radius) * 2);
+  }
+
+  .code {
+    color: var(--color-text-muted);
+  }
+
+  section {
+    display: grid;
+    gap: var(--space-2);
+  }
+
+  section + section {
+    padding-top: var(--space-6);
+    border-top: 1px solid var(--color-border);
+  }
+
+  h1 {
+    font-size: var(--text-xl);
+  }
+</style>

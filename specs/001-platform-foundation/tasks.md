@@ -27,12 +27,12 @@ and MUST be seen failing before the implementation task that makes them pass.
 
 **Purpose**: Project initialisation and the local golden path
 
-- [ ] T001 Initialise `package.json` (name, `"type": "module"`, `engines.node >=24`, scripts per contracts/quality-gate.md), `.nvmrc` (`24`) and install pinned dev dependencies from research.md R13
-- [ ] T002 Create `astro.config.mjs` (static output, `site: https://sammieetje.github.io`, i18n `en`/`nl` without default prefix, sitemap) and `tsconfig.json` extending `astro/tsconfigs/strictest`
-- [ ] T003 [P] Configure Prettier in `.prettierrc.json` and `.prettierignore` (with `prettier-plugin-astro`)
-- [ ] T004 [P] Configure ESLint flat config in `eslint.config.js` (typescript-eslint + eslint-plugin-astro)
-- [ ] T005 [P] Configure Vitest in `vitest.config.ts` (`tests/unit/**/*.test.ts`) and Playwright in `playwright.config.ts` (Chromium, `webServer` = `astro preview` on port 4321, `tests/e2e`)
-- [ ] T006 Add a minimal `src/pages/index.astro` placeholder so `npm run build` succeeds, and verify `format:check`, `lint`, `typecheck` and `build` pass
+- [x] T001 Initialise `package.json` (name, `"type": "module"`, `engines.node >=24`, scripts per contracts/quality-gate.md), `.nvmrc` (`24`) and install pinned dev dependencies from research.md R13
+- [x] T002 Create `astro.config.mjs` (static output, `site: https://sammieetje.github.io`, i18n `en`/`nl` without default prefix, sitemap) and `tsconfig.json` extending `astro/tsconfigs/strictest`
+- [x] T003 [P] Configure Prettier in `.prettierrc.json` and `.prettierignore` (with `prettier-plugin-astro`)
+- [x] T004 [P] Configure ESLint flat config in `eslint.config.js` (typescript-eslint + eslint-plugin-astro)
+- [x] T005 [P] Configure Vitest in `vitest.config.ts` (`tests/unit/**/*.test.ts`) and Playwright in `playwright.config.ts` (Chromium, `webServer` = `astro preview` on port 4321, `tests/e2e`)
+- [x] T006 Add a minimal `src/pages/index.astro` placeholder so `npm run build` succeeds, and verify `format:check`, `lint`, `typecheck` and `build` pass
 
 ---
 
@@ -40,14 +40,14 @@ and MUST be seen failing before the implementation task that makes them pass.
 
 **Purpose**: Dictionaries, route registry, metadata and traceability that every story depends on
 
-- [ ] T007 [P] Write failing unit tests for dictionary parity (equal key sets, non-empty values) and `t()` lookup in `tests/unit/i18n.test.ts`
-- [ ] T008 [P] Write failing unit tests for the route registry (each route has a path per locale; counterpart path lookup; navigation lists only registry routes) in `tests/unit/routes.test.ts`
-- [ ] T009 [P] Write failing unit tests for the PageMeta builder (unique title, description length 50–160, canonical, hreflang en/nl/x-default, og fields) in `tests/unit/meta.test.ts`
-- [ ] T010 [P] Write failing unit tests for the trace check (accepts existing FR/SC/US/T IDs, rejects unknown IDs and unknown feature folders) in `tests/unit/trace-check.test.ts`
-- [ ] T011 Implement typed dictionaries and helpers in `src/i18n/ui.ts` and `src/i18n/utils.ts` (makes T007 pass)
-- [ ] T012 Implement the route registry in `src/site/routes.ts` (makes T008 pass)
-- [ ] T013 Implement the PageMeta builder in `src/site/meta.ts` (makes T009 pass)
-- [ ] T014 Implement `scripts/trace-check.ts` as a pure `checkTraces()` plus CLI entry, wired to `npm run trace` (makes T010 pass)
+- [x] T007 [P] Write failing unit tests for dictionary parity (equal key sets, non-empty values) and `t()` lookup in `tests/unit/i18n.test.ts`
+- [x] T008 [P] Write failing unit tests for the route registry (each route has a path per locale; counterpart path lookup; navigation lists only registry routes) in `tests/unit/routes.test.ts`
+- [x] T009 [P] Write failing unit tests for the PageMeta builder (unique title, description length 50–160, canonical, hreflang en/nl/x-default, og fields) in `tests/unit/meta.test.ts`
+- [x] T010 [P] Write failing unit tests for the trace check (accepts existing FR/SC/US/T IDs, rejects unknown IDs and unknown feature folders) in `tests/unit/trace-check.test.ts`
+- [x] T011 Implement typed dictionaries and helpers in `src/i18n/ui.ts` and `src/i18n/utils.ts` (makes T007 pass)
+- [x] T012 Implement the route registry in `src/site/routes.ts` (makes T008 pass)
+- [x] T013 Implement the PageMeta builder in `src/site/meta.ts` (makes T009 pass)
+- [x] T014 Implement `scripts/trace-check.ts` as a pure `checkTraces()` plus CLI entry, wired to `npm run trace` (makes T010 pass)
 
 **Checkpoint**: shared modules tested; user-story work can begin
 
@@ -61,16 +61,16 @@ and MUST be seen failing before the implementation task that makes them pass.
 
 ### Tests for User Story 2
 
-- [ ] T015 [P] [US2] Write failing unit tests for the workflow policy (top-level `permissions: {}`, each job declares permissions, every external `uses:` pinned to a 40-char SHA, deploy job `needs` the gate and only runs on push to `main`) in `tests/unit/workflow-policy.test.ts`
-- [ ] T016 [P] [US2] Write failing unit tests for the quality report builder (median scores per page, `passed` false when any budget is missed, schema v1 per data-model.md) in `tests/unit/quality-report.test.ts`
-- [ ] T017 [P] [US2] Write a failing unit test asserting `.github/dependabot.yml` covers `npm` and `github-actions` weekly in `tests/unit/dependabot.test.ts`
+- [x] T015 [P] [US2] Write failing unit tests for the workflow policy (top-level `permissions: {}`, each job declares permissions, every external `uses:` pinned to a 40-char SHA, deploy job `needs` the gate and only runs on push to `main`) in `tests/unit/workflow-policy.test.ts`
+- [x] T016 [P] [US2] Write failing unit tests for the quality report builder (median scores per page, `passed` false when any budget is missed, schema v1 per data-model.md) in `tests/unit/quality-report.test.ts`
+- [x] T017 [P] [US2] Write a failing unit test asserting `.github/dependabot.yml` covers `npm` and `github-actions` weekly in `tests/unit/dependabot.test.ts`
 
 ### Implementation for User Story 2
 
-- [ ] T018 [US2] Create `.github/workflows/pipeline.yml` with the `quality-gate` and `deploy` jobs per contracts/quality-gate.md and research.md R10 (makes T015 pass)
-- [ ] T019 [US2] Create `lighthouserc.cjs` (static dist, all HTML pages, mobile, 3 runs, assertions from constitution V, filesystem upload to `.lighthouseci/`) and `scripts/quality-report.ts` writing `quality-report.json` and a Markdown step summary (makes T016 pass)
-- [ ] T020 [P] [US2] Create `.github/dependabot.yml` for `npm` and `github-actions`, weekly, grouped (makes T017 pass)
-- [ ] T021 [US2] Wire `npm run check` to chain `format:check → lint → typecheck → test:unit → trace → build → test:e2e → links → budgets`, and verify it passes locally
+- [x] T018 [US2] Create `.github/workflows/pipeline.yml` with the `quality-gate` and `deploy` jobs per contracts/quality-gate.md and research.md R10 (makes T015 pass)
+- [x] T019 [US2] Create `lighthouserc.cjs` (static dist, all HTML pages, mobile, 3 runs, assertions from constitution V, filesystem upload to `.lighthouseci/`) and `scripts/quality-report.ts` writing `quality-report.json` and a Markdown step summary (makes T016 pass)
+- [x] T020 [P] [US2] Create `.github/dependabot.yml` for `npm` and `github-actions`, weekly, grouped (makes T017 pass)
+- [x] T021 [US2] Wire `npm run check` to chain `format:check → lint → typecheck → test:unit → trace → build → test:e2e → links → budgets`, and verify it passes locally
 
 **Checkpoint**: the gate runs locally exactly as in CI
 
@@ -84,16 +84,16 @@ and MUST be seen failing before the implementation task that makes them pass.
 
 ### Tests for User Story 1
 
-- [ ] T022 [P] [US1] Write failing e2e tests for the home identity block (h1 name, current role, positioning, headline, LinkedIn link with accessible name) in `tests/e2e/home.spec.ts`
-- [ ] T023 [P] [US1] Write failing e2e tests for the portal shell (banner, primary nav with term + subtitle and `aria-current="page"`, single main, contentinfo) and 360 px above-the-fold + no horizontal scroll in `tests/e2e/shell.spec.ts`
-- [ ] T024 [P] [US1] Write failing e2e tests for page metadata (title, description, canonical, hreflang, og tags) and the privacy guarantee (no `<script>`, only same-origin requests, zero cookies) in `tests/e2e/meta-privacy.spec.ts`
+- [x] T022 [P] [US1] Write failing e2e tests for the home identity block (h1 name, current role, positioning, headline, LinkedIn link with accessible name) in `tests/e2e/home.spec.ts`
+- [x] T023 [P] [US1] Write failing e2e tests for the portal shell (banner, primary nav with term + subtitle and `aria-current="page"`, single main, contentinfo) and 360 px above-the-fold + no horizontal scroll in `tests/e2e/shell.spec.ts`
+- [x] T024 [P] [US1] Write failing e2e tests for page metadata (title, description, canonical, hreflang, og tags) and the privacy guarantee (no `<script>`, only same-origin requests, zero cookies) in `tests/e2e/meta-privacy.spec.ts`
 
 ### Implementation for User Story 1
 
-- [ ] T025 [P] [US1] Create design tokens with `light-dark()` and base styles in `src/styles/tokens.css` and `src/styles/global.css` (own identity, self-hosted Inter + JetBrains Mono)
-- [ ] T026 [P] [US1] Create the profile data in `src/site/profile.ts`
-- [ ] T027 [US1] Create `src/layouts/PortalLayout.astro` with `SiteHeader`, `PrimaryNav`, `SiteFooter` components in `src/components/` and head metadata from `src/site/meta.ts`
-- [ ] T028 [US1] Create `src/components/EntityHeader.astro` and the English home page `src/pages/index.astro` (makes T022–T024 pass)
+- [x] T025 [P] [US1] Create design tokens with `light-dark()` and base styles in `src/styles/tokens.css` and `src/styles/global.css` (own identity, self-hosted Inter + JetBrains Mono)
+- [x] T026 [P] [US1] Create the profile data in `src/site/profile.ts`
+- [x] T027 [US1] Create `src/layouts/PortalLayout.astro` with `SiteHeader`, `PrimaryNav`, `SiteFooter` components in `src/components/` and head metadata from `src/site/meta.ts`
+- [x] T028 [US1] Create `src/components/EntityHeader.astro` and the English home page `src/pages/index.astro` (makes T022–T024 pass)
 
 **Checkpoint**: MVP — English identity page, gated and deployable
 
@@ -107,13 +107,13 @@ and MUST be seen failing before the implementation task that makes them pass.
 
 ### Tests for User Story 3
 
-- [ ] T029 [P] [US3] Write failing e2e tests for the language switch (links to counterpart, `aria-current` on the current language, Dutch interface text on `/nl/`, `lang="nl"`) in `tests/e2e/i18n.spec.ts`
-- [ ] T030 [P] [US3] Write a failing build-parity test (every English HTML page in `dist/` has a Dutch counterpart and vice versa, `404.html` excepted) in `tests/e2e/parity.spec.ts`
+- [x] T029 [P] [US3] Write failing e2e tests for the language switch (links to counterpart, `aria-current` on the current language, Dutch interface text on `/nl/`, `lang="nl"`) in `tests/e2e/i18n.spec.ts`
+- [x] T030 [P] [US3] Write a failing build-parity test (every English HTML page in `dist/` has a Dutch counterpart and vice versa, `404.html` excepted) in `tests/e2e/parity.spec.ts`
 
 ### Implementation for User Story 3
 
-- [ ] T031 [US3] Create `src/components/LanguageSwitch.astro` and add it to `SiteHeader`
-- [ ] T032 [US3] Create `src/pages/nl/index.astro` and complete the Dutch dictionary (makes T029–T030 pass)
+- [x] T031 [US3] Create `src/components/LanguageSwitch.astro` and add it to `SiteHeader`
+- [x] T032 [US3] Create `src/pages/nl/index.astro` and complete the Dutch dictionary (makes T029–T030 pass)
 
 ---
 
@@ -125,12 +125,12 @@ and MUST be seen failing before the implementation task that makes them pass.
 
 ### Tests for User Story 4
 
-- [ ] T033 [P] [US4] Write failing e2e tests: first Tab shows the skip link and Enter focuses `main`; dark scheme applies on first paint (computed background differs from light); 320 px and 200% zoom reflow without horizontal scroll; JavaScript disabled still renders all content, in `tests/e2e/a11y-behaviour.spec.ts`
-- [ ] T034 [P] [US4] Write failing axe scans for every page × both languages × both colour schemes in `tests/e2e/axe.spec.ts`
+- [x] T033 [P] [US4] Write failing e2e tests: first Tab shows the skip link and Enter focuses `main`; dark scheme applies on first paint (computed background differs from light); 320 px and 200% zoom reflow without horizontal scroll; JavaScript disabled still renders all content, in `tests/e2e/a11y-behaviour.spec.ts`
+- [x] T034 [P] [US4] Write failing axe scans for every page × both languages × both colour schemes in `tests/e2e/axe.spec.ts`
 
 ### Implementation for User Story 4
 
-- [ ] T035 [US4] Create `src/components/SkipLink.astro`, add it to the layout, add focus styles and `prefers-reduced-motion` rules (makes T033–T034 pass)
+- [x] T035 [US4] Create `src/components/SkipLink.astro`, add it to the layout, add focus styles and `prefers-reduced-motion` rules (makes T033–T034 pass)
 
 ---
 
@@ -140,8 +140,8 @@ and MUST be seen failing before the implementation task that makes them pass.
 
 **Independent Test**: open `/404.html`; both languages and both home links present
 
-- [ ] T036 [US5] Write failing e2e tests for `/404.html` (English and Dutch sections with `lang`, links to `/` and `/nl/`, portal layout) in `tests/e2e/not-found.spec.ts`
-- [ ] T037 [US5] Create `src/pages/404.astro` (makes T036 pass)
+- [x] T036 [US5] Write failing e2e tests for `/404.html` (English and Dutch sections with `lang`, links to `/` and `/nl/`, portal layout) in `tests/e2e/not-found.spec.ts`
+- [x] T037 [US5] Create `src/pages/404.astro` (makes T036 pass)
 
 ---
 
@@ -151,21 +151,21 @@ and MUST be seen failing before the implementation task that makes them pass.
 
 **Independent Test**: footer build link points to the commit of the deployed version
 
-- [ ] T038 [P] [US6] Write failing unit tests for `src/site/build-info.ts` (uses `GITHUB_SHA`, falls back to git, then `local`; short SHA = 7 chars; URLs) in `tests/unit/build-info.test.ts`
-- [ ] T039 [P] [US6] Write failing e2e tests for the footer links (build, source, specs) in `tests/e2e/footer.spec.ts`
-- [ ] T040 [US6] Implement `src/site/build-info.ts` and render it in `src/components/SiteFooter.astro` (makes T038–T039 pass)
+- [x] T038 [P] [US6] Write failing unit tests for `src/site/build-info.ts` (uses `GITHUB_SHA`, falls back to git, then `local`; short SHA = 7 chars; URLs) in `tests/unit/build-info.test.ts`
+- [x] T039 [P] [US6] Write failing e2e tests for the footer links (build, source, specs) in `tests/e2e/footer.spec.ts`
+- [x] T040 [US6] Implement `src/site/build-info.ts` and render it in `src/components/SiteFooter.astro` (makes T038–T039 pass)
 
 ---
 
 ## Phase 9: Polish & Cross-Cutting Concerns
 
-- [ ] T041 [P] Add `public/robots.txt` referencing the sitemap and a favicon in `public/`
-- [ ] T042 [P] Rewrite `README.md`: purpose, the golden path (`npm ci && npm run check`), pipeline, Spec Kit workflow, and the roadmap of upcoming specs
-- [ ] T043 Run `npm run trace` and the full `npm run check`; fix any finding
-- [ ] T044 Enable GitHub Pages with source "GitHub Actions" for the repository
-- [ ] T045 Open the pull request, confirm the `quality-gate` check passes in CI, then apply branch protection on `main` requiring `quality-gate`, an up-to-date branch, and enforcement for administrators (FR-015)
-- [ ] T046 Verify SC-006 without extra commits or pull requests: read the protection rule back through the API, and confirm the pull request reports a blocked merge state while `quality-gate` has not succeeded
-- [ ] T047 Run the quickstart.md manual scenarios that can be run before merge and record the results in `specs/001-platform-foundation/quickstart.md`
+- [x] T041 [P] Add `public/robots.txt` referencing the sitemap and a favicon in `public/`
+- [x] T042 [P] Rewrite `README.md`: purpose, the golden path (`npm ci && npm run check`), pipeline, Spec Kit workflow, and the roadmap of upcoming specs
+- [x] T043 Run `npm run trace` and the full `npm run check`; fix any finding
+- [x] T044 Enable GitHub Pages with source "GitHub Actions" for the repository
+- [x] T045 Open the pull request, confirm the `quality-gate` check passes in CI, then apply branch protection on `main` requiring `quality-gate`, an up-to-date branch, and enforcement for administrators (FR-015)
+- [x] T046 Verify SC-006 without extra commits or pull requests: read the protection rule back through the API, and confirm the pull request reports a blocked merge state while `quality-gate` has not succeeded
+- [x] T047 Run the quickstart.md manual scenarios that can be run before merge and record the results in `specs/001-platform-foundation/quickstart.md`
 
 ---
 

@@ -1,0 +1,124 @@
+---
+// 001:T028 Home identity block, styled as a catalog entity card (001:FR-001)
+import type { Locale } from '../i18n/ui.ts';
+import { t } from '../i18n/utils.ts';
+import { profile } from '../site/profile.ts';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const chips = [
+  [t(locale, 'entity.kind'), t(locale, 'entity.kind.value')],
+  [t(locale, 'entity.lifecycle'), t(locale, 'entity.lifecycle.value')],
+  [t(locale, 'entity.owner'), t(locale, 'entity.owner.value')],
+] as const;
+---
+
+<section class="entity" aria-labelledby="entity-name" data-spec="001:FR-001">
+  <p class="label mono">{t(locale, 'entity.label')}</p>
+  <h1 id="entity-name">{profile.name}</h1>
+  <p class="role">
+    <span class="current">{t(locale, 'profile.role')}</span>
+    <span class="positioning">{t(locale, 'profile.positioning')}</span>
+  </p>
+  <p class="headline">{t(locale, 'profile.headline')}</p>
+  <p>
+    <a class="cta" href={profile.linkedin} rel="me noopener">
+      {t(locale, 'profile.linkedin')}
+      <span aria-hidden="true"> ↗</span>
+    </a>
+  </p>
+  <ul class="chips mono">
+    {chips.map(([key, value]) => (
+      <li>
+        <span class="key">{key}:</span> {value}
+      </li>
+    ))}
+  </ul>
+</section>
+
+<style>
+  .entity {
+    display: grid;
+    gap: var(--space-4);
+    padding: var(--space-6);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: calc(var(--radius) * 2);
+    border-top: 4px solid var(--color-accent);
+  }
+
+  .label {
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  h1 {
+    font-size: var(--text-display);
+    font-weight: 750;
+  }
+
+  .role {
+    display: grid;
+    gap: var(--space-1);
+  }
+
+  .current {
+    font-weight: 600;
+  }
+
+  .positioning {
+    color: var(--color-text-muted);
+  }
+
+  .headline {
+    font-size: var(--text-xl);
+    line-height: 1.35;
+    max-width: 36ch;
+    padding-left: var(--space-4);
+    border-left: 3px solid var(--color-accent);
+  }
+
+  .cta {
+    display: inline-block;
+    padding: var(--space-2) var(--space-4);
+    border-radius: var(--radius);
+    background: var(--color-accent);
+    color: var(--color-accent-contrast);
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .cta:hover {
+    filter: brightness(1.08);
+  }
+
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .chips li {
+    padding: var(--space-1) var(--space-3);
+    border-radius: var(--radius-pill);
+    background: var(--color-surface-muted);
+    border: 1px solid var(--color-border);
+  }
+
+  .key {
+    color: var(--color-text-muted);
+  }
+
+  @media (min-width: 48rem) {
+    .entity {
+      padding: var(--space-8) var(--space-12);
+    }
+  }
+</style>

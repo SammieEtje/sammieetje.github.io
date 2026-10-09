@@ -1,0 +1,35 @@
+---
+// 001:T035 Skip link: first focus stop on every page (001:FR-003)
+import type { Locale } from '../i18n/ui.ts';
+import { t } from '../i18n/utils.ts';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+---
+
+<a class="skip" href="#main" data-spec="001:FR-003">
+  {t(locale, 'skip.link')}
+</a>
+
+<style>
+  .skip {
+    position: absolute;
+    top: var(--space-2);
+    left: var(--space-2);
+    z-index: 10;
+    padding: var(--space-2) var(--space-4);
+    border-radius: var(--radius);
+    background: var(--color-text);
+    color: var(--color-bg);
+    font-weight: 600;
+    text-decoration: none;
+    transform: translateY(-200%);
+  }
+
+  .skip:focus {
+    transform: none;
+  }
+</style>

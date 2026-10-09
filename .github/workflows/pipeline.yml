@@ -1,0 +1,136 @@
+# 001:T018 The golden path: one quality gate for every change, one deploy for every gated build on main
+# Contract: specs/001-platform-foundation/contracts/quality-gate.md
+name: Pipeline
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions: {}
+
+concurrency:
+  group: pipeline-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  quality-gate:
+    name: quality-gate
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+    steps:
+      - name: Check out
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Set up Node
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - name: Install
+        run: npm ci
+      - name: Install browser
+        run: npx playwright install --with-deps chromium
+
+      - name: Formatting
+        id: format
+        run: npm run format:check
+      - name: Lint
+        id: lint
+        run: npm run lint
+      - name: Types
+        id: typecheck
+        run: npm run typecheck
+      - name: Unit tests
+        id: unit
+        run: npm run test:unit
+      - name: Traceability
+        id: trace
+        run: npm run trace
+      - name: Build
+        id: build
+        run: npm run build
+      - name: End-to-end and accessibility tests
+        id: e2e
+        run: npm run test:e2e
+      - name: Internal links
+        id: links
+        run: npm run links
+      - name: Budgets
+        id: budgets
+        run: npm run budgets
+
+      # 001:T018 One summary per run (001:FR-019)
+      - name: Summary
+        if: ${{ always() }}
+        env:
+          FORMAT: ${{ steps.format.outcome }}
+          LINT: ${{ steps.lint.outcome }}
+          TYPECHECK: ${{ steps.typecheck.outcome }}
+          UNIT: ${{ steps.unit.outcome }}
+          TRACE: ${{ steps.trace.outcome }}
+          BUILD: ${{ steps.build.outcome }}
+          E2E: ${{ steps.e2e.outcome }}
+          LINKS: ${{ steps.links.outcome }}
+          BUDGETS: ${{ steps.budgets.outcome }}
+        run: |
+          {
+            echo "### Quality gate"
+            echo "| Check | Outcome | Run locally |"
+            echo "|---|---|---|"
+            echo "| Formatting | $FORMAT | \`npm run format:check\` |"
+            echo "| Lint | $LINT | \`npm run lint\` |"
+            echo "| Types | $TYPECHECK | \`npm run typecheck\` |"
+            echo "| Unit tests | $UNIT | \`npm run test:unit\` |"
+            echo "| Traceability | $TRACE | \`npm run trace\` |"
+            echo "| Build | $BUILD | \`npm run build\` |"
+            echo "| End-to-end + accessibility | $E2E | \`npm run test:e2e\` |"
+            echo "| Internal links | $LINKS | \`npm run links\` |"
+            echo "| Budgets | $BUDGETS | \`npm run budgets\` |"
+          } >> "$GITHUB_STEP_SUMMARY"
+      - name: Keep quality report
+        if: ${{ always() }}
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: quality-report
+          path: |
+            quality-report.json
+            .lighthouseci/reports/
+          if-no-files-found: ignore
+      - name: Keep Playwright report
+        if: ${{ failure() }}
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: playwright-report
+          path: playwright-report/
+          if-no-files-found: ignore
+      - name: Package site for Pages
+        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+        uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
+        with:
+          path: dist
+
+  deploy:
+    name: deploy
+    needs: quality-gate
+    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    concurrency:
+      group: pages
+      cancel-in-progress: false
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5.0.1
