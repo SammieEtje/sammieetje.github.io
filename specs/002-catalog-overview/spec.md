@@ -24,6 +24,29 @@ posted on LinkedIn or in a chat shows a proper preview card.
 Out of scope (later specs): career history (003), method (004), "How I lead" (005), writing
 (006), projects (007), playground (008), live scorecard (009).
 
+## Clarifications
+
+### Session 2026-10-09
+
+- Q: Which key numbers does the overview show? → A: Three: (1) 10,000 voluntary users on the
+  CI/CD platform in an IT organisation of 7,600, without a mandate — Rabobank, 2016–2020;
+  (2) 5× infrastructure growth (500 → 2,500 Linux nodes) with a 15% smaller team — Rabobank,
+  2011–2016; (3) 2.5× service volume with minimal team growth — TenneT, Infrastructure,
+  Integration & Cloud, 2023–2026.
+- Q: What is the About text? → A: Two sentences on work and approach plus one on the current
+  role; no Rabobank sentence (the numbers card carries the proof). EN: "For nearly twenty years
+  I have turned IT departments in banking and energy into platform organisations that teams
+  actually want to use. My thesis on behaviour change taught me that people take the path of
+  least resistance, so I don't push change: I redesign the environment until the right thing is
+  the easy thing. Today I lead the Data & Analytics Platform at TenneT, where data and AI power
+  the energy transition." NL: "Al bijna twintig jaar maak ik van IT-afdelingen in bankwezen en
+  energie platformorganisaties die teams echt willen gebruiken. Mijn afstudeeronderzoek naar
+  gedragsverandering leerde me dat mensen de weg van de minste weerstand kiezen; daarom duw ik
+  niet, maar herontwerp ik de omgeving tot het juiste het makkelijkste is. Vandaag leid ik het
+  Data & Analytics Platform bij TenneT, waar data en AI de energietransitie aandrijven."
+- Q: How is the photo cropped? → A: Head only (hair to chin), shown as a rounded square. Source
+  crop: 490 × 490 px at offset (45, 72) of the original 613 × 903 photo.
+
 ## User Scenarios & Testing *(mandatory)*
 
 ### User Story 1 - Put a face to the name (Priority: P1)
@@ -145,7 +168,7 @@ as a large-image card.
 **Photo**
 
 - **FR-001**: The identity card on `/` and `/nl/` MUST show Sander's profile photo, cropped
-  square around the face, with a text alternative in the page language.
+  head-only and shown as a rounded square, with a text alternative in the page language.
 - **FR-002**: The photo MUST be delivered in at least one modern image format with a fallback,
   in sizes covering 1× and 2× the displayed size, with explicit dimensions so its space is
   reserved before it loads.
@@ -153,8 +176,8 @@ as a large-image card.
 
 **Key numbers**
 
-- **FR-004**: The home page MUST show a key-numbers card with the numbers selected in
-  clarification, each with a value, a label and a context line naming the organisation and the
+- **FR-004**: The home page MUST show a key-numbers card with exactly the three numbers listed in
+  Clarifications, each with a value, a label and a context line naming the organisation and the
   period.
 - **FR-005**: Numbers MUST be formatted for the page language (English `10,000`, Dutch `10.000`).
 - **FR-006**: Each number MUST be readable by assistive technology as one statement combining
@@ -162,8 +185,9 @@ as a large-image card.
 
 **About and links**
 
-- **FR-007**: The home page MUST show an About card of at most three sentences in the page
-  language, covering what Sander does, his approach, and his current role.
+- **FR-007**: The home page MUST show an About card with the three-sentence text from
+  Clarifications in the page language, covering what Sander does, his approach, and his current
+  role.
 - **FR-008**: The home page MUST show a Links card with LinkedIn and GitHub, each with an
   accessible name and `rel="me"`.
 
@@ -213,8 +237,9 @@ as a large-image card.
 ## Assumptions
 
 - The source photo is the selfie Sander provided on 2026-10-09 (613 × 903 px, no embedded
-  metadata). A square crop of about 540 px around the face is enough for display up to 240 px at
-  2×. People partly visible at the edges of the original are mostly removed by the crop.
+  metadata). The 490 px head-only crop is enough for display up to 240 px at 2×. Small parts of
+  other people at the edge of the crop are accepted; Sander can swap the source photo later
+  and every variant regenerates.
 - Key numbers and About text come from Sander's approved public LinkedIn narrative; past-role
   numbers are labelled with their organisation and period.
 - GitHub profile: `https://github.com/SammieEtje`. No email address is published (contact goes
