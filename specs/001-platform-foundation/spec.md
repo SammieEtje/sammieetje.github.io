@@ -24,6 +24,18 @@ Later features, each in its own spec, are out of scope here: catalog overview wi
 numbers, career history, method ("golden paths"), "How I lead" README, writing excerpts,
 open-source projects, interactive playground, and the live scorecard.
 
+## Clarifications
+
+### Session 2026-10-09
+
+- Q: What role line appears under the name on the home page? → A: Current role and positioning,
+  as two lines: "Manager Data & Analytics Platform at TenneT" and "Platform transformation in
+  highly regulated contexts".
+- Q: How literally do navigation and section labels follow the developer-portal metaphor? → A: A
+  portal term plus a plain-language subtitle, for example "Golden paths — how I work".
+- Q: Which visual identity does the portal use? → A: Its own personal identity inspired by
+  developer-portal interfaces; not the Polderworks design system.
+
 ## User Scenarios & Testing *(mandatory)*
 
 ### User Story 1 - Recognise who this is (Priority: P1)
@@ -175,14 +187,18 @@ links to the source repository and the specifications, and confirm they lead to 
 
 **Identity and shell**
 
-- **FR-001**: The site root MUST show, in English, Sander Ettema's name, his role line, his
-  headline statement and a link to his LinkedIn profile (`https://www.linkedin.com/in/sanderettema/`).
+- **FR-001**: The site root MUST show, in English, Sander Ettema's name, a two-part role line
+  (current role "Manager Data & Analytics Platform at TenneT" and positioning "Platform
+  transformation in highly regulated contexts"), his headline statement and a link to his
+  LinkedIn profile (`https://www.linkedin.com/in/sanderettema/`).
 - **FR-002**: Every page MUST use the shared portal layout: a header with the site identity, a
   primary navigation, a single main content region and a footer.
 - **FR-003**: Every page MUST start with a "skip to content" link that becomes visible on focus
   and moves focus to the main content region.
 - **FR-004**: The primary navigation MUST be generated from the list of pages that exist, MUST
-  NOT link to pages that do not exist, and MUST mark the current page.
+  NOT link to pages that do not exist, and MUST mark the current page. Each item MUST show a
+  developer-portal term and a plain-language subtitle in the page's language (for example
+  "Overview — who I am").
 - **FR-005**: Every page MUST follow the visitor's system colour-scheme preference (light or
   dark) from the first paint, without client-side scripting.
 - **FR-006**: Every page MUST have a unique title and a meta description in its own language,
@@ -270,10 +286,11 @@ links to the source repository and the specifications, and confirm they lead to 
 
 - The site is published at `https://sammieetje.github.io/` from the public repository
   `SammieEtje/sammieetje.github.io`; a custom domain is out of scope.
-- The role line and headline come from Sander's approved public positioning: role "Platform
-  transformation in highly regulated contexts" and headline "People take the path of
-  least resistance. I build environments where the right thing is the easy thing — together."
-  The Dutch versions are translations of these.
+- The headline comes from Sander's approved public positioning: "People take the path of least
+  resistance. I build environments where the right thing is the easy thing — together." The
+  Dutch role line and headline are translations.
+- The visual identity is new and personal, inspired by developer-portal interfaces (catalog
+  cards, metadata chips, monospace accents); it does not reuse the Polderworks design system.
 - English is served at the root; Dutch under `/nl/`. There is no automatic language redirect,
   because that would need client-side scripting or cookies; search engines and the switch guide
   visitors instead.
