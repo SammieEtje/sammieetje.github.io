@@ -79,7 +79,9 @@ nowhere.
 ## Stack
 
 Astro 7 (static output), TypeScript 6 strict, Vitest, Playwright with axe-core, Lighthouse CI,
-GitHub Actions and GitHub Pages. Fonts are self-hosted. There is no client-side JavaScript yet.
+GitHub Actions and GitHub Pages. Fonts are self-hosted. Images are optimised at build time
+(AVIF/WebP), and the sharing cards are rendered by the build with Satori and resvg. There is no
+client-side JavaScript yet.
 
 ## Content
 

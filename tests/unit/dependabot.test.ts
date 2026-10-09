@@ -23,3 +23,19 @@ describe('dependabot.yml', () => {
     }
   });
 });
+
+// 002:T022 Ignore majors the toolchain cannot accept yet (001:FR-021 follow-up, research R8 of 002)
+describe('dependabot.yml ignore rules', () => {
+  it('skips TypeScript >= 6.1 and major @types/node updates', () => {
+    const config = parse(readFileSync('.github/dependabot.yml', 'utf8')) as {
+      updates: { 'package-ecosystem': string; ignore?: Record<string, unknown>[] }[];
+    };
+    const npm = config.updates.find((u) => u['package-ecosystem'] === 'npm');
+    expect(npm?.ignore).toEqual(
+      expect.arrayContaining([
+        { 'dependency-name': 'typescript', versions: ['>=6.1.0'] },
+        { 'dependency-name': '@types/node', 'update-types': ['version-update:semver-major'] },
+      ]),
+    );
+  });
+});

@@ -1,0 +1,68 @@
+---
+// 002:T015 Links card: the owner's public profiles (002:FR-008)
+import type { Locale } from '../i18n/ui.ts';
+import { t } from '../i18n/utils.ts';
+import { profileLinks } from '../site/profile.ts';
+import PortalCard from './PortalCard.astro';
+
+interface Props {
+  locale: Locale;
+  class?: string | undefined;
+}
+
+const { locale, class: className } = Astro.props;
+---
+
+<PortalCard
+  id="links-title"
+  title={t(locale, 'card.links.title')}
+  kind={t(locale, 'card.links.kind')}
+  spec="002:FR-008"
+  class={className}
+>
+  <ul>
+    {profileLinks.map((link) => (
+      <li>
+        <a href={link.url} rel="me noopener">
+          <span class="name">{t(locale, link.labelKey)}</span>
+          <span class="handle mono">{link.handle}</span>
+        </a>
+      </li>
+    ))}
+  </ul>
+</PortalCard>
+
+<style>
+  ul {
+    display: grid;
+    gap: var(--space-2);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  a {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: var(--space-1) var(--space-3);
+    padding: var(--space-2) var(--space-3);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    color: var(--color-text);
+    text-decoration: none;
+  }
+
+  a:hover {
+    border-color: var(--color-accent);
+  }
+
+  .name {
+    font-weight: 600;
+  }
+
+  .handle {
+    color: var(--color-text-muted);
+  }
+</style>

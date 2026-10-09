@@ -1,0 +1,29 @@
+---
+// 002:T013 About card (002:FR-007)
+import type { Locale } from '../i18n/ui.ts';
+import { t } from '../i18n/utils.ts';
+import PortalCard from './PortalCard.astro';
+
+interface Props {
+  locale: Locale;
+  class?: string | undefined;
+}
+
+const { locale, class: className } = Astro.props;
+---
+
+<PortalCard
+  id="about-title"
+  title={t(locale, 'card.about.title')}
+  kind={t(locale, 'card.about.kind')}
+  spec="002:FR-007"
+  class={className}
+>
+  <p>{t(locale, 'about.body')}</p>
+</PortalCard>
+
+<style>
+  p {
+    max-width: 68ch;
+  }
+</style>

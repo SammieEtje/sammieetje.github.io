@@ -1,7 +1,8 @@
 ---
 // 001:T028 English home page (001:FR-001)
 import PortalLayout from '../layouts/PortalLayout.astro';
-import EntityHeader from '../components/EntityHeader.astro';
+// 002:T017 The home page is the entity overview (002:FR-009)
+import Overview from '../components/Overview.astro';
 import { routes } from '../site/routes.ts';
 import { routeMeta } from '../site/meta.ts';
 
@@ -10,5 +11,5 @@ const locale = 'en';
 ---
 
 <PortalLayout locale={locale} path={route.paths[locale]} meta={routeMeta(route, locale)}>
-  <EntityHeader locale={locale} />
+  <Overview locale={locale} />
 </PortalLayout>

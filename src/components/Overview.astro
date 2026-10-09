@@ -1,0 +1,39 @@
+---
+// 002:T017 Entity overview: portal cards in one grid (002:FR-009)
+import type { Locale } from '../i18n/ui.ts';
+import EntityHeader from './EntityHeader.astro';
+import KeyNumbers from './KeyNumbers.astro';
+import AboutCard from './AboutCard.astro';
+import LinksCard from './LinksCard.astro';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+---
+
+<div class="overview" data-spec="002:FR-009">
+  <EntityHeader locale={locale} />
+  <KeyNumbers locale={locale} class="numbers" />
+  <AboutCard locale={locale} class="about" />
+  <LinksCard locale={locale} class="links" />
+</div>
+
+<style>
+  .overview {
+    display: grid;
+    gap: var(--space-6);
+  }
+
+  @media (min-width: 48rem) {
+    .overview {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .overview > :global(:first-child),
+    .overview > :global(.about) {
+      grid-column: span 2;
+    }
+  }
+</style>
