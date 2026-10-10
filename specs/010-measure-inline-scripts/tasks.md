@@ -25,4 +25,4 @@ failing first. Code carries `010:T###` comments.
 ## Phase 3: Polish
 
 - [x] T007 Run `npm run check`; confirm the local report shows inline bytes for the four scripted pages and 0 elsewhere; run the over-budget experiment from quickstart.md and revert it
-- [ ] T008 Open the pull request, confirm `quality-gate` passes, record results; after merge verify the live scorecard (SC-001)
+- [x] T008 Open the pull request, confirm `quality-gate` passes, record results; after merge verify the live scorecard (SC-001)
