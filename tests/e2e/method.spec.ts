@@ -64,6 +64,7 @@ test.describe('method page: levers and assumptions', () => {
 // 004:T006 Phases with proof, release anchors, compliance (004:FR-006 – 004:FR-008, 004:SC-002)
 
 test.describe('method page: phases and proof', () => {
+  // 006:T006 Only the proof list: the community phase also carries a further-reading link
   test('each phase links to every release tagged with it', async ({ page }) => {
     await page.goto('/method/');
     const phases = page.locator('[data-spec="004:FR-006"] .phase');
@@ -72,7 +73,7 @@ test.describe('method page: phases and proof', () => {
       const card = phases.nth(i);
       await expect(card.getByRole('heading', { level: 3 })).toHaveText(phase.name.en);
       const hrefs = await card
-        .locator('a')
+        .locator('.proof a')
         .evaluateAll((as) => as.map((a) => a.getAttribute('href')));
       expect(hrefs).toEqual(
         releases
@@ -138,17 +139,18 @@ test.describe('method page: dependencies', () => {
 
 // 004:T010 Findability and Dutch (004:FR-010, 004:FR-011, 004:SC-005)
 test.describe('method page: findability and Dutch', () => {
-  test('navigation order is Overview, Golden paths, Deployment history, API docs', async ({
+  test('navigation order is Overview, Golden paths, Deployment history, API docs, TechDocs', async ({
     page,
   }) => {
     await page.goto('/method/');
     const nav = page.getByRole('navigation', { name: 'Primary' });
-    // 005:T008 API docs added as the fourth section (005:FR-010)
+    // 005:T008 API docs added as the fourth section (005:FR-010); 006:T005 TechDocs fifth (006:FR-008)
     await expect(nav.locator('.term')).toHaveText([
       'Overview',
       'Golden paths',
       'Deployment history',
       'API docs',
+      'TechDocs',
     ]);
     await expect(nav.getByRole('link', { name: /Golden paths/ })).toHaveAttribute(
       'aria-current',

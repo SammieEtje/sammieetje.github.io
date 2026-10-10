@@ -1,0 +1,179 @@
+---
+// 006:T004 TechDocs: articles grouped by pillar, linking out to LinkedIn (006:FR-001 – 006:FR-007)
+import type { Locale } from '../i18n/ui.ts';
+import { t } from '../i18n/utils.ts';
+import { articlesFor, pillars, series } from '../site/articles.ts';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const date = new Intl.DateTimeFormat(locale === 'nl' ? 'nl-NL' : 'en-GB', {
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric',
+  timeZone: 'UTC',
+});
+const formatDate = (iso: string) => date.format(new Date(`${iso}T00:00:00Z`));
+---
+
+<div class="writing" data-spec="006:FR-001">
+  <header>
+    <p class="kind mono">docs / articles</p>
+    <h1>{t(locale, 'writing.heading')}</h1>
+    <p class="intro">{t(locale, 'writing.intro')}</p>
+  </header>
+
+  {pillars.map((pillar) => {
+    const list = articlesFor(pillar.id);
+    return (
+      <section id={`pillar-${pillar.id}`} aria-labelledby={`h-${pillar.id}`} data-spec="006:FR-002">
+        <h2 id={`h-${pillar.id}`}>{pillar.name[locale]}</h2>
+        <p class="pillar-intro">{pillar.intro[locale]}</p>
+        {list.length === 0 ? (
+          <p class="soon">{t(locale, 'writing.soon')}</p>
+        ) : (
+          <ol class="articles" data-spec="006:FR-003">
+            {list.map((a) => (
+              <li data-article={a.id} data-spec="006:FR-004">
+                <article aria-labelledby={`a-${a.id}`}>
+                  <h3 id={`a-${a.id}`}>
+                    <a href={a.url} lang="en" rel="noopener" data-spec="006:FR-005">
+                      {a.title}
+                      <span class="visually-hidden" lang={locale}>
+                        {' '}
+                        {t(locale, 'writing.onLinkedIn')}
+                      </span>
+                    </a>
+                  </h3>
+                  <p class="meta mono">
+                    <time datetime={a.published}>{formatDate(a.published)}</time> · {a.minutes}{' '}
+                    {t(locale, 'writing.minutes')}
+                  </p>
+                  {a.series && (
+                    <p class="series" data-spec="006:FR-006">
+                      {series[a.series.id].name[locale]} · {t(locale, 'writing.part')}{' '}
+                      {a.series.part} {t(locale, 'writing.of')} {a.series.total}
+                    </p>
+                  )}
+                  <p class="excerpt">{a.excerpt[locale]}</p>
+                </article>
+              </li>
+            ))}
+          </ol>
+        )}
+      </section>
+    );
+  })}
+</div>
+
+<style>
+  .writing {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-8);
+  }
+
+  header {
+    display: grid;
+    gap: var(--space-2);
+  }
+
+  .kind {
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  h1 {
+    font-size: clamp(2rem, 1.6rem + 2vw, 2.75rem);
+  }
+
+  .intro {
+    max-width: 62ch;
+    color: var(--color-text-muted);
+    font-size: var(--text-lg);
+  }
+
+  section {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-3);
+  }
+
+  h2 {
+    font-size: var(--text-xl);
+  }
+
+  .pillar-intro {
+    color: var(--color-text-muted);
+  }
+
+  .soon {
+    padding: var(--space-4) var(--space-6);
+    border: 1px dashed var(--color-border);
+    border-radius: calc(var(--radius) * 2);
+    color: var(--color-text-muted);
+    font-style: italic;
+  }
+
+  .articles {
+    display: grid;
+    gap: var(--space-4);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  article {
+    display: grid;
+    gap: var(--space-2);
+    padding: var(--space-4) var(--space-6);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: calc(var(--radius) * 2);
+    overflow-wrap: break-word;
+  }
+
+  h3 {
+    font-size: var(--text-lg);
+    line-height: 1.3;
+  }
+
+  h3 a {
+    color: var(--color-text);
+    text-decoration-color: var(--color-accent);
+  }
+
+  h3 a:hover {
+    color: var(--color-accent);
+  }
+
+  h3 a::after {
+    content: ' ↗';
+    color: var(--color-accent);
+  }
+
+  .meta {
+    color: var(--color-text-muted);
+  }
+
+  .series {
+    justify-self: start;
+    padding: 0 var(--space-2);
+    border-radius: var(--radius);
+    background: var(--color-accent-soft);
+    font-size: var(--text-sm);
+  }
+
+  .excerpt {
+    max-width: 68ch;
+  }
+
+  @media (min-width: 64rem) {
+    .articles {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+</style>

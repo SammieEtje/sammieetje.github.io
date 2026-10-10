@@ -12,4 +12,7 @@ export const pages = [
   // 005:T007 How I lead joins every shared per-page suite
   { path: '/how-i-lead/', lang: 'en' },
   { path: '/nl/zo-leid-ik/', lang: 'nl' },
+  // 006:T005 TechDocs joins every shared per-page suite
+  { path: '/writing/', lang: 'en' },
+  { path: '/nl/schrijven/', lang: 'nl' },
 ] as const;
