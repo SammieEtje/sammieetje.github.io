@@ -1,0 +1,14 @@
+---
+// 005:T004 English manager README (005:FR-001)
+import PortalLayout from '../layouts/PortalLayout.astro';
+import ReadmePage from '../components/ReadmePage.astro';
+import { routes } from '../site/routes.ts';
+import { routeMeta } from '../site/meta.ts';
+
+const route = routes.find((r) => r.id === 'how-i-lead')!;
+const locale = 'en';
+---
+
+<PortalLayout locale={locale} path={route.paths[locale]} meta={routeMeta(route, locale)}>
+  <ReadmePage locale={locale} />
+</PortalLayout>

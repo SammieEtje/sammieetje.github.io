@@ -69,8 +69,8 @@ nowhere.
 | 001  | Platform foundation: shell, i18n, gate    | live    |
 | 002  | Catalog overview: photo, key numbers      | live    |
 | 003  | Deployment history: career as release log | live    |
-| 004  | Golden paths: the method                  | this PR |
-| 005  | API docs: "How I lead" manager README     | planned |
+| 004  | Golden paths: the method                  | live    |
+| 005  | API docs: "How I lead" manager README     | this PR |
 | 006  | TechDocs: writing, by content pillar      | planned |
 | 007  | Plugins: open-source projects             | planned |
 | 008  | Playground: the path of least resistance  | planned |

@@ -9,4 +9,7 @@ export const pages = [
   // 004:T010 Golden paths joins every shared per-page suite
   { path: '/method/', lang: 'en' },
   { path: '/nl/methode/', lang: 'nl' },
+  // 005:T007 How I lead joins every shared per-page suite
+  { path: '/how-i-lead/', lang: 'en' },
+  { path: '/nl/zo-leid-ik/', lang: 'nl' },
 ] as const;

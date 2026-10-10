@@ -6,12 +6,14 @@ import profilePhoto from '../assets/profile.jpg';
 import type { Locale } from '../i18n/ui.ts';
 import { t } from '../i18n/utils.ts';
 import { profile } from '../site/profile.ts';
+import { routes } from '../site/routes.ts';
 
 interface Props {
   locale: Locale;
 }
 
 const { locale } = Astro.props;
+const readme = routes.find((r) => r.id === 'how-i-lead')!.paths[locale];
 const chips = [
   [t(locale, 'entity.kind'), t(locale, 'entity.kind.value')],
   [t(locale, 'entity.lifecycle'), t(locale, 'entity.lifecycle.value')],
@@ -45,10 +47,15 @@ const chips = [
     <span class="positioning">{t(locale, 'profile.positioning')}</span>
   </p>
   <p class="headline">{t(locale, 'profile.headline')}</p>
-  <p>
+  <p class="actions">
     <a class="cta" href={profile.linkedin} rel="me noopener">
       {t(locale, 'profile.linkedin')}
       <span aria-hidden="true"> ↗</span>
+    </a>
+    <!-- 005:T008 Secondary link for engineers (005:FR-010) -->
+    <a class="secondary" href={readme} data-spec="005:FR-010">
+      {t(locale, 'profile.readme')}
+      <span aria-hidden="true"> →</span>
     </a>
   </p>
   <ul class="chips mono">
@@ -134,6 +141,17 @@ const chips = [
     color: var(--color-accent-contrast);
     font-weight: 600;
     text-decoration: none;
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-3) var(--space-6);
+  }
+
+  .secondary {
+    font-weight: 600;
   }
 
   .cta:hover {
