@@ -26,6 +26,18 @@ golden paths behave differently.
 
 Out of scope: live pipeline metrics (009), saving or sharing scenarios, multiple teams.
 
+## Clarifications
+
+### Session 2026-10-10
+
+- Q: Which default scenario is shown first (and without JavaScript)? → A: The typical start: all
+  levers off, no mandate; adoption stalls at the early adopters.
+- Q: Is Rabobank named as the real-world reference? → A: Yes, carefully: "At Rabobank, with all of
+  these levers in place and no mandate, 10,000 people chose the platform. This model is
+  illustrative, not a reconstruction."
+- Q: How playful is the look? → A: Portal-native: a clean line chart in the site's style (accent
+  line for adoption, hatched band for reluctant users) and toggles styled as feature flags.
+
 ## User Scenarios & Testing *(mandatory)*
 
 ### User Story 1 - Try the levers (Priority: P1)
@@ -42,7 +54,7 @@ without reloading the page.
 
 1. **Given** the playground, **When** it loads, **Then** it shows the levers (the four that lower
    resistance on the right path and the three that raise it on the wrong path) with the default
-   scenario selected, the adoption curve and a summary.
+   scenario selected (all levers off, no mandate), the adoption curve and a summary.
 2. **Given** any lever, **When** the visitor switches it, **Then** the curve and the summary update
    within 100 ms.
 3. **Given** the summary, **When** it changes, **Then** assistive technology announces it.
@@ -135,7 +147,8 @@ summary plus a note that interaction needs JavaScript; navigation lists "Playgro
 - **FR-006**: Without JavaScript, the page MUST show the default scenario's curve and summary,
   rendered at build time, and a note that changing the scenario needs JavaScript.
 - **FR-007**: The page MUST explain the model's rules in plain language, state that it is
-  illustrative, and link to the model's source file.
+  illustrative, link to the model's source file, and name the Rabobank reference in the clarified
+  wording.
 - **FR-008**: Client-side JavaScript MUST exist only on the playground pages and stay within the
   constitution's 50 KB budget; every other page keeps zero scripts.
 
