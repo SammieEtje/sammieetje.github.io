@@ -142,6 +142,9 @@ takeaway.
 
 ### User Story 6 - Find it and read it in Dutch (Priority: P2)
 
+A visitor reaches the method from anywhere — the navigation, the home About card, the
+deployment-history legend — and reads it in Dutch if they prefer.
+
 **Why this priority**: constitution VII, and the page must be reachable.
 
 **Independent Test**: navigation lists "Golden paths — how I work"; `/nl/methode/` shows the same
@@ -156,8 +159,8 @@ in Dutch; the home About card and the deployment-history legend link to the meth
 
 ### Edge Cases
 
-- A phase has no tagged release: the build fails (every phase must be proven by at least one
-  release).
+- A phase has no tagged release: the quality gate fails (every phase must be proven by at least
+  one release).
 - The diagram fails to render or is read by a screen reader: its text alternative carries the
   same message.
 - Very narrow screens: lever cards and assumption cards stack; no horizontal scrolling.
