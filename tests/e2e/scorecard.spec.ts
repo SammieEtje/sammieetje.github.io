@@ -168,3 +168,21 @@ for (const colorScheme of ['light', 'dark'] as const) {
     });
   }
 }
+
+// 010:T006 The scorecard says what the JavaScript value counts (010:FR-005)
+for (const [path, text] of [
+  [
+    '/scorecard/',
+    'compressed size of all script a page delivers, embedded in the page and in separate files',
+  ],
+  [
+    '/nl/scorecard/',
+    'gecomprimeerde omvang van alle scripts die een pagina levert, in de pagina zelf en in aparte bestanden',
+  ],
+] as const) {
+  test(`${path}: explains the JavaScript measure`, async ({ page }) => {
+    await serve(page, fixture);
+    await page.goto(path);
+    await expect(page.locator('[data-spec="010:FR-005"]')).toContainText(text);
+  });
+}

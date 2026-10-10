@@ -184,6 +184,12 @@ jobs:
         with:
           name: test-reports
           path: reports
+      # 010:T004 The report measures embedded script from the built pages on every run (010:FR-001)
+      - name: Get the tested build
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: dist
+          path: dist
       - name: Merge the quality report
         env:
           GH_TOKEN: ${{ github.token }}
@@ -197,12 +203,6 @@ jobs:
         with:
           name: quality-report
           path: quality-report.json
-      - name: Get the tested build
-        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
-        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
-        with:
-          name: dist
-          path: dist
       - name: Add the report to the site
         if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
         run: mkdir -p dist/quality && cp quality-report.json dist/quality/report.json

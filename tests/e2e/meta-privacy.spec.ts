@@ -1,9 +1,12 @@
 // 001:T024 Page metadata and privacy guarantees (001:FR-006, 001:FR-009, 001:FR-013, 001:SC-008)
+import { readFileSync } from 'node:fs';
 import { gzipSync } from 'node:zlib';
 import { expect, test } from '@playwright/test';
 import { routes } from '../../src/site/routes.ts';
 import { routeMeta } from '../../src/site/meta.ts';
 import { pages } from './pages.ts';
+import { scriptBytes } from '../../src/site/script-size.ts';
+import { pageFile } from '../../scripts/quality-report.ts';
 
 for (const route of routes) {
   for (const locale of ['en', 'nl'] as const) {
@@ -67,13 +70,34 @@ for (const { path } of pages) {
       const scripts = page.locator('script');
       await expect(scripts).toHaveCount(1);
       await expect(scripts).toHaveAttribute('type', 'module');
-      // Lighthouse only counts external script files; measure inline code against the
-      // constitution's budget (V: at most 50 KB compressed per page) here.
-      const inline = (await scripts.allTextContents()).join('');
-      expect(gzipSync(inline).length).toBeLessThanOrEqual(50 * 1024);
     } else {
       await expect(page.locator('script')).toHaveCount(0);
     }
     expect(await context.cookies()).toEqual([]);
+  });
+}
+
+// 010:T005 The shared measurement agrees with what the browser actually receives (010:SC-001, 010:SC-002)
+// The budget itself is gated once, by the quality report; this checks that its measure is exact.
+for (const path of scriptPages) {
+  test(`${path}: the shared measurement matches the page's embedded script`, async ({ page }) => {
+    await page.goto(path);
+    const executable = await page
+      .locator('script:not([src])')
+      .evaluateAll((els) =>
+        els
+          .filter((el) =>
+            ['', 'module', 'text/javascript', 'application/javascript'].includes(
+              (el.getAttribute('type') ?? '').toLowerCase(),
+            ),
+          )
+          .map((el) => el.textContent ?? ''),
+      );
+    const browser = executable
+      .filter((code) => code.trim() !== '')
+      .reduce((sum, code) => sum + gzipSync(code).length, 0);
+    const built = scriptBytes(readFileSync(pageFile(path, 'dist'), 'utf8'));
+    expect(built).toBeGreaterThan(0);
+    expect(Math.abs(built - browser)).toBeLessThanOrEqual(102);
   });
 }
