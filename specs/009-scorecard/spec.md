@@ -26,6 +26,18 @@ limit and keeps it there as pages are added.
 Audiences: engineers and peers see the engineering standard in numbers; decision-makers see a
 leader who measures what he asks of others.
 
+## Clarifications
+
+### Session 2026-10-10
+
+- Q: How does the scorecard get numbers that are produced after the build? → A: It loads the
+  deployed report in the browser with a small script; the deployed site is exactly the tested
+  build plus `/quality/report.json`. Without JavaScript: an explanation and a link to the raw
+  report.
+- Q: Which facts besides Lighthouse scores and JavaScript size? → A: Tests passed (unit and
+  end-to-end), pipeline duration (against the ten-minute target) and specs shipped (Spec Kit
+  features delivered, linking to them). Not traced references.
+
 ## User Scenarios & Testing *(mandatory)*
 
 ### User Story 1 - A merge is live within ten minutes again (Priority: P1)
@@ -68,7 +80,7 @@ that deployed it.
    scores and its JavaScript size, with each value marked as within or outside its budget in text,
    not only by colour.
 3. **Given** the summary tiles, **When** they are read, **Then** they show unit tests passed,
-   end-to-end tests passed, traced references and pipeline duration.
+   end-to-end tests passed, pipeline duration against the ten-minute target, and specs shipped.
 
 ---
 
@@ -122,8 +134,8 @@ the footer's build link sits next to a link to the scorecard.
 - **FR-002**: A single required check named `quality-gate` MUST pass only when every other check,
   including every budget shard, has passed; deployment MUST depend on it.
 - **FR-003**: The pipeline MUST produce one merged quality report per run, containing per-page
-  scores and JavaScript size, unit and end-to-end test counts, traced references, commit, run
-  start and report time, and whether all budgets passed.
+  scores and JavaScript size, unit and end-to-end test counts, commit, run start and report time,
+  and whether all budgets passed.
 - **FR-004**: On `main`, the merged report MUST be deployed with the site at a stable address
   (`/quality/report.json`), unchanged from what the pipeline measured.
 - **FR-005**: The local check command MUST keep running every check, including budgets on every
@@ -133,7 +145,8 @@ the footer's build link sits next to a link to the scorecard.
 
 - **FR-006**: The site MUST have a scorecard page at `/scorecard/` (EN) and `/nl/scorecard/` (NL)
   that loads the deployed report and shows commit, measurement time, verdict, per-page scores and
-  JavaScript against budgets, test counts, traced references and pipeline duration.
+  JavaScript against budgets, test counts and pipeline duration, plus the number of specs shipped
+  (known at build time, so also shown without JavaScript) linking to the specifications.
 - **FR-007**: Every value MUST state in text whether it meets its budget.
 - **FR-008**: Without JavaScript or without a report, the page MUST explain the measurements, link
   to the raw report, and never show invented numbers.
@@ -148,8 +161,7 @@ the footer's build link sits next to a link to the scorecard.
 ### Key Entities
 
 - **Quality report** (extends 001's schema): schema version, commit, run start, generated at, pages
-  (url, scores, script bytes), budgets, unit tests passed, end-to-end tests passed, traced
-  references, passed.
+  (url, scores, script bytes), budgets, unit tests passed, end-to-end tests passed, passed.
 - **Shard**: index and total; the pages it measures.
 
 ## Success Criteria *(mandatory)*
