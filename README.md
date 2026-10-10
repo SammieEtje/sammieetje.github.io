@@ -71,8 +71,8 @@ nowhere.
 | 003  | Deployment history: career as release log | live    |
 | 004  | Golden paths: the method                  | live    |
 | 005  | API docs: "How I lead" manager README     | live    |
-| 006  | TechDocs: writing, by content pillar      | this PR |
-| 007  | Plugins: open-source projects             | planned |
+| 006  | TechDocs: writing, by content pillar      | live    |
+| 007  | Plugins: open-source projects             | this PR |
 | 008  | Playground: the path of least resistance  | planned |
 | 009  | Scorecard: live quality metrics           | planned |
 

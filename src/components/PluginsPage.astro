@@ -1,0 +1,221 @@
+---
+// 007:T004 Plugins: curated side projects as plugin cards (007:FR-001 – 007:FR-005)
+import type { Locale } from '../i18n/ui.ts';
+import { t } from '../i18n/utils.ts';
+import { projects } from '../site/projects.ts';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+---
+
+<div class="plugins-page" data-spec="007:FR-001">
+  <header data-spec="007:FR-002">
+    <p class="kind mono">plugins / installed</p>
+    <h1>{t(locale, 'plugins.heading')}</h1>
+    <p class="intro">{t(locale, 'plugins.intro')}</p>
+  </header>
+
+  <ul class="plugins">
+    {projects.map((p) => (
+      <li data-project={p.id} data-spec="007:FR-003">
+        <article aria-labelledby={`p-${p.id}`}>
+          <div class="head">
+            <h2 id={`p-${p.id}`} class="mono">
+              {p.name}
+            </h2>
+            <p class="chips mono">
+              <span class={`lifecycle ${p.lifecycle}`}>{p.lifecycle}</span>
+              <span class="since">
+                {t(locale, 'plugins.since')} {p.since}
+              </span>
+            </p>
+          </div>
+          <dl>
+            <dt>{t(locale, 'plugins.purpose')}</dt>
+            <dd class="purpose">{p.purpose[locale]}</dd>
+            <dt>{t(locale, 'plugins.demonstrates')}</dt>
+            <dd class="demonstrates">{p.demonstrates[locale]}</dd>
+            <dt>{t(locale, 'plugins.tech')}</dt>
+            <dd>
+              <ul class="tech mono">
+                {p.tech.map((name) => (
+                  <li>{name}</li>
+                ))}
+              </ul>
+            </dd>
+          </dl>
+          <p class="links">
+            <a href={p.repo} rel="noopener">
+              {t(locale, 'plugins.repo')}
+              <span class="visually-hidden">: {p.name}</span>
+            </a>
+            {p.live === 'self' && <span class="self">{t(locale, 'plugins.self')}</span>}
+          </p>
+          {p.specs && (
+            <p class="spec-driven" data-spec="007:FR-004">
+              <span class="marker mono">{t(locale, 'plugins.specDriven')}</span>
+              <a href={p.specs} rel="noopener">
+                {t(locale, 'plugins.specs')}
+                <span class="visually-hidden">: {p.name}</span>
+              </a>
+            </p>
+          )}
+        </article>
+      </li>
+    ))}
+  </ul>
+</div>
+
+<style>
+  .plugins-page {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-8);
+  }
+
+  header {
+    display: grid;
+    gap: var(--space-2);
+  }
+
+  .kind {
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  h1 {
+    font-size: clamp(2rem, 1.6rem + 2vw, 2.75rem);
+  }
+
+  .intro {
+    max-width: 62ch;
+    color: var(--color-text-muted);
+    font-size: var(--text-lg);
+  }
+
+  .plugins {
+    display: grid;
+    gap: var(--space-4);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  article {
+    display: grid;
+    gap: var(--space-4);
+    padding: var(--space-6);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: calc(var(--radius) * 2);
+    overflow-wrap: anywhere;
+  }
+
+  .head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-2) var(--space-4);
+  }
+
+  h2 {
+    font-size: var(--text-lg);
+    letter-spacing: 0;
+  }
+
+  .chips {
+    display: flex;
+    gap: var(--space-2);
+    font-size: var(--text-xs);
+  }
+
+  .chips span {
+    padding: 0 var(--space-2);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-pill);
+    background: var(--color-surface-muted);
+  }
+
+  .lifecycle.production {
+    border-color: var(--color-accent);
+    background: var(--color-accent-soft);
+  }
+
+  dl {
+    display: grid;
+    gap: var(--space-1) var(--space-6);
+    margin: 0;
+  }
+
+  dt {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  dd {
+    margin: 0 0 var(--space-2);
+    max-width: 68ch;
+  }
+
+  .tech {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-size: var(--text-xs);
+  }
+
+  .tech li {
+    padding: 0 var(--space-2);
+    border-radius: var(--radius);
+    background: var(--color-surface-muted);
+  }
+
+  .links,
+  .spec-driven {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--space-2) var(--space-4);
+    font-weight: 600;
+  }
+
+  .links a::after,
+  .spec-driven a::after {
+    content: ' ↗';
+  }
+
+  .self {
+    color: var(--color-text-muted);
+    font-weight: 400;
+    font-style: italic;
+  }
+
+  .marker {
+    padding: 0 var(--space-2);
+    border: 1px solid var(--color-accent);
+    border-radius: var(--radius-pill);
+    font-size: var(--text-xs);
+    font-weight: 400;
+  }
+
+  @media (min-width: 48rem) {
+    dl {
+      grid-template-columns: max-content minmax(0, 1fr);
+    }
+
+    dt {
+      padding-top: 0.25em;
+    }
+  }
+</style>
