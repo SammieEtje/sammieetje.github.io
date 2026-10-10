@@ -22,6 +22,18 @@ engineers want to know how he thinks before they talk to him.
 Out of scope: projects (007), playground (008), scorecard (009). No comments, no newsletter, no
 full-text copies.
 
+## Clarifications
+
+### Session 2026-10-10
+
+- Q: How is a pillar without published articles shown ("Regulated and fast")? → A: Show all four
+  pillars; an empty pillar says an article is in the works ("coming soon").
+- Q: Does the home page show the latest writing? → A: No; navigation only.
+- Q: Do other pages link to relevant articles? → A: Yes, on the method page, as "Further
+  reading": premise → "What elite sports taught me about IT transformation"; levers → "Why your
+  golden path became a golden cage"; assumptions → "People are lazy, engineers are trustworthy,
+  and failure should be free"; community phase → "The community that drives change".
+
 ## User Scenarios & Testing *(mandatory)*
 
 ### User Story 1 - Browse the writing by theme (Priority: P1)
@@ -36,8 +48,8 @@ pillar, with title, date, reading time and excerpt.
 
 **Acceptance Scenarios**:
 
-1. **Given** the TechDocs page, **When** it loads, **Then** each pillar with articles is a section
-   with a title and a one-sentence introduction.
+1. **Given** the TechDocs page, **When** it loads, **Then** all four pillars are sections with a
+   title and a one-sentence introduction; a pillar without articles says an article is coming.
 2. **Given** a pillar section, **When** it is read, **Then** its articles are listed newest first,
    each with title, publication date, reading time and an excerpt of one or two sentences.
 3. **Given** the ten provided articles, **When** the page is built, **Then** each appears exactly
@@ -96,7 +108,8 @@ as English.
 
 ### Edge Cases
 
-- A pillar without published articles: handled as decided in clarification.
+- A pillar without published articles shows a "coming soon" note instead of an empty list; it
+  fills automatically once an article is assigned to it.
 - An article published late in the evening UTC: its date is shown in Dutch time (Europe/Amsterdam),
   so "8 March 23:00 UTC" shows as 9 March.
 - A LinkedIn URL changes or disappears: the external link is not checked by the gate (LinkedIn
@@ -110,8 +123,9 @@ as English.
 **Page and grouping**
 
 - **FR-001**: The site MUST have a TechDocs page at `/writing/` (EN) and `/nl/schrijven/` (NL).
-- **FR-002**: Articles MUST be grouped by content pillar; each pillar section MUST have a title and
-  a one-sentence introduction in the page language.
+- **FR-002**: Articles MUST be grouped by content pillar; all four pillar sections MUST be shown,
+  each with a title and a one-sentence introduction in the page language; a pillar without
+  articles MUST show a "coming soon" note.
 - **FR-003**: Within a pillar, articles MUST be ordered newest first.
 
 **Articles**
@@ -123,6 +137,12 @@ as English.
   the link opens LinkedIn.
 - **FR-006**: Articles that belong to a series MUST show the series name and "part n of total".
 - **FR-007**: Excerpts MUST be original summaries, not copied passages of the articles.
+
+**Cross-links**
+
+- **FR-009**: The method page MUST show "Further reading" links to the four clarified articles in
+  the premise, levers, assumptions and community-phase sections, each opening the article on
+  LinkedIn.
 
 **Findability**
 
