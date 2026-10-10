@@ -138,16 +138,16 @@ as English.
 - **FR-006**: Articles that belong to a series MUST show the series name and "part n of total".
 - **FR-007**: Excerpts MUST be original summaries, not copied passages of the articles.
 
+**Findability**
+
+- **FR-008**: The page MUST appear in the navigation with term and subtitle in both languages, and
+  have its own title, description and sharing metadata.
+
 **Cross-links**
 
 - **FR-009**: The method page MUST show "Further reading" links to the four clarified articles in
   the premise, levers, assumptions and community-phase sections, each opening the article on
   LinkedIn.
-
-**Findability**
-
-- **FR-008**: The page MUST appear in the navigation with term and subtitle in both languages, and
-  have its own title, description and sharing metadata.
 
 ### Key Entities
 
