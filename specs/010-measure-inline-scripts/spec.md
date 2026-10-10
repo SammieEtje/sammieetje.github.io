@@ -24,6 +24,14 @@ The budget itself is safe: a separate end-to-end test measures embedded script a
 different definitions of "JavaScript per page" (one for the public number, one for the gate) is
 exactly the kind of drift the constitution forbids (principle I: one rule, checked one way).
 
+## Clarifications
+
+### Session 2026-10-10
+
+- No critical ambiguities: the measure (compressed, embedded plus separate, executable script
+  only), the 50 KB budget and the scope follow from constitution V and spec 009. The owner chose
+  to proceed without questions.
+
 ## User Scenarios & Testing *(mandatory)*
 
 ### User Story 1 - The scorecard shows the JavaScript a page really ships (Priority: P1)
