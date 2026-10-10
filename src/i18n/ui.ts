@@ -8,6 +8,7 @@ const en = {
   'site.home': 'Sander Ettema, home',
   'skip.link': 'Skip to content',
   'nav.label': 'Primary',
+  'nav.menu': 'Menu',
   'lang.label': 'Language',
   'nav.overview.term': 'Overview',
   'nav.overview.subtitle': 'who I am',
@@ -39,6 +40,36 @@ const en = {
   'links.linkedin': 'LinkedIn profile',
   'links.github': 'GitHub profile',
   'numbers.history': 'Full deployment history',
+  'nav.playground.term': 'Playground',
+  'nav.playground.subtitle': 'try it',
+  'page.playground.title': 'Playground: try the path of least resistance',
+  'page.playground.description':
+    "An interactive model of Sander Ettema's method: switch the levers and see how a team adopts the golden path over a year.",
+  'playground.heading': 'Playground',
+  'playground.intro':
+    'Switch the levers from the method on and off and see how a team of engineers adopts the golden path over a year. Then try a mandate instead.',
+  'playground.mandate': 'Mandate the platform',
+  'playground.mandate.hint': 'top-down: announced in week 8, enforced by week 16',
+  'playground.nojs': 'Changing the scenario needs JavaScript; this is the default scenario.',
+  'playground.chart': 'Adoption of the golden path over 52 weeks',
+  'playground.legend.adoption': 'on the golden path',
+  'playground.legend.reluctant': 'only because of the mandate',
+  'playground.axis.week': 'week',
+  'playground.model.title': 'How the model works',
+  'playground.rule.1': 'Everyone starts on the old habit, except a few early adopters.',
+  'playground.rule.2':
+    'Each lever that lowers resistance makes the golden path easier; each lever that raises resistance makes the old habit harder.',
+  'playground.rule.3':
+    'Every week some people switch when the golden path is easier, and more of them when colleagues already did.',
+  'playground.rule.4': 'When the golden path is harder than the habit, people drift back.',
+  'playground.rule.5':
+    'A mandate pushes most of the team onto the platform from week 8; whoever would not have chosen it counts as reluctant.',
+  'playground.illustrative':
+    'The numbers are illustrative, chosen to make the method visible. They are not measurements.',
+  'playground.rabobank':
+    'At Rabobank, with all of these levers in place and no mandate, 10,000 people chose the platform. This model is illustrative, not a reconstruction.',
+  'playground.source': 'Read the model source',
+  'method.playground': 'Try it in the playground',
   'nav.plugins.term': 'Plugins',
   'nav.plugins.subtitle': 'what I build',
   'page.plugins.title': 'Plugins: what I build to stay close to the work',
@@ -153,6 +184,7 @@ const nl: Record<UiKey, string> = {
   'site.home': 'Sander Ettema, startpagina',
   'skip.link': 'Naar de inhoud',
   'nav.label': 'Hoofdmenu',
+  'nav.menu': 'Menu',
   'lang.label': 'Taal',
   'nav.overview.term': 'Overzicht',
   'nav.overview.subtitle': 'wie ik ben',
@@ -184,6 +216,36 @@ const nl: Record<UiKey, string> = {
   'links.linkedin': 'LinkedIn-profiel',
   'links.github': 'GitHub-profiel',
   'numbers.history': 'Volledige releasegeschiedenis',
+  'nav.playground.term': 'Speeltuin',
+  'nav.playground.subtitle': 'probeer het',
+  'page.playground.title': 'Speeltuin: probeer de weg van de minste weerstand',
+  'page.playground.description':
+    'Een interactief model van de methode van Sander Ettema: zet de hefbomen aan en zie hoe een team in een jaar het golden path adopteert.',
+  'playground.heading': 'Speeltuin',
+  'playground.intro':
+    'Zet de hefbomen uit de methode aan en uit en zie hoe een team engineers in een jaar het golden path adopteert. Probeer daarna een mandaat.',
+  'playground.mandate': 'Verplicht het platform',
+  'playground.mandate.hint': 'top-down: aangekondigd in week 8, afgedwongen in week 16',
+  'playground.nojs': 'Het scenario aanpassen vraagt JavaScript; dit is het standaardscenario.',
+  'playground.chart': 'Adoptie van het golden path over 52 weken',
+  'playground.legend.adoption': 'via het golden path',
+  'playground.legend.reluctant': 'alleen door het mandaat',
+  'playground.axis.week': 'week',
+  'playground.model.title': 'Hoe het model werkt',
+  'playground.rule.1': 'Iedereen begint bij de oude gewoonte, op een paar early adopters na.',
+  'playground.rule.2':
+    'Elke hefboom die weerstand verlaagt, maakt het golden path makkelijker; elke hefboom die weerstand verhoogt, maakt de oude gewoonte zwaarder.',
+  'playground.rule.3':
+    'Elke week stappen mensen over als het golden path makkelijker is, en meer als collega’s het al deden.',
+  'playground.rule.4': 'Is het golden path zwaarder dan de gewoonte, dan vallen mensen terug.',
+  'playground.rule.5':
+    'Een mandaat duwt vanaf week 8 het grootste deel van het team het platform op; wie er zelf niet voor gekozen had, telt als onwillig.',
+  'playground.illustrative':
+    'De getallen zijn illustratief, gekozen om de methode zichtbaar te maken. Het zijn geen metingen.',
+  'playground.rabobank':
+    'Bij Rabobank kozen 10.000 mensen voor het platform, met al deze hefbomen en zonder mandaat. Dit model is illustratief, geen reconstructie.',
+  'playground.source': 'Bekijk de broncode van het model',
+  'method.playground': 'Probeer het in de speeltuin',
   'nav.plugins.term': 'Plugins',
   'nav.plugins.subtitle': 'wat ik bouw',
   'page.plugins.title': 'Plugins: wat ik bouw om dicht bij het werk te blijven',

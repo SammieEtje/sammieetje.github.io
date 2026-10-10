@@ -51,6 +51,8 @@ test.describe('navigation on a 320 px screen', () => {
   for (const path of ['/', '/nl/']) {
     test(`${path}: every item is within the viewport`, async ({ page }) => {
       await page.goto(path);
+      // 008:T007 On phones the navigation sits behind a native Menu disclosure
+      await page.locator('details.menu > summary').click();
       const links = page.locator('[data-spec="001:FR-004"] a');
       expect(await links.count()).toBeGreaterThanOrEqual(3);
       for (const link of await links.all()) {
@@ -60,4 +62,37 @@ test.describe('navigation on a 320 px screen', () => {
       }
     });
   }
+});
+
+// 008:T007 The menu keeps the identity above the fold however many sections exist (001:SC-001)
+for (const width of [320, 360]) {
+  test.describe(`navigation menu at ${width} px`, () => {
+    test.use({ viewport: { width, height: 740 } });
+
+    for (const path of ['/', '/nl/']) {
+      test(`${path}: closed by default, the LinkedIn button stays above the fold`, async ({
+        page,
+      }) => {
+        await page.goto(path);
+        await expect(page.locator('details.menu')).not.toHaveAttribute('open');
+        await expect(page.locator('details.menu > summary')).toBeVisible();
+        await expect(page.locator('[data-spec="001:FR-001"] a.cta')).toBeInViewport({ ratio: 1 });
+      });
+    }
+  });
+}
+
+test.describe('navigation on a desktop', () => {
+  test.use({ viewport: { width: 1280, height: 800 } });
+
+  test('is an always-visible sidebar without a menu button', async ({ page }) => {
+    await page.goto('/');
+    await expect(page.locator('details.menu > summary')).toBeHidden();
+    for (const link of await page
+      .getByRole('navigation', { name: 'Primary' })
+      .getByRole('link')
+      .all()) {
+      await expect(link).toBeVisible();
+    }
+  });
 });

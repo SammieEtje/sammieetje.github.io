@@ -1,0 +1,427 @@
+---
+// 008:T004 Playground: build-time default, enhanced in the browser by the same model (008:FR-004 – 008:FR-008)
+import type { Locale } from '../i18n/ui.ts';
+import { t } from '../i18n/utils.ts';
+import { levers } from '../site/method.ts';
+import {
+  PLOT,
+  WEEKS,
+  chartPaths,
+  lowerIds,
+  raiseIds,
+  simulate,
+  summarize,
+} from '../site/adoption-model.ts';
+import { repoUrl } from '../site/build-info.ts';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const W = 600;
+const H = 300;
+const result = simulate({ levers: new Set(), mandate: false });
+const paths = chartPaths(result, W, H);
+const groups = [
+  { lever: levers.find((l) => l.id === 'lower')!, ids: lowerIds },
+  { lever: levers.find((l) => l.id === 'raise')!, ids: raiseIds },
+];
+const yTicks = [0, 0.25, 0.5, 0.75, 1];
+const xTicks = [1, 13, 26, 39, 52];
+const x = (week: number) => PLOT.left + ((week - 1) / (WEEKS - 1)) * (W - PLOT.left - PLOT.right);
+const y = (share: number) => PLOT.top + (1 - share) * (H - PLOT.top - PLOT.bottom);
+const rules = [1, 2, 3, 4, 5] as const;
+---
+
+<div class="playground-page">
+  <header>
+    <p class="kind mono">sandbox / adoption-model</p>
+    <h1>{t(locale, 'playground.heading')}</h1>
+    <p class="intro">{t(locale, 'playground.intro')}</p>
+  </header>
+
+  <div class="lab">
+    <figure data-spec="008:FR-005">
+      <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-label={t(locale, 'playground.chart')}>
+        <defs>
+          <pattern
+            id="hatch"
+            width="8"
+            height="8"
+            patternUnits="userSpaceOnUse"
+            patternTransform="rotate(45)"
+          >
+            <line x1="0" y1="0" x2="0" y2="8" class="hatch-line"></line>
+          </pattern>
+        </defs>
+        {yTicks.map((v) => (
+          <g class="grid">
+            <line x1={PLOT.left} x2={W - PLOT.right} y1={y(v)} y2={y(v)} />
+            <text x={PLOT.left - 8} y={y(v) + 4} text-anchor="end">
+              {Math.round(v * 100)}%
+            </text>
+          </g>
+        ))}
+        {xTicks.map((w) => (
+          <text
+            class="tick"
+            x={x(w)}
+            y={H - 10}
+            text-anchor={w === 1 ? 'start' : w === WEEKS ? 'end' : 'middle'}
+          >
+            {t(locale, 'playground.axis.week')} {w}
+          </text>
+        ))}
+        <path class="reluctant" d={paths.reluctant}></path>
+        <path class="adoption" d={paths.adoption}></path>
+      </svg>
+      <figcaption>
+        <ul class="legend">
+          <li>
+            <span class="swatch adoption" aria-hidden="true"></span>
+            {t(locale, 'playground.legend.adoption')}
+          </li>
+          <li>
+            <span class="swatch reluctant" aria-hidden="true"></span>
+            {t(locale, 'playground.legend.reluctant')}
+          </li>
+        </ul>
+        <p class="summary" role="status" aria-live="polite">
+          {summarize(result, locale)}
+        </p>
+      </figcaption>
+    </figure>
+
+    <form class="playground" data-locale={locale} autocomplete="off" data-spec="008:FR-004">
+      <fieldset class="controls" disabled>
+        {groups.map(({ lever, ids }) => (
+          <fieldset class={`group ${lever.id}`}>
+            <legend>{lever.title[locale]}</legend>
+            {ids.map((id, i) => (
+              <label class="flag">
+                <input type="checkbox" name="lever" value={id} />
+                <span>{lever.instruments[i]![locale]}</span>
+              </label>
+            ))}
+          </fieldset>
+        ))}
+        <label class="flag mandate">
+          <input type="checkbox" name="mandate" />
+          <span>
+            {t(locale, 'playground.mandate')}
+            <small>{t(locale, 'playground.mandate.hint')}</small>
+          </span>
+        </label>
+      </fieldset>
+      <p class="nojs" data-spec="008:FR-006">
+        {t(locale, 'playground.nojs')}
+      </p>
+    </form>
+  </div>
+
+  <section aria-labelledby="model-title" data-spec="008:FR-007">
+    <h2 id="model-title">{t(locale, 'playground.model.title')}</h2>
+    <ol class="rules">
+      {rules.map((n) => (
+        <li>{t(locale, `playground.rule.${n}`)}</li>
+      ))}
+    </ol>
+    <p class="note">{t(locale, 'playground.illustrative')}</p>
+    <p class="note">{t(locale, 'playground.rabobank')}</p>
+    <p>
+      <a href={`${repoUrl}/blob/main/src/site/adoption-model.ts`} rel="noopener">
+        {t(locale, 'playground.source')}
+      </a>
+    </p>
+  </section>
+</div>
+
+<script>
+  // 008:T004 Progressive enhancement: the same model re-runs on every change (008:FR-001, 008:FR-005)
+  import { chartPaths, simulate, summarize, type LeverId } from '../site/adoption-model.ts';
+
+  const form = document.querySelector<HTMLFormElement>('form.playground');
+  const figure = document.querySelector('[data-spec="008:FR-005"]');
+  if (form && figure) {
+    const locale = form.dataset['locale'] === 'nl' ? 'nl' : 'en';
+    const adoption = figure.querySelector('path.adoption')!;
+    const reluctant = figure.querySelector('path.reluctant')!;
+    const summary = figure.querySelector('.summary')!;
+    form.querySelector<HTMLFieldSetElement>('fieldset.controls')!.disabled = false;
+    form.querySelector('.nojs')?.remove();
+
+    form.addEventListener('change', () => {
+      const levers = new Set(
+        [...form.querySelectorAll<HTMLInputElement>('input[name="lever"]:checked')].map(
+          (input) => input.value as LeverId,
+        ),
+      );
+      const mandate = form.querySelector<HTMLInputElement>('input[name="mandate"]')!.checked;
+      const result = simulate({ levers, mandate });
+      const paths = chartPaths(result, 600, 300);
+      adoption.setAttribute('d', paths.adoption);
+      reluctant.setAttribute('d', paths.reluctant);
+      summary.textContent = summarize(result, locale);
+    });
+  }
+</script>
+
+<style>
+  .playground-page {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-8);
+  }
+
+  header {
+    display: grid;
+    gap: var(--space-2);
+  }
+
+  .kind {
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  h1 {
+    font-size: clamp(2rem, 1.6rem + 2vw, 2.75rem);
+  }
+
+  .intro {
+    max-width: 62ch;
+    color: var(--color-text-muted);
+    font-size: var(--text-lg);
+  }
+
+  .lab {
+    display: grid;
+    gap: var(--space-6);
+  }
+
+  figure {
+    margin: 0;
+    display: grid;
+    gap: var(--space-3);
+    padding: var(--space-4);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: calc(var(--radius) * 2);
+  }
+
+  svg {
+    width: 100%;
+    height: auto;
+    font-family: var(--font-mono);
+  }
+
+  .grid line {
+    stroke: var(--color-border);
+  }
+
+  .grid text,
+  .tick {
+    fill: var(--color-text-muted);
+    font-size: 12px;
+  }
+
+  .hatch-line {
+    stroke: var(--color-text-muted);
+    stroke-width: 2;
+  }
+
+  path.reluctant {
+    fill: url(#hatch);
+    stroke: var(--color-text-muted);
+    stroke-width: 1.5;
+    stroke-dasharray: 4 4;
+  }
+
+  path.adoption {
+    fill: none;
+    stroke: var(--color-accent);
+    stroke-width: 3.5;
+    stroke-linejoin: round;
+  }
+
+  figcaption {
+    display: grid;
+    gap: var(--space-2);
+  }
+
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-1) var(--space-4);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    color: var(--color-text-muted);
+    font-size: var(--text-sm);
+  }
+
+  .legend li {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+  }
+
+  .swatch {
+    display: inline-block;
+    width: 1.5rem;
+    height: 0.75rem;
+  }
+
+  .swatch.adoption {
+    height: 0;
+    border-top: 3.5px solid var(--color-accent);
+  }
+
+  .swatch.reluctant {
+    border: 1.5px dashed var(--color-text-muted);
+    background: repeating-linear-gradient(
+      45deg,
+      var(--color-text-muted) 0 2px,
+      transparent 2px 6px
+    );
+  }
+
+  .summary {
+    font-size: var(--text-lg);
+    font-weight: 600;
+  }
+
+  form {
+    display: grid;
+    gap: var(--space-3);
+  }
+
+  fieldset {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    min-width: 0;
+  }
+
+  .controls {
+    display: grid;
+    gap: var(--space-4);
+  }
+
+  .group {
+    display: grid;
+    gap: var(--space-2);
+    padding: var(--space-4);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: calc(var(--radius) * 2);
+  }
+
+  legend {
+    float: left;
+    width: 100%;
+    margin-bottom: var(--space-2);
+    font-weight: 650;
+  }
+
+  /* Feature flags: native checkboxes drawn as switches */
+  .flag {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-3);
+    cursor: pointer;
+  }
+
+  .flag input {
+    appearance: none;
+    flex: none;
+    position: relative;
+    width: 2.5rem;
+    height: 1.4rem;
+    margin: 0.1rem 0 0;
+    border: 1.5px solid var(--color-text-muted);
+    border-radius: var(--radius-pill);
+    background: var(--color-surface-muted);
+    cursor: pointer;
+  }
+
+  .flag input::after {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: calc(1.4rem - 7px);
+    height: calc(1.4rem - 7px);
+    border-radius: 50%;
+    background: var(--color-text-muted);
+  }
+
+  .flag input:checked {
+    border-color: var(--color-accent);
+    background: var(--color-accent-soft);
+  }
+
+  .flag input:checked::after {
+    left: auto;
+    right: 2px;
+    background: var(--color-accent);
+  }
+
+  .flag input:disabled,
+  .controls:disabled .flag {
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+
+  .mandate {
+    padding: var(--space-4);
+    border: 1px dashed var(--color-text-muted);
+    border-radius: calc(var(--radius) * 2);
+  }
+
+  .mandate small {
+    display: block;
+    color: var(--color-text-muted);
+    font-size: var(--text-xs);
+  }
+
+  .nojs {
+    color: var(--color-text-muted);
+    font-style: italic;
+  }
+
+  section {
+    display: grid;
+    gap: var(--space-3);
+  }
+
+  h2 {
+    font-size: var(--text-xl);
+  }
+
+  .rules {
+    display: grid;
+    gap: var(--space-2);
+    margin: 0;
+    padding-left: var(--space-6);
+    max-width: 68ch;
+  }
+
+  .note {
+    color: var(--color-text-muted);
+    max-width: 68ch;
+  }
+
+  @media (min-width: 64rem) {
+    .lab {
+      grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+      align-items: start;
+    }
+
+    figure {
+      position: sticky;
+      top: var(--space-6);
+    }
+  }
+</style>

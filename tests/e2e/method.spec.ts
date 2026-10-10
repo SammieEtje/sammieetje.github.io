@@ -139,12 +139,12 @@ test.describe('method page: dependencies', () => {
 
 // 004:T010 Findability and Dutch (004:FR-010, 004:FR-011, 004:SC-005)
 test.describe('method page: findability and Dutch', () => {
-  test('navigation order is Overview, Golden paths, Deployment history, API docs, TechDocs, Plugins', async ({
+  test('navigation order is Overview, Golden paths, Deployment history, API docs, TechDocs, Plugins, Playground', async ({
     page,
   }) => {
     await page.goto('/method/');
     const nav = page.getByRole('navigation', { name: 'Primary' });
-    // 005:T008 API docs added as the fourth section (005:FR-010); 006:T005 TechDocs fifth (006:FR-008); 007:T005 Plugins sixth (007:FR-006)
+    // 005:T008 API docs added as the fourth section (005:FR-010); 006:T005 TechDocs fifth (006:FR-008); 007:T005 Plugins sixth (007:FR-006); 008:T005 Playground seventh (008:FR-009)
     await expect(nav.locator('.term')).toHaveText([
       'Overview',
       'Golden paths',
@@ -152,6 +152,7 @@ test.describe('method page: findability and Dutch', () => {
       'API docs',
       'TechDocs',
       'Plugins',
+      'Playground',
     ]);
     await expect(nav.getByRole('link', { name: /Golden paths/ })).toHaveAttribute(
       'aria-current',

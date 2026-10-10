@@ -18,4 +18,7 @@ export const pages = [
   // 007:T005 Plugins joins every shared per-page suite
   { path: '/plugins/', lang: 'en' },
   { path: '/nl/projecten/', lang: 'nl' },
+  // 008:T005 Playground joins every shared per-page suite
+  { path: '/playground/', lang: 'en' },
+  { path: '/nl/speeltuin/', lang: 'nl' },
 ] as const;
