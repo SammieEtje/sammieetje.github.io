@@ -179,10 +179,10 @@ how I lead"; `/nl/zo-leid-ik/` exists in Dutch; the home overview links to it.
 **Contact and findability**
 
 - **FR-009**: The page MUST end with a call to action that links to LinkedIn.
-- **FR-011**: The page MUST show the clarified LinkedIn recommendation as a quote with the
-  author's name, role and a link to the author's LinkedIn profile.
 - **FR-010**: The page MUST appear in the navigation with term and subtitle in both languages, have
   its own title, description and sharing metadata, and be linked from the home identity card.
+- **FR-011**: The page MUST show the clarified LinkedIn recommendation as a quote with the
+  author's name, role and a link to the author's LinkedIn profile.
 
 ### Key Entities
 
@@ -204,6 +204,8 @@ how I lead"; `/nl/zo-leid-ik/` exists in Dutch; the home overview links to it.
 - **SC-003**: Zero statements on the page come from private sources (assessment, performance
   agreement, internal notes); every statement traces to Sander's approval.
 - **SC-004**: Constitution budgets hold with zero client-side JavaScript.
+- **SC-005**: An engineer who wants to talk can reach the LinkedIn call to action from the page
+  in one action.
 
 ## Assumptions
 
