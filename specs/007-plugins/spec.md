@@ -23,6 +23,19 @@ ways of working (spec-driven development with an AI assistant) before asking tea
 Out of scope: live repository statistics (009 Scorecard), private repositories, contribution
 graphs.
 
+## Clarifications
+
+### Session 2026-10-10
+
+- Q: Which projects appear? → A: Three: this site (`sammieetje.github.io`), `my-specdriven-app`
+  and `myPool`. Not `microbit_compas`.
+- Q: Is the family member's project (a fork with own contributions) shown? → A: No; it stays
+  off the site and out of this repository (constitution VI: no family names).
+- Q: How does the introduction frame the projects? → A: "I'm technically curious, not technically
+  deep. I build side projects to understand what my teams deal with every day, and to try new
+  ways of working, like spec-driven development with an AI assistant, before I ask anyone else
+  to."
+
 ## User Scenarios & Testing *(mandatory)*
 
 ### User Story 1 - See what he builds (Priority: P1)
@@ -95,8 +108,8 @@ in Dutch.
   repository link; projects with a live page MUST also link to it.
 - **FR-004**: Spec-driven projects MUST carry a "spec-driven" marker and link to their
   specifications folder.
-- **FR-005**: Only repositories selected in clarification MUST appear; forks without own commits
-  MUST NOT appear.
+- **FR-005**: Exactly the three repositories selected in clarification MUST appear; forks and the
+  family member's project MUST NOT appear.
 - **FR-006**: The page MUST appear in the navigation with term and subtitle in both languages, and
   have its own title, description and sharing metadata.
 
