@@ -59,7 +59,7 @@ const history = routes.find((r) => r.id === 'career')!.paths[locale];
     <p class="intro">{t(locale, 'method.assumptions.intro')}</p>
     <ol class="assumptions">
       {assumptions.map((a, i) => (
-        <li>
+        <li id={`assumption-${i + 1}`}>
           <span class="number mono" aria-hidden="true">
             {two(i + 1)}
           </span>
@@ -250,6 +250,8 @@ const history = routes.find((r) => r.id === 'career')!.paths[locale];
   }
 
   .assumptions li {
+    /* 005:T006 Stable anchors for links from the README (005:FR-008) */
+    scroll-margin-top: var(--space-6);
     display: grid;
     gap: var(--space-2);
     padding: var(--space-6);
