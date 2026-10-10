@@ -23,6 +23,30 @@ leadership made explicit) and decision-makers (leadership style, in his own word
 Out of scope: writing (006), projects (007). No contact form or email address (agreed in 001):
 the call to action is LinkedIn.
 
+## Clarifications
+
+### Session 2026-10-10
+
+- Q: How do one-on-ones work? → A: Monthly, one hour, structured; ad hoc whenever needed.
+- Q: How do people reach Sander and how fast does he respond? → A: Chat for anything, reply the
+  same working day; urgent means call. No expectation of replies in the evening or at weekends,
+  and he tries not to send them.
+- Q: How does he want feedback and how does he give it? → A: Anytime, anywhere, including in the
+  team if it helps everyone learn. Praise in public; correction in private when it is personal.
+- Q: Which known issues does he disclose? → A: (1) "I'm direct and can come across as blunt.
+  Workaround: tell me when it lands wrong; I'd rather know." (2) "I get impatient with process
+  that no longer serves a purpose. Workaround: show me the purpose, and I'm on board."
+- Q: What does he expect from his team? → A: Own outcomes, not tickets (choose the systemic fix
+  when it matters more); make it visible (share learning and what went wrong early, bad news fast
+  is good news); build for others (docs, golden paths, self-service: your impact is what others
+  can do because of you); challenge me (disagree with arguments; rather convinced than obeyed).
+- Q: What can people expect from him? → A: Context, not instructions (the why and the
+  boundaries; you decide the how); remove what's in the way (staffing, priorities, politics,
+  blockers); fair and transparent (if I can't share something, I'll say that I can't).
+- Q: Is the LinkedIn recommendation used, and how? → A: Yes, with the author's name: Chris
+  Stapper, community manager in Sander's team at Rabobank, linked to
+  `https://www.linkedin.com/in/chrisstapper` (tracking parameters removed).
+
 ## User Scenarios & Testing *(mandatory)*
 
 ### User Story 1 - Know what working for Sander is like (Priority: P1)
@@ -155,6 +179,8 @@ how I lead"; `/nl/zo-leid-ik/` exists in Dutch; the home overview links to it.
 **Contact and findability**
 
 - **FR-009**: The page MUST end with a call to action that links to LinkedIn.
+- **FR-011**: The page MUST show the clarified LinkedIn recommendation as a quote with the
+  author's name, role and a link to the author's LinkedIn profile.
 - **FR-010**: The page MUST appear in the navigation with term and subtitle in both languages, have
   its own title, description and sharing metadata, and be linked from the home identity card.
 
@@ -163,6 +189,8 @@ how I lead"; `/nl/zo-leid-ik/` exists in Dutch; the home overview links to it.
 - **Endpoint**: id (anchor), method, path, title, body (paragraphs and/or list items), per
   language.
 - **Known issue**: description, workaround, per language.
+- **Testimonial**: quote (original English, quoted verbatim in both languages), author, role per
+  language, profile URL.
 - **README meta**: last-updated date, introduction per language.
 
 ## Success Criteria *(mandatory)*
