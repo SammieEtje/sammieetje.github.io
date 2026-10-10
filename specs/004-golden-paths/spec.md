@@ -24,6 +24,20 @@ environment designed this way.
 Out of scope: an interactive model (008 Playground), individual writing (006), the "How I lead"
 README (005).
 
+## Clarifications
+
+### Session 2026-10-10
+
+- Q: How do the phases relate to compliance? → A: Keep the four phases from 003 (consolidate,
+  stabilise, design the environment, grow the community). Compliance is a property built into
+  "design the environment" and gets its own four-step section; 003 is not retagged.
+- Q: How does the science section handle the "90% of decisions" (Kahneman) and "ADKAR leaves 80%
+  unused" figures? → A: No numbers, same message: "most everyday decisions are made fast and
+  automatically (System 1)"; "ADKAR addresses only the conscious, individual layer of behaviour
+  change".
+- Q: How is assumption 3 worded? → A: Keep "People are inherently lazy", with the subtitle "Not a
+  judgement, a design constraint: people take the path of least resistance."
+
 ## User Scenarios & Testing *(mandatory)*
 
 ### User Story 1 - Get the idea in one minute (Priority: P1)
@@ -184,8 +198,8 @@ in Dutch; the home About card and the deployment-history legend link to the meth
 **Science**
 
 - **FR-009**: The page MUST list the behavioural-science models it builds on, each with name,
-  authors and a one-line takeaway, and MUST NOT state statistics that the cited source does not
-  state.
+  authors and a one-line takeaway, and MUST NOT contain any percentage or other statistic about
+  behaviour (clarified: same message, no numbers).
 
 **Findability**
 
@@ -216,7 +230,7 @@ in Dutch; the home About card and the deployment-history legend link to the meth
 
 - Content comes from Sander's approved positioning (vault: Kernpositionering, Content Pilaren,
   the published post "Four assumptions").
-- The phases are the four from 003; how compliance relates to them is settled in clarification.
+- The phases are the four from 003; compliance lives inside "design the environment".
 - "People are inherently lazy" is Sander's own published wording; the page pairs it with "take
   the path of least resistance" so it is not read as a moral judgement.
 - The 003 post-merge check (LinkedIn preview of `/career/`) passed on 2026-10-10 and is recorded
