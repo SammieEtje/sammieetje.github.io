@@ -78,6 +78,8 @@ its specifications.
 
 ### User Story 3 - Find it, read it in Dutch (Priority: P2)
 
+A visitor reaches Plugins from the navigation on any page and can read it in Dutch.
+
 **Why this priority**: constitution VII and findability.
 
 **Independent Test**: navigation lists "Plugins — what I build"; `/nl/projecten/` shows the same
@@ -93,7 +95,7 @@ in Dutch.
 - A project's repository disappears or is renamed: the link check does not crawl external links;
   repository URLs are validated for shape and uniqueness only.
 - Forks without own work are never shown as own projects.
-- Projects involving family members are shown only as clarified.
+- Projects involving family members are never shown (clarified).
 - Volatile numbers (stars, commit counts) are not shown; they go stale without a live source.
 
 ## Requirements *(mandatory)*
