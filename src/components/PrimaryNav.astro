@@ -1,5 +1,7 @@
 ---
 // 001:T027 Navigation generated from the route registry (001:FR-004)
+// 008:T007 Phones and tablets: a native disclosure ("Menu · current page"), so any number of
+// sections leaves the content above the fold (001:SC-001); desktop: an always-open sidebar.
 import type { Locale } from '../i18n/ui.ts';
 import { t } from '../i18n/utils.ts';
 import { navItems } from '../site/routes.ts';
@@ -11,30 +13,76 @@ interface Props {
 
 const { locale, path } = Astro.props;
 const items = navItems(locale, path);
+const current = items.find((item) => item.current);
 ---
 
-<nav aria-label={t(locale, 'nav.label')} data-spec="001:FR-004">
-  <ul>
-    {items.map((item) => (
-      <li>
-        <a href={item.href} aria-current={item.current ? 'page' : undefined}>
-          <span class="term">{item.term}</span>
-          <span class="subtitle">{item.subtitle}</span>
-        </a>
-      </li>
-    ))}
-  </ul>
-</nav>
+<details class="menu">
+  <summary>
+    <span class="menu-label">{t(locale, 'nav.menu')}</span>
+    {current && <span class="menu-current">{current.term}</span>}
+  </summary>
+  <nav aria-label={t(locale, 'nav.label')} data-spec="001:FR-004">
+    <ul>
+      {items.map((item) => (
+        <li>
+          <a href={item.href} aria-current={item.current ? 'page' : undefined}>
+            <span class="term">{item.term}</span>
+            <span class="subtitle">{item.subtitle}</span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </nav>
+</details>
 
 <style>
-  /* 004:T013 Every section stays visible on phones; nothing hides off-screen.
-     006:T006 Phones: a compact two-column grid, so five sections still leave the
-     identity card above the fold (001:SC-001). */
+  .menu {
+    min-width: 0;
+  }
+
+  summary {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    width: fit-content;
+    padding: var(--space-2) var(--space-4);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    background: var(--color-surface);
+    cursor: pointer;
+    font-weight: 600;
+    font-size: var(--text-sm);
+  }
+
+  .menu-current {
+    color: var(--color-text-muted);
+    font-weight: 400;
+  }
+
+  .menu-current::before {
+    content: '· ';
+  }
+
+  summary::-webkit-details-marker {
+    display: none;
+  }
+
+  summary::after {
+    content: '▾';
+    margin-left: var(--space-1);
+    color: var(--color-text-muted);
+    transition: transform 0.15s;
+  }
+
+  .menu[open] summary::after {
+    transform: rotate(180deg);
+  }
+
   ul {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: var(--space-1) var(--space-2);
-    margin: 0;
+    margin: var(--space-3) 0 0;
     padding: 0;
     list-style: none;
   }
@@ -71,27 +119,34 @@ const items = navItems(locale, path);
     font-size: var(--text-xs);
   }
 
-  /* Tablets: one wrapping row */
   @media (min-width: 48rem) {
     ul {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  /* Desktop: the disclosure is always open as a sticky sidebar */
+  @media (min-width: 64rem) {
+    summary {
+      display: none;
+    }
+
+    .menu::details-content {
+      content-visibility: visible;
+    }
+
+    ul {
       display: flex;
-      flex-wrap: wrap;
+      flex-direction: column;
       gap: var(--space-2);
+      margin: 0;
+      position: sticky;
+      top: var(--space-8);
     }
 
     a {
       padding: var(--space-2) var(--space-3);
       line-height: 1.6;
-    }
-  }
-
-  /* Desktop: sticky sidebar */
-  @media (min-width: 64rem) {
-    ul {
-      flex-direction: column;
-      flex-wrap: nowrap;
-      position: sticky;
-      top: var(--space-8);
     }
   }
 </style>

@@ -72,16 +72,18 @@ nowhere.
 | 004  | Golden paths: the method                  | live    |
 | 005  | API docs: "How I lead" manager README     | live    |
 | 006  | TechDocs: writing, by content pillar      | live    |
-| 007  | Plugins: open-source projects             | this PR |
-| 008  | Playground: the path of least resistance  | planned |
+| 007  | Plugins: open-source projects             | live    |
+| 008  | Playground: the path of least resistance  | this PR |
 | 009  | Scorecard: live quality metrics           | planned |
 
 ## Stack
 
 Astro 7 (static output), TypeScript 6 strict, Vitest, Playwright with axe-core, Lighthouse CI,
 GitHub Actions and GitHub Pages. Fonts are self-hosted. Images are optimised at build time
-(AVIF/WebP), and the sharing cards are rendered by the build with Satori and resvg. There is no
-client-side JavaScript yet.
+(AVIF/WebP), and the sharing cards are rendered by the build with Satori and resvg. Client-side
+JavaScript exists on one page only: the playground, where the same adoption model that renders the
+default chart at build time re-runs in the browser (about 1 KB compressed). Every other page ships
+zero scripts, and a test keeps it that way.
 
 ## Content
 

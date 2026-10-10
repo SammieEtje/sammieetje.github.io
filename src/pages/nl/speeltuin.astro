@@ -1,0 +1,14 @@
+---
+// 008:T006 Dutch playground (008:FR-004)
+import PortalLayout from '../../layouts/PortalLayout.astro';
+import PlaygroundPage from '../../components/PlaygroundPage.astro';
+import { routes } from '../../site/routes.ts';
+import { routeMeta } from '../../site/meta.ts';
+
+const route = routes.find((r) => r.id === 'playground')!;
+const locale = 'nl';
+---
+
+<PortalLayout locale={locale} path={route.paths[locale]} meta={routeMeta(route, locale)}>
+  <PlaygroundPage locale={locale} />
+</PortalLayout>

@@ -1,4 +1,5 @@
 // 001:T024 Page metadata and privacy guarantees (001:FR-006, 001:FR-009, 001:FR-013, 001:SC-008)
+import { gzipSync } from 'node:zlib';
 import { expect, test } from '@playwright/test';
 import { routes } from '../../src/site/routes.ts';
 import { routeMeta } from '../../src/site/meta.ts';
@@ -42,8 +43,11 @@ for (const route of routes) {
   }
 }
 
+// 008:T005 Scripts only where a spec allows them: the playground (008:FR-008)
+const scriptPages = ['/playground/', '/nl/speeltuin/'];
+
 for (const { path } of pages) {
-  test(`${path} ships no scripts, stays on its own origin and sets no cookies`, async ({
+  test(`${path} ships only allowed scripts, stays on its own origin and sets no cookies`, async ({
     page,
     context,
     baseURL,
@@ -58,7 +62,17 @@ for (const { path } of pages) {
     await page.goto(path);
     await page.waitForLoadState('networkidle');
     expect(foreign).toEqual([]);
-    await expect(page.locator('script')).toHaveCount(0);
+    if (scriptPages.includes(path)) {
+      const scripts = page.locator('script');
+      await expect(scripts).toHaveCount(1);
+      await expect(scripts).toHaveAttribute('type', 'module');
+      // Lighthouse only counts external script files; measure inline code against the
+      // constitution's budget (V: at most 50 KB compressed per page) here.
+      const inline = (await scripts.allTextContents()).join('');
+      expect(gzipSync(inline).length).toBeLessThanOrEqual(50 * 1024);
+    } else {
+      await expect(page.locator('script')).toHaveCount(0);
+    }
     expect(await context.cookies()).toEqual([]);
   });
 }

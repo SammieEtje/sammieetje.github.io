@@ -25,6 +25,7 @@ interface Props {
 const { locale } = Astro.props;
 const two = (n: number) => String(n).padStart(2, '0');
 const history = routes.find((r) => r.id === 'career')!.paths[locale];
+const playground = routes.find((r) => r.id === 'playground')!.paths[locale];
 const further = {
   premise: articleById('elite-sports'),
   levers: articleById('golden-cage'),
@@ -49,6 +50,13 @@ const further = {
             {' '}
             {t(locale, 'writing.onLinkedIn')}
           </span>
+        </a>
+      </p>
+      <!-- 008:T006 Invitation to the playground (008:FR-009) -->
+      <p>
+        <a class="try" href={playground} data-spec="008:FR-009">
+          {t(locale, 'method.playground')}
+          <span aria-hidden="true"> →</span>
         </a>
       </p>
     </div>
@@ -233,6 +241,10 @@ const further = {
 
   .lead {
     font-size: var(--text-lg);
+  }
+
+  .try {
+    font-weight: 600;
   }
 
   .further {
