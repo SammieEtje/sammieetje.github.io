@@ -15,4 +15,7 @@ export const pages = [
   // 006:T005 TechDocs joins every shared per-page suite
   { path: '/writing/', lang: 'en' },
   { path: '/nl/schrijven/', lang: 'nl' },
+  // 007:T005 Plugins joins every shared per-page suite
+  { path: '/plugins/', lang: 'en' },
+  { path: '/nl/projecten/', lang: 'nl' },
 ] as const;

@@ -1,0 +1,14 @@
+---
+// 007:T004 English Plugins page (007:FR-001)
+import PortalLayout from '../layouts/PortalLayout.astro';
+import PluginsPage from '../components/PluginsPage.astro';
+import { routes } from '../site/routes.ts';
+import { routeMeta } from '../site/meta.ts';
+
+const route = routes.find((r) => r.id === 'plugins')!;
+const locale = 'en';
+---
+
+<PortalLayout locale={locale} path={route.paths[locale]} meta={routeMeta(route, locale)}>
+  <PluginsPage locale={locale} />
+</PortalLayout>
