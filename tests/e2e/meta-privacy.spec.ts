@@ -44,7 +44,8 @@ for (const route of routes) {
 }
 
 // 008:T005 Scripts only where a spec allows them: the playground (008:FR-008)
-const scriptPages = ['/playground/', '/nl/speeltuin/'];
+// 009:T008 and the scorecard (009:FR-009)
+const scriptPages = ['/playground/', '/nl/speeltuin/', '/scorecard/', '/nl/scorecard/'];
 
 for (const { path } of pages) {
   test(`${path} ships only allowed scripts, stays on its own origin and sets no cookies`, async ({

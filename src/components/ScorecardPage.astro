@@ -1,0 +1,330 @@
+---
+// 009:T008 Scorecard: static facts at build time, the deployed report loaded in the browser (009:FR-006 – 009:FR-008, 009:FR-011)
+import type { Locale } from '../i18n/ui.ts';
+import { t } from '../i18n/utils.ts';
+import { repoUrl, specsUrl } from '../site/build-info.ts';
+import { readSpecs, shippedSpecs } from '../site/specs.ts';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const shipped = shippedSpecs(readSpecs()).length;
+const columns = [
+  ['performance', 'scorecard.col.performance'],
+  ['accessibility', 'scorecard.col.accessibility'],
+  ['best-practices', 'scorecard.col.bestPractices'],
+  ['seo', 'scorecard.col.seo'],
+] as const;
+---
+
+<div
+  class="scorecard-page"
+  data-locale={locale}
+  data-repo={repoUrl}
+  data-within={t(locale, 'scorecard.within')}
+  data-over={t(locale, 'scorecard.over')}
+  data-pass={t(locale, 'scorecard.pass')}
+  data-fail={t(locale, 'scorecard.fail')}
+  data-target-ok={t(locale, 'scorecard.target.ok')}
+  data-target-over={t(locale, 'scorecard.target.over')}
+  data-unavailable={t(locale, 'scorecard.unavailable')}
+>
+  <header>
+    <p class="kind mono">scorecard / live</p>
+    <h1>{t(locale, 'scorecard.heading')}</h1>
+    <p class="intro">{t(locale, 'scorecard.intro')}</p>
+  </header>
+
+  <p class="state" data-spec="009:FR-008">
+    {t(locale, 'scorecard.nojs')} <a href="/quality/report.json">{t(locale, 'scorecard.raw')}</a>.
+  </p>
+
+  <ul class="tiles">
+    <li data-tile="specs">
+      <span class="label">{t(locale, 'scorecard.tile.specs')}</span>
+      <strong>{shipped}</strong>
+      <a href={specsUrl} class="mono">
+        specs/
+      </a>
+    </li>
+    <li data-tile="unit" hidden>
+      <span class="label">{t(locale, 'scorecard.tile.unit')}</span>
+      <strong></strong>
+    </li>
+    <li data-tile="e2e" hidden>
+      <span class="label">{t(locale, 'scorecard.tile.e2e')}</span>
+      <strong></strong>
+    </li>
+    <li data-tile="duration" hidden>
+      <span class="label">{t(locale, 'scorecard.tile.duration')}</span>
+      <strong></strong>
+      <span class="note"></span>
+    </li>
+  </ul>
+
+  <section class="live" hidden data-spec="009:FR-006">
+    <p class="verdict">
+      <span class="result"></span>
+      <span aria-hidden="true">·</span>
+      <span>
+        {t(locale, 'scorecard.commit')} <span class="commit-slot"></span>
+      </span>
+      <span aria-hidden="true">·</span>
+      <span>
+        {t(locale, 'scorecard.measured')} <time></time>
+      </span>
+    </p>
+    <div
+      class="table-wrap"
+      data-spec="009:FR-007"
+      role="region"
+      aria-labelledby="sc-caption"
+      tabindex="0"
+    >
+      <table>
+        <caption id="sc-caption">{t(locale, 'scorecard.caption')}</caption>
+        <thead>
+          <tr>
+            <th scope="col">{t(locale, 'scorecard.col.page')}</th>
+            {columns.map(([, key]) => (
+              <th scope="col">{t(locale, key)}</th>
+            ))}
+            <th scope="col">{t(locale, 'scorecard.col.js')}</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </section>
+</div>
+
+<script>
+  // 009:T008 Render the deployed report; never invent numbers (009:FR-006 – 009:FR-008)
+  type Category = 'performance' | 'accessibility' | 'best-practices' | 'seo';
+  interface Report {
+    status?: 'pending';
+    commit: string;
+    generatedAt: string;
+    durationSeconds: number | null;
+    pages: { url: string; scores: Record<Category, number>; scriptBytes: number }[];
+    budgets: Record<Category, number> & { scriptBytes: number };
+    tests: { unit: number | null; e2e: number | null };
+    passed: boolean;
+  }
+
+  const root = document.querySelector<HTMLElement>('.scorecard-page');
+  if (root) {
+    const d = root.dataset;
+    const state = root.querySelector('.state')!;
+    const tile = (name: string) => root.querySelector<HTMLElement>(`[data-tile="${name}"]`)!;
+    const show = (name: string, value: string, note?: string) => {
+      const el = tile(name);
+      el.querySelector('strong')!.textContent = value;
+      if (note) el.querySelector('.note')!.textContent = note;
+      el.hidden = false;
+    };
+    const status = (ok: boolean) => {
+      const span = document.createElement('span');
+      span.className = `status ${ok ? 'ok' : 'over'}`;
+      span.textContent = ok ? d['within']! : d['over']!;
+      return span;
+    };
+    const cell = (text: string, ok: boolean) => {
+      const td = document.createElement('td');
+      td.append(`${text} `, status(ok));
+      return td;
+    };
+
+    fetch('/quality/report.json')
+      .then((response) => (response.ok ? (response.json() as Promise<Report>) : null))
+      .catch(() => null)
+      .then((report) => {
+        // The build ships a pending placeholder (no numbers); the pipeline replaces it on main.
+        if (!report || !Array.isArray(report.pages)) {
+          state.textContent = d['unavailable']!;
+          return;
+        }
+        state.remove();
+        const live = root.querySelector<HTMLElement>('.live')!;
+        live.querySelector('.result')!.textContent = report.passed ? d['pass']! : d['fail']!;
+        const commit = document.createElement('a');
+        commit.className = 'commit mono';
+        commit.href = `${d['repo']}/commit/${report.commit}`;
+        commit.textContent = report.commit.slice(0, 7);
+        live.querySelector('.commit-slot')!.replaceWith(commit);
+        const time = live.querySelector('time')!;
+        time.dateTime = report.generatedAt;
+        time.textContent = new Intl.DateTimeFormat(d['locale'] === 'nl' ? 'nl-NL' : 'en-GB', {
+          dateStyle: 'medium',
+          timeStyle: 'short',
+          timeZone: 'Europe/Amsterdam',
+        }).format(new Date(report.generatedAt));
+
+        const body = live.querySelector('tbody')!;
+        for (const page of report.pages) {
+          const row = document.createElement('tr');
+          const th = document.createElement('th');
+          th.scope = 'row';
+          th.className = 'mono';
+          th.textContent = page.url;
+          row.append(th);
+          for (const c of ['performance', 'accessibility', 'best-practices', 'seo'] as const) {
+            row.append(
+              cell(String(Math.round(page.scores[c] * 100)), page.scores[c] >= report.budgets[c]),
+            );
+          }
+          row.append(
+            cell(
+              `${page.scriptBytes === 0 ? '0' : (page.scriptBytes / 1024).toFixed(1)} KB`,
+              page.scriptBytes <= report.budgets.scriptBytes,
+            ),
+          );
+          body.append(row);
+        }
+        live.hidden = false;
+
+        if (report.tests.unit !== null) show('unit', String(report.tests.unit));
+        if (report.tests.e2e !== null) show('e2e', String(report.tests.e2e));
+        if (report.durationSeconds !== null) {
+          const s = report.durationSeconds;
+          show(
+            'duration',
+            `${Math.floor(s / 60)} min ${s % 60} s`,
+            s <= 600 ? d['targetOk'] : d['targetOver'],
+          );
+        }
+      });
+  }
+</script>
+
+<style>
+  .scorecard-page {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-6);
+  }
+
+  header {
+    display: grid;
+    gap: var(--space-2);
+  }
+
+  .kind {
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  h1 {
+    font-size: clamp(2rem, 1.6rem + 2vw, 2.75rem);
+  }
+
+  .intro {
+    max-width: 62ch;
+    color: var(--color-text-muted);
+    font-size: var(--text-lg);
+  }
+
+  .state {
+    padding: var(--space-4) var(--space-6);
+    border: 1px dashed var(--color-border);
+    border-radius: calc(var(--radius) * 2);
+    color: var(--color-text-muted);
+  }
+
+  .tiles {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+    gap: var(--space-3);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .tiles li {
+    display: grid;
+    align-content: start;
+    gap: var(--space-1);
+    padding: var(--space-4);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-top: 3px solid var(--color-accent);
+    border-radius: calc(var(--radius) * 1.5);
+  }
+
+  .tiles li[hidden] {
+    display: none;
+  }
+
+  .label,
+  .note {
+    color: var(--color-text-muted);
+    font-size: var(--text-sm);
+  }
+
+  .tiles strong {
+    font-size: var(--text-xl);
+    letter-spacing: -0.02em;
+  }
+
+  .live {
+    display: grid;
+    gap: var(--space-3);
+  }
+
+  .live[hidden] {
+    display: none;
+  }
+
+  .verdict {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 0.4em;
+    font-weight: 600;
+  }
+
+  .table-wrap {
+    overflow-x: auto;
+    border: 1px solid var(--color-border);
+    border-radius: calc(var(--radius) * 2);
+    background: var(--color-surface);
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--text-sm);
+  }
+
+  caption {
+    padding: var(--space-3) var(--space-4);
+    text-align: left;
+    font-weight: 650;
+  }
+
+  .table-wrap :global(th),
+  .table-wrap :global(td) {
+    padding: var(--space-2) var(--space-4);
+    text-align: left;
+    border-top: 1px solid var(--color-border);
+    white-space: nowrap;
+  }
+
+  thead th {
+    color: var(--color-text-muted);
+    font-weight: 600;
+  }
+
+  .table-wrap :global(.status) {
+    display: block;
+    font-size: var(--text-xs);
+    color: var(--color-text-muted);
+  }
+
+  .table-wrap :global(.status.over) {
+    color: var(--color-accent);
+    font-weight: 700;
+  }
+</style>

@@ -1,0 +1,14 @@
+---
+// 009:T008 English scorecard (009:FR-006)
+import PortalLayout from '../layouts/PortalLayout.astro';
+import ScorecardPage from '../components/ScorecardPage.astro';
+import { routes } from '../site/routes.ts';
+import { routeMeta } from '../site/meta.ts';
+
+const route = routes.find((r) => r.id === 'scorecard')!;
+const locale = 'en';
+---
+
+<PortalLayout locale={locale} path={route.paths[locale]} meta={routeMeta(route, locale)}>
+  <ScorecardPage locale={locale} />
+</PortalLayout>

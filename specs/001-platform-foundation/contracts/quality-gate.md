@@ -23,6 +23,11 @@ npm run check
 
 ## Pipeline (`.github/workflows/pipeline.yml`)
 
+> Superseded by 009: the pipeline now runs as `checks`, three parallel `budgets` shards, `report`,
+> an aggregate `quality-gate` and `deploy`. See
+> [`specs/009-scorecard/contracts/pipeline.md`](../../009-scorecard/contracts/pipeline.md).
+> The table below describes the original 001 design.
+
 | Trigger | `quality-gate` job | `deploy` job |
 |---------|--------------------|--------------|
 | `pull_request` → `main` | runs every script above as a separate step | skipped |

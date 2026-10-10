@@ -55,25 +55,54 @@ describe('every workflow', () => {
   }
 });
 
+interface MatrixJob extends Job {
+  strategy?: { matrix?: { shard?: string[] } };
+  'runs-on'?: string;
+}
+
+// 001:T015 originally; 009:T003 the pipeline as five jobs behind one aggregate check (009:FR-001, 009:FR-002, 009:FR-004)
 describe('pipeline.yml', () => {
+  const jobs = (pipeline?.jobs ?? {}) as Record<string, MatrixJob>;
+  const runs = (job: string) =>
+    (jobs[job]?.steps ?? []).flatMap((s) => {
+      // A step that IS a check (`npm run x`), not one that mentions it in a summary.
+      const m = s.run?.match(/^npm run ([\w:]+)$/m);
+      return m ? [m[1]] : [];
+    });
+
   it('runs on pull requests to main and pushes to main', () => {
     expect(pipeline?.on['pull_request']?.branches).toEqual(['main']);
     expect(pipeline?.on['push']?.branches).toEqual(['main']);
   });
 
-  it('runs every script of `npm run check`, in the same order', () => {
+  it('has checks, three budget shards, a report, the aggregate gate and a deploy', () => {
+    expect(Object.keys(jobs)).toEqual(['checks', 'budgets', 'report', 'quality-gate', 'deploy']);
+    expect(jobs['budgets']?.strategy?.matrix?.shard).toEqual(['1/3', '2/3', '3/3']);
+    expect([jobs['budgets']?.needs].flat()).toEqual(['checks']);
+    expect([jobs['report']?.needs].flat().sort()).toEqual(['budgets', 'checks']);
+  });
+
+  it('runs every script of `npm run check`, in the same order, across checks and budgets', () => {
     const local = [...pkg.scripts['check']!.matchAll(/npm run ([\w:]+)/g)].map((m) => m[1]);
-    const ci = (pipeline?.jobs['quality-gate']?.steps ?? []).flatMap((s) => {
-      const m = s.run?.match(/^npm run ([\w:]+)$/m);
-      return m ? [m[1]] : [];
-    });
     expect(local.length).toBeGreaterThan(0);
-    expect(ci).toEqual(local);
+    expect([...runs('checks'), ...runs('budgets')]).toEqual(local);
+  });
+
+  it('makes quality-gate the single aggregate check that fails unless everything succeeded', () => {
+    const gate = jobs['quality-gate'];
+    expect((gate as { name?: string })?.name).toBe('quality-gate');
+    expect(gate?.if).toContain('always()');
+    expect([gate?.needs].flat().sort()).toEqual(['budgets', 'checks', 'report']);
+    const script = (gate?.steps ?? []).map((s) => s.run ?? '').join('\n');
+    for (const need of ['checks', 'budgets', 'report']) {
+      expect(script).toContain(`needs.${need}.result`);
+    }
+    expect(gate?.permissions).toEqual({});
   });
 
   it('deploys only after the gate, only for pushes to main', () => {
-    const deploy = pipeline?.jobs['deploy'];
-    expect([deploy?.needs].flat()).toContain('quality-gate');
+    const deploy = jobs['deploy'];
+    expect([deploy?.needs].flat()).toEqual(['quality-gate']);
     expect(deploy?.if).toContain("github.event_name == 'push'");
     expect(deploy?.if).toContain("github.ref == 'refs/heads/main'");
     expect(deploy?.permissions).toEqual({ pages: 'write', 'id-token': 'write' });
@@ -81,7 +110,15 @@ describe('pipeline.yml', () => {
     expect(deploy?.steps?.some((s) => s.uses?.startsWith('actions/deploy-pages@'))).toBe(true);
   });
 
-  it('gives the gate read-only access to the repository', () => {
-    expect(pipeline?.jobs['quality-gate']?.permissions).toEqual({ contents: 'read' });
+  it('grants read-only repository access, and the actions API to the report job only', () => {
+    expect(jobs['checks']?.permissions).toEqual({ contents: 'read' });
+    expect(jobs['budgets']?.permissions).toEqual({ contents: 'read' });
+    expect(jobs['report']?.permissions).toEqual({ contents: 'read', actions: 'read' });
+  });
+
+  it('packages the site with the merged report for Pages, from the report job', () => {
+    const steps = jobs['report']?.steps ?? [];
+    expect(steps.some((s) => s.uses?.startsWith('actions/upload-pages-artifact@'))).toBe(true);
+    expect(steps.map((s) => s.run ?? '').join('\n')).toContain('dist/quality/report.json');
   });
 });

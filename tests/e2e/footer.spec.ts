@@ -20,3 +20,13 @@ for (const { path, lang } of pages) {
     );
   });
 }
+
+// 009:T009 The footer links to the scorecard next to the build identity (009:FR-010)
+for (const { path, lang } of pages) {
+  test(`${path}: footer links to the scorecard`, async ({ page }) => {
+    await page.goto(path);
+    const link = page.locator('footer[data-spec="001:FR-012"] a[data-spec="009:FR-010"]');
+    await expect(link).toHaveText('Scorecard');
+    await expect(link).toHaveAttribute('href', lang === 'nl' ? '/nl/scorecard/' : '/scorecard/');
+  });
+}

@@ -66,6 +66,14 @@ export const routes: readonly Route[] = [
     descriptionKey: 'page.playground.description',
     nav: { termKey: 'nav.playground.term', subtitleKey: 'nav.playground.subtitle' },
   },
+  // 009:T008 Scorecard (009:FR-010)
+  {
+    id: 'scorecard',
+    paths: { en: '/scorecard/', nl: '/nl/scorecard/' },
+    titleKey: 'page.scorecard.title',
+    descriptionKey: 'page.scorecard.description',
+    nav: { termKey: 'nav.scorecard.term', subtitleKey: 'nav.scorecard.subtitle' },
+  },
 ];
 
 const withSlash = (path: string) => (path.endsWith('/') ? path : `${path}/`);
