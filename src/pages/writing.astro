@@ -1,0 +1,14 @@
+---
+// 006:T004 English TechDocs (006:FR-001)
+import PortalLayout from '../layouts/PortalLayout.astro';
+import WritingPage from '../components/WritingPage.astro';
+import { routes } from '../site/routes.ts';
+import { routeMeta } from '../site/meta.ts';
+
+const route = routes.find((r) => r.id === 'writing')!;
+const locale = 'en';
+---
+
+<PortalLayout locale={locale} path={route.paths[locale]} meta={routeMeta(route, locale)}>
+  <WritingPage locale={locale} />
+</PortalLayout>

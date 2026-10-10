@@ -42,6 +42,14 @@ export const routes: readonly Route[] = [
     descriptionKey: 'page.readme.description',
     nav: { termKey: 'nav.readme.term', subtitleKey: 'nav.readme.subtitle' },
   },
+  // 006:T004 TechDocs (006:FR-008)
+  {
+    id: 'writing',
+    paths: { en: '/writing/', nl: '/nl/schrijven/' },
+    titleKey: 'page.writing.title',
+    descriptionKey: 'page.writing.description',
+    nav: { termKey: 'nav.writing.term', subtitleKey: 'nav.writing.subtitle' },
+  },
 ];
 
 const withSlash = (path: string) => (path.endsWith('/') ? path : `${path}/`);

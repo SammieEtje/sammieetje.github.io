@@ -15,6 +15,8 @@ import { patterns } from '../site/patterns.ts';
 import { releaseLabel } from '../site/period.ts';
 import { routes } from '../site/routes.ts';
 import PathDiagram from './PathDiagram.astro';
+// 006:T006 Further reading on LinkedIn (006:FR-009)
+import { articleById } from '../site/articles.ts';
 
 interface Props {
   locale: Locale;
@@ -23,6 +25,12 @@ interface Props {
 const { locale } = Astro.props;
 const two = (n: number) => String(n).padStart(2, '0');
 const history = routes.find((r) => r.id === 'career')!.paths[locale];
+const further = {
+  premise: articleById('elite-sports'),
+  levers: articleById('golden-cage'),
+  assumptions: articleById('people-lazy'),
+  community: articleById('community'),
+};
 ---
 
 <div class="method">
@@ -33,6 +41,16 @@ const history = routes.find((r) => r.id === 'career')!.paths[locale];
       <p class="principle">{premise.principle[locale]}</p>
       <p class="lead">{premise.premise[locale]}</p>
       <p class="diagnosis">{premise.diagnosis[locale]}</p>
+      <p class="further" data-spec="006:FR-009">
+        <span class="label mono">{t(locale, 'method.further')}</span>
+        <a href={further.premise.url} lang="en" rel="noopener">
+          {further.premise.title}
+          <span class="visually-hidden" lang={locale}>
+            {' '}
+            {t(locale, 'writing.onLinkedIn')}
+          </span>
+        </a>
+      </p>
     </div>
     <PathDiagram locale={locale} />
   </section>
@@ -52,6 +70,16 @@ const history = routes.find((r) => r.id === 'career')!.paths[locale];
       ))}
     </div>
     <p class="pragmatism">{pragmatism[locale]}</p>
+    <p class="further" data-spec="006:FR-009">
+      <span class="label mono">{t(locale, 'method.further')}</span>
+      <a href={further.levers.url} lang="en" rel="noopener">
+        {further.levers.title}
+        <span class="visually-hidden" lang={locale}>
+          {' '}
+          {t(locale, 'writing.onLinkedIn')}
+        </span>
+      </a>
+    </p>
   </section>
 
   <section aria-labelledby="assumptions-title" data-spec="004:FR-005">
@@ -72,6 +100,16 @@ const history = routes.find((r) => r.id === 'career')!.paths[locale];
         </li>
       ))}
     </ol>
+    <p class="further" data-spec="006:FR-009">
+      <span class="label mono">{t(locale, 'method.further')}</span>
+      <a href={further.assumptions.url} lang="en" rel="noopener">
+        {further.assumptions.title}
+        <span class="visually-hidden" lang={locale}>
+          {' '}
+          {t(locale, 'writing.onLinkedIn')}
+        </span>
+      </a>
+    </p>
   </section>
 
   <!-- 004:T007 Phases linked to the releases that prove them (004:FR-006) -->
@@ -94,6 +132,18 @@ const history = routes.find((r) => r.id === 'career')!.paths[locale];
               </li>
             ))}
           </ul>
+          {phase.id === 'community' && (
+            <p class="further" data-spec="006:FR-009">
+              <span class="label mono">{t(locale, 'method.further')}</span>
+              <a href={further.community.url} lang="en" rel="noopener">
+                {further.community.title}
+                <span class="visually-hidden" lang={locale}>
+                  {' '}
+                  {t(locale, 'writing.onLinkedIn')}
+                </span>
+              </a>
+            </p>
+          )}
         </li>
       ))}
     </ol>
@@ -183,6 +233,18 @@ const history = routes.find((r) => r.id === 'career')!.paths[locale];
 
   .lead {
     font-size: var(--text-lg);
+  }
+
+  .further {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--space-1) var(--space-3);
+    font-size: var(--text-sm);
+  }
+
+  .further a::after {
+    content: ' ↗';
   }
 
   .diagnosis {

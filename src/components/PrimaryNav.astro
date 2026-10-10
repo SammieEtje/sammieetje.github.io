@@ -27,11 +27,13 @@ const items = navItems(locale, path);
 </nav>
 
 <style>
+  /* 004:T013 Every section stays visible on phones; nothing hides off-screen.
+     006:T006 Phones: a compact two-column grid, so five sections still leave the
+     identity card above the fold (001:SC-001). */
   ul {
-    display: flex;
-    /* 004:T013 Wrap on phones: every section stays visible, nothing hides off-screen */
-    flex-wrap: wrap;
-    gap: var(--space-2);
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-1) var(--space-2);
     margin: 0;
     padding: 0;
     list-style: none;
@@ -40,12 +42,13 @@ const items = navItems(locale, path);
   a {
     display: flex;
     flex-direction: column;
-    padding: var(--space-2) var(--space-3);
+    padding: var(--space-1) var(--space-3);
     border-radius: var(--radius);
     border: 1px solid transparent;
     color: var(--color-text);
     text-decoration: none;
-    white-space: nowrap;
+    line-height: 1.3;
+    overflow-wrap: anywhere;
   }
 
   a:hover {
@@ -68,16 +71,27 @@ const items = navItems(locale, path);
     font-size: var(--text-xs);
   }
 
-  @media (min-width: 64rem) {
+  /* Tablets: one wrapping row */
+  @media (min-width: 48rem) {
     ul {
-      flex-direction: column;
-      position: sticky;
-      top: var(--space-8);
-      overflow: visible;
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-2);
     }
 
     a {
-      white-space: normal;
+      padding: var(--space-2) var(--space-3);
+      line-height: 1.6;
+    }
+  }
+
+  /* Desktop: sticky sidebar */
+  @media (min-width: 64rem) {
+    ul {
+      flex-direction: column;
+      flex-wrap: nowrap;
+      position: sticky;
+      top: var(--space-8);
     }
   }
 </style>

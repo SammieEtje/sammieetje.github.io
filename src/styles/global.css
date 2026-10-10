@@ -30,8 +30,12 @@ h3 {
   letter-spacing: -0.02em;
   margin: 0;
   /* 003:T011 Long Dutch compounds ("Releasegeschiedenis") must never force sideways scrolling */
-  hyphens: auto;
   overflow-wrap: break-word;
+}
+
+/* 006:T008 Hyphenate Dutch only: English titles stay whole words */
+:lang(nl) :is(h1, h2, h3, .term) {
+  hyphens: auto;
 }
 
 p {
