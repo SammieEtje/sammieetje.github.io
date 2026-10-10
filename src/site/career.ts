@@ -1,3 +1,4 @@
+// 004:T002 ASE attribution corrected (004:FR-009)
 // 003:T004 Career as releases, newest first; source: the approved public LinkedIn experience text (003:FR-001)
 import type { Locale } from '../i18n/ui.ts';
 import type { PatternId } from './patterns.ts';
@@ -304,7 +305,7 @@ export const releases: readonly Release[] = [
         context:
           'Supporting elite sport policy, and later information and knowledge management, for the Dutch Olympic Committee.',
         approach:
-          "Moved a key subsidy process from paper to fully online, and built a BI solution to analyse the international medal chances of Dutch athletes. My thesis applied the ASE model (Fishbein & Ajzen) to how far elite athletes' behaviour can be influenced.",
+          "Moved a key subsidy process from paper to fully online, and built a BI solution to analyse the international medal chances of Dutch athletes. My thesis applied the ASE model (De Vries et al., building on Fishbein & Ajzen) to how far elite athletes' behaviour can be influenced.",
         result:
           'Leadership gained data-driven insight into where to invest, and I gained the idea behind everything since: if you want to change behaviour, change the environment.',
       },
@@ -312,7 +313,7 @@ export const releases: readonly Release[] = [
         context:
           'Ondersteuning van het topsportbeleid, en later informatie- en kennismanagement, voor NOC*NSF.',
         approach:
-          'Een belangrijk subsidieproces van papier naar volledig online gebracht, en een BI-oplossing gebouwd om de internationale medaillekansen van Nederlandse sporters te analyseren. Mijn afstudeeronderzoek paste het ASE-model (Fishbein & Ajzen) toe op de beïnvloedbaarheid van gedrag van topsporters.',
+          'Een belangrijk subsidieproces van papier naar volledig online gebracht, en een BI-oplossing gebouwd om de internationale medaillekansen van Nederlandse sporters te analyseren. Mijn afstudeeronderzoek paste het ASE-model (De Vries e.a., voortbouwend op Fishbein & Ajzen) toe op de beïnvloedbaarheid van gedrag van topsporters.',
         result:
           'De directie kreeg datagedreven inzicht in waar te investeren, en ik het idee achter alles wat volgde: wil je gedrag veranderen, verander dan de omgeving.',
       },

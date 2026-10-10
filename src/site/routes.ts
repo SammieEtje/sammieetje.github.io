@@ -18,6 +18,14 @@ export const routes: readonly Route[] = [
     descriptionKey: 'page.overview.description',
     nav: { termKey: 'nav.overview.term', subtitleKey: 'nav.overview.subtitle' },
   },
+  // 004:T005 Golden paths, between the overview and the proof (004:FR-010)
+  {
+    id: 'method',
+    paths: { en: '/method/', nl: '/nl/methode/' },
+    titleKey: 'page.method.title',
+    descriptionKey: 'page.method.description',
+    nav: { termKey: 'nav.method.term', subtitleKey: 'nav.method.subtitle' },
+  },
   // 003:T007 Deployment history (003:FR-008)
   {
     id: 'career',

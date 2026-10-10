@@ -29,11 +29,12 @@ const items = navItems(locale, path);
 <style>
   ul {
     display: flex;
+    /* 004:T013 Wrap on phones: every section stays visible, nothing hides off-screen */
+    flex-wrap: wrap;
     gap: var(--space-2);
     margin: 0;
     padding: 0;
     list-style: none;
-    overflow-x: auto;
   }
 
   a {

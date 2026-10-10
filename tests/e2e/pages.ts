@@ -6,4 +6,7 @@ export const pages = [
   // 003:T010 Deployment history joins every shared per-page suite
   { path: '/career/', lang: 'en' },
   { path: '/nl/loopbaan/', lang: 'nl' },
+  // 004:T010 Golden paths joins every shared per-page suite
+  { path: '/method/', lang: 'en' },
+  { path: '/nl/methode/', lang: 'nl' },
 ] as const;

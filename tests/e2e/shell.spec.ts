@@ -43,3 +43,21 @@ test.describe('on a 360 px wide screen', () => {
     expect(overflow).toBeLessThanOrEqual(0);
   });
 });
+
+// 004:T013 Regression: on a phone every navigation item is fully visible, none hidden off-screen (001:FR-004)
+test.describe('navigation on a 320 px screen', () => {
+  test.use({ viewport: { width: 320, height: 740 } });
+
+  for (const path of ['/', '/nl/']) {
+    test(`${path}: every item is within the viewport`, async ({ page }) => {
+      await page.goto(path);
+      const links = page.locator('[data-spec="001:FR-004"] a');
+      expect(await links.count()).toBeGreaterThanOrEqual(3);
+      for (const link of await links.all()) {
+        const box = (await link.boundingBox())!;
+        expect(box.x).toBeGreaterThanOrEqual(0);
+        expect(box.x + box.width).toBeLessThanOrEqual(320);
+      }
+    });
+  }
+});

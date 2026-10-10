@@ -16,6 +16,7 @@ const { locale } = Astro.props;
 <ol class="releases" data-spec="003:FR-001">
   {releases.map((r) => (
     <li
+      id={`release-${r.id}`}
       data-release={r.id}
       class:list={[r.kind, { current: r.end === null }]}
       data-spec={r.kind === 'education' ? '003:FR-006' : '003:FR-002'}
@@ -99,6 +100,13 @@ const { locale } = Astro.props;
 
   .releases > li {
     position: relative;
+    /* 004:T007 Stable anchors: keep a linked release clear of the top edge (004:FR-007) */
+    scroll-margin-top: var(--space-8);
+  }
+
+  .releases > li:target article {
+    outline: 3px solid var(--color-accent);
+    outline-offset: 3px;
   }
 
   /* The commit dot: release items only, never the tag list items inside */

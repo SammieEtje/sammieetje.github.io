@@ -1,0 +1,154 @@
+---
+// 004:T005 Static diagram: the desired path versus the current habit (004:FR-003)
+import type { Locale } from '../i18n/ui.ts';
+import { t } from '../i18n/utils.ts';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const id = `path-diagram-${locale}`;
+---
+
+<svg
+  class="diagram"
+  viewBox="0 0 480 320"
+  role="img"
+  aria-labelledby={`${id}-title ${id}-desc`}
+  data-spec="004:FR-003"
+>
+  <title id={`${id}-title`}>{t(locale, 'diagram.title')}</title>
+  <desc id={`${id}-desc`}>{t(locale, 'diagram.desc')}</desc>
+
+  <!-- current habit: long and winding, always below the desired path -->
+  <path
+    class="habit"
+    d="M40 140 C 45 230, 110 260, 165 240 C 215 222, 225 195, 265 212 C 305 229, 325 285, 370 275 C 415 265, 435 205, 440 140"
+  />
+  <g class="obstacle" transform="translate(165 240)">
+    <circle r="7" />
+    <text class="marker-label" y="32" text-anchor="middle">
+      {t(locale, 'diagram.manual')}
+    </text>
+  </g>
+  <g class="obstacle" transform="translate(370 275)">
+    <circle r="7" />
+    <text class="marker-label" y="32" text-anchor="middle">
+      {t(locale, 'diagram.waiting')}
+    </text>
+  </g>
+  <text class="route-label habit-label" x="250" y="176" text-anchor="middle">
+    {t(locale, 'diagram.habit')}
+  </text>
+
+  <!-- desired path: short and smooth -->
+  <path class="desired" d="M40 140 C 160 100, 320 100, 440 140" />
+  <g class="aid" transform="translate(135 115)">
+    <circle r="7" />
+    <text class="marker-label" y="-18" text-anchor="middle">
+      {t(locale, 'diagram.selfservice')}
+    </text>
+  </g>
+  <g class="aid" transform="translate(240 110)">
+    <circle r="7" />
+    <text class="marker-label" y="-44" text-anchor="middle">
+      {t(locale, 'diagram.defaults')}
+    </text>
+  </g>
+  <g class="aid" transform="translate(345 115)">
+    <circle r="7" />
+    <text class="marker-label" y="-18" text-anchor="middle">
+      {t(locale, 'diagram.community')}
+    </text>
+  </g>
+  <text class="route-label desired-label" x="240" y="40" text-anchor="middle">
+    {t(locale, 'diagram.desired')}
+  </text>
+
+  <!-- endpoints, labelled underneath on the outside -->
+  <g class="node" transform="translate(40 140)">
+    <circle r="12" />
+    <text class="node-label" x="-14" y="-22" text-anchor="start">
+      {t(locale, 'diagram.today')}
+    </text>
+  </g>
+  <g class="node goal" transform="translate(440 140)">
+    <circle r="12" />
+    <text class="node-label" x="14" y="-22" text-anchor="end">
+      {t(locale, 'diagram.goal')}
+    </text>
+  </g>
+</svg>
+
+<style>
+  .diagram {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-width: 36rem;
+    font-family: var(--font-sans);
+  }
+
+  .habit {
+    fill: none;
+    stroke: var(--color-text-muted);
+    stroke-width: 3;
+    stroke-dasharray: 6 8;
+    stroke-linecap: round;
+  }
+
+  .desired {
+    fill: none;
+    stroke: var(--color-accent);
+    stroke-width: 7;
+    stroke-linecap: round;
+  }
+
+  .aid circle {
+    fill: var(--color-surface);
+    stroke: var(--color-accent);
+    stroke-width: 3;
+  }
+
+  .obstacle circle {
+    fill: var(--color-surface);
+    stroke: var(--color-text-muted);
+    stroke-width: 3;
+  }
+
+  .node circle {
+    fill: var(--color-text);
+  }
+
+  .node.goal circle {
+    fill: var(--color-accent);
+  }
+
+  text {
+    fill: var(--color-text);
+  }
+
+  .marker-label {
+    font-size: 19px;
+    fill: var(--color-text-muted);
+  }
+
+  .route-label {
+    font-size: 22px;
+    font-weight: 700;
+  }
+
+  .desired-label {
+    fill: var(--color-accent);
+  }
+
+  .habit-label {
+    fill: var(--color-text-muted);
+  }
+
+  .node-label {
+    font-size: 20px;
+    font-weight: 600;
+  }
+</style>
