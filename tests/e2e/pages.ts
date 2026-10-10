@@ -21,4 +21,7 @@ export const pages = [
   // 008:T005 Playground joins every shared per-page suite
   { path: '/playground/', lang: 'en' },
   { path: '/nl/speeltuin/', lang: 'nl' },
+  // 009:T009 Scorecard joins every shared per-page suite
+  { path: '/scorecard/', lang: 'en' },
+  { path: '/nl/scorecard/', lang: 'nl' },
 ] as const;

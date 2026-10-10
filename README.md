@@ -32,23 +32,34 @@ npm run check
 | `npm run build`        | Static build into `dist/`                                            |
 | `npm run test:e2e`     | Playwright + axe: behaviour, both languages, both colour schemes     |
 | `npm run links`        | Internal links in the built site                                     |
-| `npm run budgets`      | Lighthouse budgets per page, written to `quality-report.json`        |
+| `npm run budgets`      | Lighthouse budgets per page (`LHCI_SHARD=i/n` for one shard)         |
 
 Use `npm run dev` for a local server at <http://localhost:4321>.
 
 ## Pipeline
 
 [`.github/workflows/pipeline.yml`](.github/workflows/pipeline.yml) runs the gate on every pull
-request and every push to `main`. Only a push to `main` that passed every check is deployed to
-GitHub Pages, and what gets deployed is the exact build that was tested. `main` is protected:
-nothing merges without a green `quality-gate`, administrators included.
+request and every push to `main`, as five jobs:
+
+```text
+checks ──► budgets 1/3 · 2/3 · 3/3 (parallel Lighthouse shards) ──► report ──► quality-gate ──► deploy
+```
+
+`checks` runs everything except the budgets and uploads the built site; the budget shards measure
+that exact build in parallel; `report` merges their results with the test counts and pipeline
+timing into one quality report, which on `main` is deployed with the site at
+[`/quality/report.json`](https://sammieetje.github.io/quality/report.json) and shown on the
+[scorecard](https://sammieetje.github.io/scorecard/). `quality-gate` is the single required check:
+it is green only when every job above succeeded. `main` is protected: nothing merges without it,
+administrators included, and a merge is live within ten minutes.
 
 Guardrails that are tested, not just agreed:
 
 - workflows grant no permissions at the top level and the minimum per job;
 - every third-party action is pinned to a full commit SHA;
 - the CI steps and `npm run check` cannot drift apart;
-- pages load no scripts, make no third-party requests and set no cookies;
+- pages load no scripts (except the playground and the scorecard, within a 50 KB budget), make no
+  third-party requests and set no cookies;
 - Dependabot proposes grouped updates for npm and Actions every week.
 
 ## Spec-driven
@@ -73,8 +84,8 @@ nowhere.
 | 005  | API docs: "How I lead" manager README     | live    |
 | 006  | TechDocs: writing, by content pillar      | live    |
 | 007  | Plugins: open-source projects             | live    |
-| 008  | Playground: the path of least resistance  | this PR |
-| 009  | Scorecard: live quality metrics           | planned |
+| 008  | Playground: the path of least resistance  | live    |
+| 009  | Scorecard: live quality metrics           | this PR |
 
 ## Stack
 

@@ -8,7 +8,12 @@ export default defineConfig({
   fullyParallel: true,
   forbidOnly: !!process.env['CI'],
   retries: process.env['CI'] ? 1 : 0,
-  reporter: process.env['CI'] ? [['github'], ['list']] : 'list',
+  // 009:T004 JSON results for the quality report, locally and in CI (009:FR-003)
+  reporter: [
+    ...(process.env['CI'] ? [['github'] as const] : []),
+    ['list'],
+    ['json', { outputFile: 'reports/e2e.json' }],
+  ],
   use: {
     baseURL: `http://localhost:${port}`,
   },

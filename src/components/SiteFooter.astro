@@ -3,12 +3,14 @@
 import type { Locale } from '../i18n/ui.ts';
 import { t } from '../i18n/utils.ts';
 import { buildInfo, repoUrl, specsUrl } from '../site/build-info.ts';
+import { routes } from '../site/routes.ts';
 
 interface Props {
   locale: Locale;
 }
 
 const { locale } = Astro.props;
+const scorecard = routes.find((r) => r.id === 'scorecard')!.paths[locale];
 ---
 
 <footer data-spec="001:FR-012">
@@ -18,6 +20,12 @@ const { locale } = Astro.props;
       <li>
         <a href={buildInfo.url}>
           {t(locale, 'footer.build')} {buildInfo.shortSha}
+        </a>
+      </li>
+      <!-- 009:T010 How this build measured (009:FR-010) -->
+      <li>
+        <a href={scorecard} data-spec="009:FR-010">
+          {t(locale, 'footer.scorecard')}
         </a>
       </li>
       <li>

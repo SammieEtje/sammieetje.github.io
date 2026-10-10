@@ -1,5 +1,12 @@
 // 001:T019 Budgets from constitution principle V, measured on every built page
+// 009:T004 Optional sharding (LHCI_SHARD="i/n"): each CI shard measures its share of the pages
+const fs = require('node:fs');
 const { chromium } = require('@playwright/test');
+// Reuse Lighthouse CI's own page discovery, so shard lists match what it would measure.
+const FallbackServer = require('@lhci/cli/src/collect/fallback-server.js');
+
+const DIST = './dist';
+const DEPTH = 3;
 
 const budgets = {
   performance: 0.9,
@@ -9,13 +16,33 @@ const budgets = {
   scriptBytes: 51200,
 };
 
+/** Pages (as site-relative paths) a shard must skip; empty without a shard. */
+function shardBlocklist(files, shard) {
+  if (shard === undefined || shard === '') return [];
+  const match = /^(\d+)\/(\d+)$/.exec(shard);
+  const index = match ? Number(match[1]) : NaN;
+  const total = match ? Number(match[2]) : NaN;
+  if (!(index >= 1 && index <= total)) throw new Error(`Invalid LHCI_SHARD "${shard}"`);
+  return [...files]
+    .sort()
+    .filter((_, k) => k % total !== index - 1)
+    .map((file) => `/${file}`);
+}
+
+function builtPages() {
+  if (!fs.existsSync(DIST)) return [];
+  return FallbackServer.readHtmlFilesInDirectory(DIST, DEPTH).map(({ file }) => file);
+}
+
 module.exports = {
   budgets,
+  shardBlocklist,
   ci: {
     collect: {
-      staticDistDir: './dist',
+      staticDistDir: DIST,
       maxAutodiscoverUrls: 0,
-      staticDirFileDiscoveryDepth: 3,
+      staticDirFileDiscoveryDepth: DEPTH,
+      autodiscoverUrlBlocklist: shardBlocklist(builtPages(), process.env.LHCI_SHARD),
       numberOfRuns: 3,
       // Same browser locally and in CI: the one Playwright installs.
       chromePath: process.env.CHROME_PATH || chromium.executablePath(),
