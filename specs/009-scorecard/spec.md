@@ -105,6 +105,10 @@ and links to the raw report; with no report present, it says no measurement is a
 
 ### User Story 4 - Find it, read it in Dutch (Priority: P2)
 
+A visitor reaches the scorecard from the navigation or the footer and can read it in Dutch.
+
+**Why this priority**: constitution VII, and findability.
+
 **Independent Test**: navigation lists "Scorecard — how it's measured"; `/nl/scorecard/` in Dutch;
 the footer's build link sits next to a link to the scorecard.
 
@@ -152,6 +156,8 @@ the footer's build link sits next to a link to the scorecard.
   to the raw report, and never show invented numbers.
 - **FR-009**: The scorecard script MUST stay within the JavaScript budget; pages other than the
   playground and the scorecard keep zero scripts.
+- **FR-011**: Specs shipped MUST count the specification folders whose tasks are all complete and
+  link to the specifications; this value is known at build time and shown without JavaScript.
 
 **Findability**
 
