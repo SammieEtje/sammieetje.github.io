@@ -7,7 +7,9 @@ import {
   budgets,
   buildQualityReport,
   countTests,
+  exitStatus,
   loadRuns,
+  pageFile,
   renderSummary,
   type Run,
 } from '../../scripts/quality-report.ts';
@@ -52,8 +54,8 @@ describe('buildQualityReport()', () => {
     const report = buildQualityReport(runs, meta);
     expect(report).toMatchObject({ schemaVersion: 2, ...meta, budgets, passed: true });
     expect(report.pages).toEqual([
-      { url: '/', scores: good, scriptBytes: 0 },
-      { url: '/nl/', scores: good, scriptBytes: 1200 },
+      { url: '/', scores: good, scriptBytes: 0, scripts: { external: 0, inline: 0 } },
+      { url: '/nl/', scores: good, scriptBytes: 1200, scripts: { external: 1200, inline: 0 } },
     ]);
   });
 
@@ -131,8 +133,8 @@ describe('report v2', () => {
       join(root, 'shard-2', 'manifest.json'),
     ]);
     expect(buildQualityReport(merged, meta).pages).toEqual([
-      { url: '/', scores: good, scriptBytes: 0 },
-      { url: '/nl/', scores: good, scriptBytes: 1300 },
+      { url: '/', scores: good, scriptBytes: 0, scripts: { external: 0, inline: 0 } },
+      { url: '/nl/', scores: good, scriptBytes: 1300, scripts: { external: 1300, inline: 0 } },
     ]);
   });
 
@@ -154,5 +156,51 @@ describe('report v2', () => {
       unit: null,
       e2e: null,
     });
+  });
+});
+
+// 010:T002 One JavaScript measurement: external plus embedded, gated by the report (010:FR-001, 010:FR-003)
+describe('JavaScript per page (010)', () => {
+  const page = (url: string, external: number, inline: number): Run => ({
+    url,
+    isRepresentativeRun: true,
+    summary: good,
+    scriptBytes: external,
+    inlineScriptBytes: inline,
+  });
+
+  it('publishes the total with a breakdown', () => {
+    const report = buildQualityReport(
+      [page('http://localhost:1/playground/index.html', 300, 1229)],
+      meta,
+    );
+    expect(report.pages[0]).toMatchObject({
+      url: '/playground/',
+      scriptBytes: 1529,
+      scripts: { external: 300, inline: 1229 },
+    });
+  });
+
+  it('maps page URLs to built files', () => {
+    expect(pageFile('/', 'dist')).toBe('dist/index.html');
+    expect(pageFile('/nl/speeltuin/', 'dist')).toBe('dist/nl/speeltuin/index.html');
+    expect(pageFile('/404.html', 'dist')).toBe('dist/404.html');
+  });
+
+  it('fails the gate when embedded script alone exceeds the budget', () => {
+    const over = buildQualityReport([page('http://localhost:1/', 0, 51201)], meta);
+    expect(over.passed).toBe(false);
+    expect(exitStatus(over)).toBe(1);
+  });
+
+  it('passes the gate within budget, even when scores are asserted elsewhere', () => {
+    const fine = buildQualityReport([page('http://localhost:1/', 1000, 1229)], meta);
+    expect(exitStatus(fine)).toBe(0);
+    const slowButLight = buildQualityReport(
+      [{ ...page('http://localhost:1/', 0, 0), summary: { ...good, performance: 0.5 } }],
+      meta,
+    );
+    // Category scores are gated by Lighthouse CI's assertions; the report gates JavaScript only.
+    expect(exitStatus(slowButLight)).toBe(0);
   });
 });

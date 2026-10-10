@@ -1,5 +1,6 @@
 // 001:T015 Workflow policy and gate parity (001:FR-014, 001:FR-016, 001:FR-017, 001:FR-020)
 import { readdirSync, readFileSync } from 'node:fs';
+import { createRequire } from 'node:module';
 import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { parse } from 'yaml';
@@ -21,6 +22,7 @@ interface Workflow {
   jobs: Record<string, Job>;
 }
 
+const require = createRequire(import.meta.url);
 const dir = '.github/workflows';
 const workflows = readdirSync(dir)
   .filter((f) => /\.ya?ml$/.test(f))
@@ -114,6 +116,29 @@ describe('pipeline.yml', () => {
     expect(jobs['checks']?.permissions).toEqual({ contents: 'read' });
     expect(jobs['budgets']?.permissions).toEqual({ contents: 'read' });
     expect(jobs['report']?.permissions).toEqual({ contents: 'read', actions: 'read' });
+  });
+
+  // 010:T003 The report measures embedded script from the built site on every run (010:FR-001, 010:FR-006)
+  it('gives the report job the built site on every run, not only on main', () => {
+    const get = (jobs['report']?.steps ?? []).find(
+      (s) =>
+        s.uses?.startsWith('actions/download-artifact@') &&
+        (s as { with?: { name?: string } }).with?.name === 'dist',
+    ) as { if?: string } | undefined;
+    expect(get).toBeDefined();
+    expect(get?.if).toBeUndefined();
+  });
+
+  it('leaves JavaScript size to the report: Lighthouse asserts category scores only', () => {
+    const rc = require('../../lighthouserc.cjs') as {
+      ci: { assert: { assertions: Record<string, unknown> } };
+    };
+    expect(Object.keys(rc.ci.assert.assertions).sort()).toEqual([
+      'categories:accessibility',
+      'categories:best-practices',
+      'categories:performance',
+      'categories:seo',
+    ]);
   });
 
   it('packages the site with the merged report for Pages, from the report job', () => {

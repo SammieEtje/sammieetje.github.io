@@ -70,6 +70,8 @@ const en = {
   'scorecard.col.bestPractices': 'Best practices',
   'scorecard.col.seo': 'SEO',
   'scorecard.col.js': 'JavaScript',
+  'scorecard.jsNote':
+    'JavaScript: the compressed size of all script a page delivers, embedded in the page and in separate files.',
   'scorecard.within': 'within budget',
   'scorecard.over': 'over budget',
   'footer.scorecard': 'Scorecard',
@@ -279,6 +281,8 @@ const nl: Record<UiKey, string> = {
   'scorecard.col.bestPractices': 'Best practices',
   'scorecard.col.seo': 'SEO',
   'scorecard.col.js': 'JavaScript',
+  'scorecard.jsNote':
+    'JavaScript: de gecomprimeerde omvang van alle scripts die een pagina levert, in de pagina zelf en in aparte bestanden.',
   'scorecard.within': 'binnen budget',
   'scorecard.over': 'boven budget',
   'footer.scorecard': 'Scorecard',

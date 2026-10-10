@@ -54,7 +54,8 @@ module.exports = {
         'categories:accessibility': ['error', { minScore: budgets.accessibility }],
         'categories:best-practices': ['error', { minScore: budgets['best-practices'] }],
         'categories:seo': ['error', { minScore: budgets.seo }],
-        'resource-summary:script:size': ['error', { maxNumericValue: budgets.scriptBytes }],
+        // 010:T004 JavaScript size is gated by scripts/quality-report.ts, which also counts
+        // embedded script; one definition only (010:FR-003, 010:FR-006).
       },
     },
     upload: {
