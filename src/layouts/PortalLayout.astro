@@ -75,6 +75,8 @@ const { locale, path, meta } = Astro.props;
     flex: 1 0 auto;
     width: 100%;
     display: grid;
+    /* 004:T011 One shrinkable column on phones: the nav row scrolls inside itself, the page never does */
+    grid-template-columns: minmax(0, 1fr);
     align-content: start;
     gap: var(--space-6);
     max-width: calc(var(--sidebar) + var(--content) + 3 * var(--gutter));

@@ -26,7 +26,7 @@ npm run dev            # http://localhost:4321/career/ and /nl/loopbaan/
 | 4 | Pass | `career.spec.ts` legend and tag tests |
 | 5 | Pass | `career.spec.ts` navigation, Key numbers link, language switch |
 | 6 | Pass | `sharing.spec.ts` (JPEG, 1200 × 630, ≤ 125 KB; actual 84 KB); reviewed visually |
-| 7 | Pending | LinkedIn Post Inspector needs the deployed site; checked after merge |
+| 7 | Pass (2026-10-10, after merge) | LinkedIn Post Inspector previews `/` and `/career/` with the new JPEG card; a first attempt showed no preview, which cleared on retry (LinkedIn-side) |
 
 `quality-gate` passed on pull request #4. Lighthouse on all five pages: 100 / 100 / 100 / 100
 with 0 bytes of JavaScript.

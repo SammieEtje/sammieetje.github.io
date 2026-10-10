@@ -3,12 +3,14 @@
 import type { Locale } from '../i18n/ui.ts';
 import { t } from '../i18n/utils.ts';
 import { patterns } from '../site/patterns.ts';
+import { routes } from '../site/routes.ts';
 
 interface Props {
   locale: Locale;
 }
 
 const { locale } = Astro.props;
+const method = routes.find((r) => r.id === 'method')!.paths[locale];
 ---
 
 <section aria-labelledby="legend-title" data-spec="003:FR-007">
@@ -21,6 +23,11 @@ const { locale } = Astro.props;
       </div>
     ))}
   </dl>
+  <!-- 004:T011 Link to the method (004:FR-011) -->
+  <a class="more" href={method} data-spec="004:FR-011">
+    {t(locale, 'legend.method')}
+    <span aria-hidden="true"> →</span>
+  </a>
 </section>
 
 <style>
@@ -31,6 +38,12 @@ const { locale } = Astro.props;
 
   h2 {
     font-size: var(--text-base);
+  }
+
+  .more {
+    justify-self: start;
+    font-weight: 600;
+    font-size: var(--text-sm);
   }
 
   dl {
