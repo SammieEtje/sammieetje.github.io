@@ -20,6 +20,9 @@ entries, so they are outside the style rules by construction.
 
 ## Protected phrase
 
+Protection covers the phrase itself: a longer text that contains it (the headline, for example) is
+rewritten around it, and the test checks that the phrase is still contained word for word.
+
 | Phrase | Where | Reason |
 |--------|-------|--------|
 | "People take the path of least resistance." / "Mensen kiezen de weg van de minste weerstand." | headline, method premise | core message |

@@ -22,7 +22,7 @@ failing first. Code carries `012:T###` comments.
   - `setup:elliptical` ("The best part? You…").
 
   Also cover normal negations that pass: "This page does not exist.", "If I can't share something, I'll say that I can't.", "Het zijn geen metingen."
-- [ ] T002 [P] Write failing tests in `tests/unit/protected-copy.test.ts`: the core message (headline EN/NL, method premise and principle), the four assumption statements, Chris Stapper's quote and the article titles are word for word as listed in data-model.md.
+- [ ] T002 [P] Write failing tests in `tests/unit/protected-copy.test.ts`: the core message (headline EN/NL, method premise and principle), the four assumption statements, Chris Stapper's quote and the article titles are contained word for word as listed in data-model.md (the headline is rewritten around the phrases, so its em dash goes).
 - [ ] T003 Implement `src/site/style-rules.ts` (makes T001 pass) and `scripts/copy-inventory.ts` with `collectCopy()`, which walks `ui` and the content modules for `{ en, nl }` pairs. Export the playground sentences from `src/site/adoption-model.ts`. The CLI prints JSON.
 - [ ] T004 Write `tests/unit/copy-style.test.ts`: every inventory entry passes `styleViolations` in both languages. It fails now and lists the offending texts; record that count.
 
