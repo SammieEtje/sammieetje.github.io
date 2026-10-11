@@ -46,7 +46,7 @@ failing first. Code carries `012:T###` comments.
 
 ## Phase 5: Polish
 
-- [ ] T014 Run `npm run check`. Record the results in quickstart.md, open the pull request and confirm `quality-gate` passes.
+- [x] T014 Run `npm run check`. Record the results in quickstart.md, open the pull request and confirm `quality-gate` passes.
 
 ## Dependencies
 
