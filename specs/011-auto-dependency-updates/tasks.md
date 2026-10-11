@@ -26,8 +26,8 @@ auto-merge, majors arrive separately, and nothing bypasses the gate.
 - [ ] T002 [P] [US2] Extend `tests/unit/dependabot.test.ts` with failing tests:
   - both ecosystems group with `patterns: ['*']` and `update-types: ['minor', 'patch']`, so majors fall outside the groups;
   - the existing ignore rules still hold.
-- [ ] T003 [P] [US1] Extend `tests/unit/workflow-policy.test.ts` with a failing test: no workflow references `secrets.` (SC-006).
-- [ ] T004 [US1] Create `.github/workflows/dependency-updates.yml` with the `auto-merge` job, pinning `dependabot/fetch-metadata` v3.1.0 by SHA `25dd0e34f4fe68f24cc83900b1fe3fe149efef98` (makes T001 and T003 pass).
+- [ ] T003 [P] [US1] Extend `tests/unit/workflow-policy.test.ts` with a guard test: no workflow references `secrets.` (SC-006). It passes today, so prove it by temporarily adding a `secrets.` reference and seeing it fail.
+- [ ] T004 [US1] Create `.github/workflows/dependency-updates.yml` with the `auto-merge` job, pinning `dependabot/fetch-metadata` v3.1.0 by SHA `25dd0e34f4fe68f24cc83900b1fe3fe149efef98` (makes T001 pass; T003 stays green).
 - [ ] T005 [US2] Update `.github/dependabot.yml` groups with `update-types: [minor, patch]` (makes T002 pass).
 
 ## Phase 2: User Story 3 — Known vulnerabilities in shipped dependencies block the gate (P1)
@@ -65,19 +65,20 @@ Dependabot-authored, armed, `BEHIND` ones and produces the update-then-dispatch 
   - **Not selected**: `CLEAN`, `BLOCKED`, `DIRTY`, unarmed pull requests and other authors.
   - **Commands**: per pull request, in order, `['pr','update-branch','<n>','--repo',repo]` then `['workflow','run','pipeline.yml','--ref','<headRefName>','--repo',repo]`.
   - **Nothing behind**: an empty list gives no commands.
+  - **Partial failure**: `runAll(commands, exec)` runs every command even when one throws, and returns the failed ones (R3).
 - [ ] T012 [P] [US6] Extend `tests/unit/dependency-updates.test.ts` with failing tests for job `catch-up`:
   - runs on `schedule` (one daily cron) and `workflow_dispatch`, and not on pull requests;
   - permissions exactly `{ contents: write, pull-requests: write, actions: write }`;
   - checks out with `persist-credentials: false`;
   - runs `node scripts/dependency-catch-up.ts` without `npm ci`.
 - [ ] T013 [P] [US6] Extend `tests/unit/dependabot.test.ts` with a failing test: npm runs on `monday` and Actions on `wednesday` (FR-007).
-- [ ] T014 [US6] Implement `scripts/dependency-catch-up.ts`, which lists open Dependabot pull requests with `gh` and runs the commands. Add the `catch-up` job (cron `17 3 * * *`) to `.github/workflows/dependency-updates.yml`, and set the weekdays in `.github/dependabot.yml` (makes T011–T013 pass).
+- [ ] T014 [US6] Implement `scripts/dependency-catch-up.ts`, which lists open Dependabot pull requests with `gh`, runs the commands through `runAll` and exits non-zero if any failed. Add the `catch-up` job (cron `17 3 * * *`) to `.github/workflows/dependency-updates.yml`, and set the weekdays in `.github/dependabot.yml` (makes T011–T013 pass).
 
 ## Phase 6: Polish
 
-- [ ] T015 Document the dependency policy in `README.md` (what merges automatically, what waits, how vulnerabilities are caught, the daily runs). Bring the README up to date: the roadmap shows 009 and 010 as live and 011 as this PR, the gate table includes `npm run audit`, and the stack note covers both scripted pages.
+- [ ] T015 Document the dependency policy in `README.md` (what merges automatically, what waits, how vulnerabilities are caught, the daily runs). Bring the README up to date: the roadmap shows 009 and 010 as live and 011 as this PR, the gate table includes `npm run audit`, and the stack note covers both scripted pages. Note that `npm run check` needs network access for the audit.
 - [ ] T016 Run `npm run check`; run the negative audit experiment from quickstart.md and revert it.
-- [ ] T017 Record validation results in quickstart.md, open the pull request and confirm `quality-gate` passes. After merge, verify the live behaviour (quickstart 6–9) and report.
+- [ ] T017 Record validation results in quickstart.md, open the pull request and confirm `quality-gate` passes. After merge, verify the live behaviour (quickstart 6–9), including the first Actions update's automatic merge and the first catch-up (R3a), and report.
 
 ## Dependencies
 

@@ -27,5 +27,8 @@
      "Update branch" button.
 8. **Daily run**: the next scheduled `Pipeline` run on `main` deploys. The live
    `/quality/report.json` shows the new build reference and run time.
-9. **Settings**: `gh api repos/SammieEtje/sammieetje.github.io --jq .security_and_analysis` shows
+9. **Workflow-file updates (R3a)**: the first Actions group (Wednesday) merges automatically. If
+   GitHub refuses the merge for lack of the `workflows` permission, record it, switch Actions
+   updates to manual in the README, and keep npm automatic.
+10. **Settings**: `gh api repos/SammieEtje/sammieetje.github.io --jq .security_and_analysis` shows
    secret scanning, push protection and Dependabot security updates `enabled`.

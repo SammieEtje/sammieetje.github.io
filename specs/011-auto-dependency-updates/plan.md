@@ -79,4 +79,5 @@ asserted by a unit test, as for the existing workflow policy.
 | Deviation | Why Needed | Simpler Alternative Rejected Because |
 |-----------|------------|-------------------------------------|
 | Automatically merged commits are not deployed by their own push; the daily run deploys them (≤ 24 h) | GitHub starts no workflow for merges made with the workflow token | A personal access token or app token would add a stored long-lived credential (SC-006) |
+| Update pull requests merge without the owner's review | The owner's policy (clarification 2026-10-11): patch and minor updates are approved by the full quality gate; feature pull requests keep the owner's review | Reviewing every routine update by hand is the problem this feature removes |
 | A second daily schedule (catch-up) besides the pipeline's | Dependabot rebases only on conflict; strict protection blocks updates that are behind | Turning off strict protection would weaken every pull request; merge queue is unavailable for personal repositories |

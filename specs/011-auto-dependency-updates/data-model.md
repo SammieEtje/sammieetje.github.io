@@ -10,7 +10,7 @@ These are the fields read by the catch-up script (`gh pr list --json`) and the a
 | `number` | gh | pull request number |
 | `author.login` | gh | must be `app/dependabot` / `dependabot[bot]` for any automation |
 | `headRefName` | gh | branch, e.g. `dependabot/npm_and_yarn/npm-…`; the catch-up dispatches the pipeline on it |
-| `autoMergeRequest` | gh | `null` = not approved for automatic merging; an object = armed |
+| `autoMergeRequest` | gh | `null` = not approved for automatic merging; an object = armed ("armed" and "approved for automatic merging" mean the same) |
 | `mergeStateStatus` | gh | `BEHIND` = needs catch-up; `CLEAN`, `BLOCKED`, `DIRTY`, `UNSTABLE`, `UNKNOWN`, … = leave alone |
 | `update-type` | fetch-metadata | `version-update:semver-patch` / `-minor` → arm auto-merge; `-major`, empty or anything else → manual |
 

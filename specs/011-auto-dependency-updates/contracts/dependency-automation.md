@@ -54,10 +54,14 @@ export function catchUpCommands(prs: UpdatePr[], repo: string): string[][]; // g
 - For each selected pull request, the commands are, in order:
   - `['pr', 'update-branch', '<n>', '--repo', repo]`
   - `['workflow', 'run', 'pipeline.yml', '--ref', '<headRefName>', '--repo', repo]`
+```ts
+export function runAll(commands: string[][], exec: (argv: string[]) => void): string[][]; // returns the failed commands
+```
+
 - When run as the main module, the script reads the open Dependabot pull requests with
-  `gh pr list` and executes the commands in order.
+  `gh pr list` and executes the commands in order through `runAll`.
   - It logs each action.
-  - It exits non-zero when a command fails.
+  - It continues past a failed command and exits non-zero at the end if any failed.
 
 ## `.github/workflows/pipeline.yml` changes
 

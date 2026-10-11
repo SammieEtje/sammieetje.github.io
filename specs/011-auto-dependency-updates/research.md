@@ -82,6 +82,23 @@
   - An `@dependabot rebase` comment from the workflow: whether Dependabot accepts commands from
     `github-actions[bot]` is undocumented (rejected).
 
+- **Partial failures**: the script runs every pull request's commands even when an earlier one
+  fails, and it exits non-zero at the end. A failed scheduled run notifies the owner and names
+  each pull request that needs a hand.
+
+## R3a. Changes to workflow files
+
+- **Risk**: the workflow token cannot hold the `workflows` permission. GitHub may refuse two
+  things done with it when they would write a workflow file:
+  - completing an auto-merge of an Actions update, which edits `.github/workflows/*`;
+  - a catch-up branch update that carries new workflow changes from `main` into the pull request.
+- Dependabot's own pushes are not affected. This cannot be proven before merge either.
+- **Decision**: keep one mechanism and verify it on the first Actions update (Wednesday) and the
+  first catch-up.
+- **Fallback if refused**: Actions updates stay a one-click manual merge (their gate has already
+  run), and npm updates stay fully automatic. The README then states this instead of claiming
+  otherwise.
+
 ## R4. Groups and the waiting period
 
 - **Decision**: each ecosystem keeps one group, now limited with `update-types: [minor, patch]`.
