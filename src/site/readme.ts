@@ -7,8 +7,8 @@ type Text = Record<Locale, string>;
 export const readmeMeta: { updated: string; intro: Text } = {
   updated: '2026-10-10',
   intro: {
-    en: "If you're thinking about working with me, this is the documentation I wish every manager published: what I value, what you can expect, how to reach me and where my known issues are. Like any API, it's versioned; tell me when it's out of date.",
-    nl: 'Denk je erover om met mij te werken? Dit is de documentatie die ik elke manager zou gunnen: wat ik belangrijk vind, wat je kunt verwachten, hoe je me bereikt en waar mijn bekende problemen zitten. Zoals elke API heeft deze een versie; zeg het als hij verouderd is.',
+    en: "If you're thinking about working with me, this is the documentation I wish every manager published: what I value, what you can expect, how to reach me and where my known issues are. Like any API it has a version, so tell me when it's out of date.",
+    nl: 'Denk je erover om met mij te werken? Dit is de documentatie die ik elke manager zou gunnen: wat ik belangrijk vind, wat je kunt verwachten, hoe je me bereikt en waar mijn bekende problemen zitten. Zoals elke API heeft deze een versie, dus zeg het als hij verouderd is.',
   },
 };
 
@@ -36,8 +36,8 @@ export const endpoints: readonly Endpoint[] = [
         nl: 'Het juiste moet het makkelijkste zijn: voor de mensen die gebruiken wat wij bouwen, en voor onszelf.',
       },
       {
-        en: 'Learning over blaming. A mistake is information about the environment, not a verdict on a person.',
-        nl: 'Leren boven schuld. Een fout zegt iets over de omgeving, niet over een persoon.',
+        en: 'Learning from mistakes. When something goes wrong, I look at what in the environment made it possible.',
+        nl: 'Leren van fouten. Als er iets misgaat, kijk ik naar wat in de omgeving het mogelijk maakte.',
       },
       {
         en: 'Build things that outlast us. A good team, platform or community keeps running when the people who started it move on.',
@@ -52,8 +52,8 @@ export const endpoints: readonly Endpoint[] = [
     title: { en: 'What you can expect from me', nl: 'Wat je van mij kunt verwachten' },
     items: [
       {
-        en: 'Context, not instructions. I give you the why and the boundaries; you decide the how.',
-        nl: 'Context, geen instructies. Ik geef je het waarom en de kaders; jij bepaalt het hoe.',
+        en: 'Context and room to decide. I explain the why and the boundaries, and you decide how.',
+        nl: 'Context en ruimte om zelf te kiezen. Ik leg het waarom en de kaders uit, en jij bepaalt hoe.',
       },
       {
         en: "I remove what's in the way: staffing, priorities, politics, and blockers you can't fix yourself.",
@@ -72,20 +72,20 @@ export const endpoints: readonly Endpoint[] = [
     title: { en: 'What I expect from you', nl: 'Wat ik van jou verwacht' },
     items: [
       {
-        en: 'Own the outcome for your users, not just the ticket. When the systemic fix matters more than the individual problem, choose the fix.',
-        nl: 'Wees eigenaar van de uitkomst voor je gebruikers, niet alleen van het ticket. Als de structurele oplossing belangrijker is dan het losse probleem, kies dan die oplossing.',
+        en: 'Own the outcome for your users. Closing the ticket is only part of that. When fixing the system matters more than solving the single case, fix the system.',
+        nl: 'Wees eigenaar van de uitkomst voor je gebruikers. Het ticket sluiten is daar maar een deel van. Als de structurele oplossing meer oplevert dan het losse probleem, kies dan die.',
       },
       {
-        en: 'Make it visible. Share what you learn and what went wrong, early. Bad news fast is good news.',
-        nl: 'Maak het zichtbaar. Deel wat je leert en wat er misging, en doe dat vroeg. Slecht nieuws dat snel komt, is goed nieuws.',
+        en: 'Make it visible. Share what you learn and what went wrong, and do it early. I would much rather hear bad news on day one than in week three.',
+        nl: 'Maak het zichtbaar. Deel wat je leert en wat er misging, en doe dat vroeg. Slecht nieuws hoor ik veel liever op dag één dan in week drie.',
       },
       {
-        en: 'Build for others: docs, golden paths, self-service. Your impact is what others can do because of you.',
-        nl: 'Bouw voor anderen: documentatie, golden paths, zelfbediening. Jouw impact is wat anderen dankzij jou kunnen.',
+        en: 'Build for others: docs, golden paths, self-service. I look at your impact through what other people can do because of your work.',
+        nl: 'Bouw voor anderen: documentatie, golden paths, zelfbediening. Ik kijk naar jouw impact via wat anderen dankzij jouw werk kunnen.',
       },
       {
-        en: "Challenge me. Disagree with arguments; I'd rather be convinced than obeyed.",
-        nl: 'Daag me uit. Spreek me tegen met argumenten; ik word liever overtuigd dan gehoorzaamd.',
+        en: "Challenge me. If you disagree, bring your arguments. I'd rather be convinced than obeyed.",
+        nl: 'Daag me uit. Ben je het oneens, kom dan met argumenten. Ik word liever overtuigd dan gehoorzaamd.',
       },
     ],
   },
@@ -96,8 +96,8 @@ export const endpoints: readonly Endpoint[] = [
     title: { en: 'One-on-ones', nl: 'Een-op-eengesprekken' },
     items: [
       {
-        en: 'Monthly, one hour, structured, so the time goes to what matters to you and not to catching up.',
-        nl: 'Maandelijks, een uur, gestructureerd, zodat de tijd naar jouw onderwerpen gaat en niet naar bijpraten.',
+        en: 'Monthly, one hour, with a fixed structure, so the time goes to what matters to you.',
+        nl: 'Maandelijks, een uur, met een vaste opzet, zodat de tijd naar jouw onderwerpen gaat.',
       },
       {
         en: "Ad hoc whenever either of us needs it. You don't have to wait for the next slot.",
@@ -148,8 +148,8 @@ export const endpoints: readonly Endpoint[] = [
     title: { en: 'How I handle mistakes', nl: 'Hoe ik met fouten omga' },
     items: [
       {
-        en: 'When something goes wrong, tell me early. I will not ask who did it; I will ask what made it possible, and we change that together.',
-        nl: 'Als er iets misgaat, vertel het me vroeg. Ik vraag niet wie het deed; ik vraag wat het mogelijk maakte, en dat veranderen we samen.',
+        en: 'When something goes wrong, tell me early. My question will be what made it possible, and then we change that together.',
+        nl: 'Als er iets misgaat, vertel het me vroeg. Mijn vraag is dan wat het mogelijk maakte, en dat veranderen we samen.',
       },
       {
         en: 'Room to fail safely is one of the assumptions behind everything I build.',

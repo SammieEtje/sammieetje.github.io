@@ -12,7 +12,7 @@ test.describe('method page: premise', () => {
     await expect(first.getByRole('heading', { level: 1 })).toHaveText('Golden paths');
     await expect(first).toContainText('People take the path of least resistance.');
     await expect(first.locator('.principle')).toHaveText('Make the right thing the easy thing.');
-    await expect(first).toContainText('Most transformations fail on the wrong image of people');
+    await expect(first).toContainText('most transformations stall on how they look at people');
     const firstSection = await page.locator('main section').first().getAttribute('data-spec');
     expect(firstSection).toBe('004:FR-002');
   });
@@ -39,7 +39,7 @@ test.describe('method page: levers and assumptions', () => {
     await expect(lower.locator('li')).toHaveCount(4);
     await expect(raise.getByRole('heading')).toHaveText('Raise the resistance on the wrong path');
     await expect(raise.locator('li')).toHaveCount(3);
-    await expect(section.locator('.pragmatism')).toContainText('we learn from them');
+    await expect(section.locator('.pragmatism')).toContainText('learn from what they did');
   });
 
   test('four assumptions in order, each with what it means in practice', async ({ page }) => {
@@ -53,7 +53,7 @@ test.describe('method page: levers and assumptions', () => {
       'With great freedom comes great responsibility',
     ]);
     await expect(items.nth(2).locator('.subtitle')).toHaveText(
-      'Not a judgement, a design constraint: people take the path of least resistance.',
+      'I mean it as a design constraint: people take the path of least resistance.',
     );
     for (const item of await items.all()) {
       await expect(item.locator('.in-practice')).not.toBeEmpty();

@@ -52,11 +52,11 @@ for (const [path, e] of Object.entries(expected)) {
 const about = {
   '/': {
     title: 'About',
-    text: "For nearly twenty years I have turned IT departments in banking and energy into platform organisations that teams actually want to use. My thesis on behaviour change taught me that people take the path of least resistance, so I don't push change: I redesign the environment until the right thing is the easy thing. Today I lead the Data & Analytics Platform at TenneT, where data and AI power the energy transition.",
+    text: 'For almost twenty years I have been turning IT departments in banking and energy into platform organisations that teams actually want to use. My thesis on behaviour change taught me that people take the path of least resistance, and I have worked with that ever since: I change the environment until the right thing is the easy thing. Today I lead the Data & Analytics Platform at TenneT, where data and AI are becoming central to the energy transition.',
   },
   '/nl/': {
     title: 'Over mij',
-    text: 'Al bijna twintig jaar maak ik van IT-afdelingen in bankwezen en energie platformorganisaties die teams echt willen gebruiken. Mijn afstudeeronderzoek naar gedragsverandering leerde me dat mensen de weg van de minste weerstand kiezen; daarom duw ik niet, maar herontwerp ik de omgeving tot het juiste het makkelijkste is. Vandaag leid ik het Data & Analytics Platform bij TenneT, waar data en AI de energietransitie aandrijven.',
+    text: 'Al bijna twintig jaar maak ik van IT-afdelingen in bankwezen en energie platformorganisaties die teams echt willen gebruiken. Mijn afstudeeronderzoek naar gedragsverandering leerde me dat mensen de weg van de minste weerstand kiezen, en daar werk ik sindsdien mee: ik verander de omgeving tot het juiste het makkelijkste is. Nu leid ik het Data & Analytics Platform bij TenneT, waar data en AI steeds belangrijker worden voor de energietransitie.',
   },
 } as const;
 

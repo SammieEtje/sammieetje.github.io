@@ -9,7 +9,7 @@ test.describe('English home page', () => {
     await expect(identity).toContainText('Manager Data & Analytics Platform at TenneT');
     await expect(identity).toContainText('Platform transformation in highly regulated contexts');
     await expect(identity).toContainText(
-      'People take the path of least resistance. I build environments where the right thing is the easy thing — together.',
+      'People take the path of least resistance. So, together with my teams, I build environments where the right thing is the easy thing.',
     );
     const linkedin = identity.getByRole('link', { name: /LinkedIn/ });
     await expect(linkedin).toHaveAttribute('href', 'https://www.linkedin.com/in/sanderettema/');

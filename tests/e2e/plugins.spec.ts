@@ -8,7 +8,7 @@ test.describe('Plugins', () => {
     const header = page.locator('[data-spec="007:FR-002"]');
     await expect(header.getByRole('heading', { level: 1 })).toHaveText('Plugins');
     await expect(header.locator('.intro')).toContainText(
-      "I'm technically curious, not technically deep.",
+      "I'm technically curious, and I know where my depth ends.",
     );
   });
 

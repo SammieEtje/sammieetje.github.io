@@ -37,7 +37,7 @@ test.describe('how I lead: structure', () => {
   test('day-to-day practices are stated', async ({ page }) => {
     await page.goto('/how-i-lead/');
     await expect(page.locator('#endpoint-one-on-ones')).toContainText(
-      'Monthly, one hour, structured',
+      'Monthly, one hour, with a fixed structure',
     );
     await expect(page.locator('#endpoint-contact')).toContainText('I reply the same working day');
     await expect(page.locator('#endpoint-feedback')).toContainText('including in the team');
