@@ -39,3 +39,42 @@ describe('dependabot.yml ignore rules', () => {
     );
   });
 });
+
+interface Policy {
+  'package-ecosystem': string;
+  schedule: { interval: string; day?: string };
+  cooldown?: Record<string, number>;
+  groups?: Record<string, { patterns?: string[]; 'update-types'?: string[] }>;
+}
+const policy = (parse(readFileSync('.github/dependabot.yml', 'utf8')) as { updates: Policy[] })
+  .updates;
+
+// 011:T002 Patch and minor are grouped; majors fall outside and arrive alone (011:FR-006)
+describe('dependabot.yml groups', () => {
+  it('groups only patch and minor updates, per ecosystem', () => {
+    for (const update of policy) {
+      const groups = Object.values(update.groups ?? {});
+      expect(groups, update['package-ecosystem']).toHaveLength(1);
+      expect(groups[0]?.patterns).toEqual(['*']);
+      expect([...(groups[0]?.['update-types'] ?? [])].sort()).toEqual(['minor', 'patch']);
+    }
+  });
+});
+
+// 011:T010 New releases wait 3 days; security updates are exempt by design (011:FR-005)
+describe('dependabot.yml cooldown', () => {
+  it('waits 3 days before proposing a version update, in both ecosystems', () => {
+    for (const update of policy) {
+      expect(update.cooldown, update['package-ecosystem']).toEqual({ 'default-days': 3 });
+    }
+  });
+});
+
+// 011:T013 npm and Actions arrive on different weekdays (011:FR-007)
+describe('dependabot.yml weekdays', () => {
+  it('proposes npm on Monday and Actions on Wednesday', () => {
+    const day = (e: string) => policy.find((u) => u['package-ecosystem'] === e)?.schedule.day;
+    expect(day('npm')).toBe('monday');
+    expect(day('github-actions')).toBe('wednesday');
+  });
+});

@@ -20,10 +20,12 @@ npx playwright install chromium
 npm run check
 ```
 
-`npm run check` is the whole quality gate, and the pipeline runs exactly the same scripts:
+`npm run check` is the whole quality gate, and the pipeline runs exactly the same scripts (the
+audit needs network access to the npm advisory database):
 
 | Script                 | Checks                                                               |
 | ---------------------- | -------------------------------------------------------------------- |
+| `npm run audit`        | No known high or critical vulnerability in shipped dependencies      |
 | `npm run format:check` | Prettier formatting                                                  |
 | `npm run lint`         | ESLint for TypeScript and Astro                                      |
 | `npm run typecheck`    | `astro check`, TypeScript strict, translation completeness           |
@@ -39,7 +41,7 @@ Use `npm run dev` for a local server at <http://localhost:4321>.
 ## Pipeline
 
 [`.github/workflows/pipeline.yml`](.github/workflows/pipeline.yml) runs the gate on every pull
-request and every push to `main`, as five jobs:
+request, every push to `main` and once a day on `main`, as five jobs:
 
 ```text
 checks ──► budgets 1/3 · 2/3 · 3/3 (parallel Lighthouse shards) ──► report ──► quality-gate ──► deploy
@@ -60,7 +62,32 @@ Guardrails that are tested, not just agreed:
 - the CI steps and `npm run check` cannot drift apart;
 - pages load no scripts (except the playground and the scorecard, within a 50 KB budget), make no
   third-party requests and set no cookies;
-- Dependabot proposes grouped updates for npm and Actions every week.
+- dependency updates follow the policy below, and the workflow token is the only credential.
+
+## Dependencies
+
+Routine updates do not wait for a person; the quality gate approves them.
+
+- **Proposals**: Dependabot proposes npm updates on Monday and Actions updates on Wednesday
+  ([`.github/dependabot.yml`](.github/dependabot.yml)). Patch and minor updates are grouped per
+  ecosystem. A new release is only proposed after it has been public for 3 days, because hijacked
+  releases are usually caught and withdrawn within that time. Security updates do not wait.
+- **Merging itself**: [`dependency-updates.yml`](.github/workflows/dependency-updates.yml) turns on
+  auto-merge for Dependabot's patch and minor pull requests, version and security updates alike.
+  GitHub merges only when `quality-gate` is green and the branch is up to date. The job never
+  checks out the pull request's code and uses no stored secrets.
+- **Waiting for the owner**: major updates arrive one by one, and so does anything whose update
+  type is unknown. They wait for a review.
+- **Catching up**: an approved update that fell behind `main` is brought up to date and re-checked
+  by a daily catch-up job.
+- **Going live**: merges made by automation start no pipeline of their own, so the daily pipeline
+  run on `main` ships them within a day.
+- **Vulnerabilities**:
+  - The gate fails on any known high or critical vulnerability in the dependencies the site is
+    built from (`npm run audit`). Because the gate also runs daily, a new advisory is caught
+    within a day even when nothing changes, and nothing vulnerable is deployed.
+  - Development tooling is covered by Dependabot alerts and security updates.
+  - Secret scanning with push protection is on.
 
 ## Spec-driven
 
@@ -85,16 +112,19 @@ nowhere.
 | 006  | TechDocs: writing, by content pillar      | live    |
 | 007  | Plugins: open-source projects             | live    |
 | 008  | Playground: the path of least resistance  | live    |
-| 009  | Scorecard: live quality metrics           | this PR |
+| 009  | Scorecard: live quality metrics           | live    |
+| 010  | Exact JavaScript measurement on scorecard | live    |
+| 011  | Automatic dependency updates              | this PR |
 
 ## Stack
 
 Astro 7 (static output), TypeScript 6 strict, Vitest, Playwright with axe-core, Lighthouse CI,
 GitHub Actions and GitHub Pages. Fonts are self-hosted. Images are optimised at build time
 (AVIF/WebP), and the sharing cards are rendered by the build with Satori and resvg. Client-side
-JavaScript exists on one page only: the playground, where the same adoption model that renders the
-default chart at build time re-runs in the browser (about 1 KB compressed). Every other page ships
-zero scripts, and a test keeps it that way.
+JavaScript exists on two pages only. On the playground, the same adoption model that renders the
+default chart at build time re-runs in the browser. The scorecard loads the live quality report.
+Each ships about 1 KB compressed. Every other page ships zero scripts, and a test keeps it that
+way.
 
 ## Content
 

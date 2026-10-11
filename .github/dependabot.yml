@@ -1,10 +1,17 @@
 # 001:T020 Weekly update proposals for packages and pipeline actions (001:FR-021)
+# 011:T005 Patch and minor are grouped and merge themselves after the gate; majors fall outside
+# the groups, arrive alone and wait for the owner (011:FR-006).
+# 011:T010 Releases wait 3 days before they are proposed; security updates never wait (011:FR-005).
+# 011:T014 npm on Monday, Actions on Wednesday, so the weekly groups do not wait on each other (011:FR-007).
 version: 2
 updates:
   - package-ecosystem: npm
     directory: /
     schedule:
       interval: weekly
+      day: monday
+    cooldown:
+      default-days: 3
     # 002:T022 Majors the toolchain cannot accept yet: @astrojs/check and typescript-eslint
     # support TypeScript < 6.1; @types/node follows the Node 24 runtime.
     ignore:
@@ -15,10 +22,15 @@ updates:
     groups:
       npm:
         patterns: ['*']
+        update-types: [minor, patch]
   - package-ecosystem: github-actions
     directory: /
     schedule:
       interval: weekly
+      day: wednesday
+    cooldown:
+      default-days: 3
     groups:
       actions:
         patterns: ['*']
+        update-types: [minor, patch]

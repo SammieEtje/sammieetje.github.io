@@ -32,3 +32,16 @@
    updates to manual in the README, and keep npm automatic.
 10. **Settings**: `gh api repos/SammieEtje/sammieetje.github.io --jq .security_and_analysis` shows
    secret scanning, push protection and Dependabot security updates `enabled`.
+
+## Results (2026-10-11, before merge)
+
+- Steps 1, 2 and 4 pass locally: 151 unit tests (23 files), audit "found 0 vulnerabilities",
+  trace 744 references, 304 end-to-end tests, links and budgets green.
+- Step 3: with `lodash@4.17.20` added as a shipped dependency, `npm run audit` exits 1 (high and
+  critical lodash advisories); after reverting it exits 0.
+- The secrets guard fails when a `secrets.` reference is injected into a workflow and passes
+  without it.
+- The catch-up script, run against the repository, reports `0 open update(s), 0 behind main with
+  auto-merge armed` and exits 0.
+- Repository settings: secret scanning, push protection and Dependabot security updates are
+  `enabled`, auto-merge and update branch are allowed, and automated security fixes are on.
