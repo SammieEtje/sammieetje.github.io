@@ -26,6 +26,24 @@ and links on the exact build that ships. This feature lets that gate, not a pers
 routine updates. People keep the decisions that need judgement, and the gate watches for new
 vulnerabilities even when nothing changes.
 
+## Clarifications
+
+### Session 2026-10-11
+
+- Q: Which Dependabot updates may merge into main automatically (always after a green gate)? → A:
+  Patch and minor, for npm and pipeline actions, version and security updates alike; majors stay
+  manual.
+- Q: How long must a new release wait before it is proposed (security updates excepted)? → A: 3
+  days.
+- Q: May the repository's security and merge settings be enabled? → A: Yes: vulnerability alerts,
+  Dependabot security updates, secret scanning with push protection, allow auto-merge, allow
+  update branch (automatic branch deletion after merge enabled alongside).
+- Q: Which known vulnerabilities fail the quality gate and so block deploys? → A: Only high or
+  critical vulnerabilities in shipped dependencies; development tooling is handled through alerts
+  and Dependabot's security updates. (At the time of this session the shipped dependencies have
+  none; development tooling has 11 high findings, all via the Lighthouse CI tool, without a
+  non-downgrade fix.)
+
 ## User Scenarios & Testing *(mandatory)*
 
 ### User Story 1 - Non-breaking updates land on main without manual work (Priority: P1)
