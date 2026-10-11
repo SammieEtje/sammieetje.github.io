@@ -36,7 +36,7 @@ const en = {
   'card.links.title': 'Links',
   'card.links.kind': 'links',
   'about.body':
-    'For almost twenty years I have been turning IT departments in banking and energy into platform organisations that teams actually want to use. My thesis on behaviour change taught me that people take the path of least resistance, and I have worked with that ever since: I change the environment until the right thing is the easy thing. Today I lead the Data & Analytics Platform at TenneT, where data and AI are becoming central to the energy transition.',
+    'I have been working on behaviour change in organisations for more than 25 years, starting with my thesis in 2000. It taught me that people take the path of least resistance, and I have worked with that ever since: I change the environment until the right thing is the easy thing. In banking and energy, that is how I turned IT departments into platform organisations that teams actually want to use. Today I lead the Data & Analytics Platform at TenneT, where data and AI are becoming central to the energy transition.',
   'links.linkedin': 'LinkedIn profile',
   'links.github': 'GitHub profile',
   'numbers.history': 'Full deployment history',
@@ -247,7 +247,7 @@ const nl: Record<UiKey, string> = {
   'card.links.title': 'Links',
   'card.links.kind': 'links',
   'about.body':
-    'Al bijna twintig jaar maak ik van IT-afdelingen in bankwezen en energie platformorganisaties die teams echt willen gebruiken. Mijn afstudeeronderzoek naar gedragsverandering leerde me dat mensen de weg van de minste weerstand kiezen, en daar werk ik sindsdien mee: ik verander de omgeving tot het juiste het makkelijkste is. Nu leid ik het Data & Analytics Platform bij TenneT, waar data en AI steeds belangrijker worden voor de energietransitie.',
+    'Ik werk al ruim 25 jaar aan gedragsverandering in organisaties, te beginnen met mijn afstudeeronderzoek in 2000. Dat leerde me dat mensen de weg van de minste weerstand kiezen, en daar werk ik sindsdien mee: ik verander de omgeving tot het juiste het makkelijkste is. In bankwezen en energie maakte ik zo van IT-afdelingen platformorganisaties die teams echt willen gebruiken. Nu leid ik het Data & Analytics Platform bij TenneT, waar data en AI steeds belangrijker worden voor de energietransitie.',
   'links.linkedin': 'LinkedIn-profiel',
   'links.github': 'GitHub-profiel',
   'numbers.history': 'Volledige releasegeschiedenis',
