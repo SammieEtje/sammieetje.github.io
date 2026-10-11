@@ -1,0 +1,73 @@
+# 011:T004 Routine dependency updates merge themselves once the quality gate passes; breaking ones
+# wait for the owner. 011:T014 A daily catch-up for approved updates that fell behind main.
+# Contract: specs/011-auto-dependency-updates/contracts/dependency-automation.md
+name: Dependency updates
+
+on:
+  pull_request:
+    branches: [main]
+  schedule:
+    - cron: '17 3 * * *'
+  workflow_dispatch:
+
+permissions: {}
+
+concurrency:
+  group: dependency-updates-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # 011:T004 Arms GitHub's auto-merge; GitHub merges only when quality-gate is green and the branch
+  # is up to date. No checkout: no code from the pull request runs with this token (011:FR-001..FR-004).
+  auto-merge:
+    name: auto-merge
+    if: >-
+      ${{ github.event_name == 'pull_request'
+      && github.event.pull_request.user.login == 'dependabot[bot]'
+      && github.repository == 'SammieEtje/sammieetje.github.io' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Read the update
+        id: update
+        uses: dependabot/fetch-metadata@25dd0e34f4fe68f24cc83900b1fe3fe149efef98 # v3.1.0
+        with:
+          github-token: ${{ github.token }}
+      - name: Merge after the quality gate (patch and minor only)
+        if: >-
+          ${{ steps.update.outputs.update-type == 'version-update:semver-patch'
+          || steps.update.outputs.update-type == 'version-update:semver-minor' }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_URL: ${{ github.event.pull_request.html_url }}
+          UPDATE_TYPE: ${{ steps.update.outputs.update-type }}
+        run: |
+          echo "Auto-merge armed for a ${UPDATE_TYPE#version-update:semver-} update" >> "$GITHUB_STEP_SUMMARY"
+          gh pr merge --auto --squash "$PR_URL"
+
+  # 011:T014 Approved updates behind main: update the branch and run the pipeline on it (011:FR-010)
+  catch-up:
+    name: catch-up
+    if: ${{ github.event_name != 'pull_request' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: write
+      pull-requests: write
+      actions: write
+    steps:
+      - name: Check out
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Set up Node
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+      - name: Catch up
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: node scripts/dependency-catch-up.ts

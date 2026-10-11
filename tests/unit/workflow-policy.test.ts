@@ -26,7 +26,10 @@ const require = createRequire(import.meta.url);
 const dir = '.github/workflows';
 const workflows = readdirSync(dir)
   .filter((f) => /\.ya?ml$/.test(f))
-  .map((file) => ({ file, wf: parse(readFileSync(join(dir, file), 'utf8')) as Workflow }));
+  .map((file) => {
+    const text = readFileSync(join(dir, file), 'utf8');
+    return { file, text, wf: parse(text) as Workflow };
+  });
 const pipeline = workflows.find((w) => w.file === 'pipeline.yml')?.wf;
 const pkg = JSON.parse(readFileSync('package.json', 'utf8')) as { scripts: Record<string, string> };
 
@@ -35,7 +38,12 @@ describe('every workflow', () => {
     expect(workflows.length).toBeGreaterThan(0);
   });
 
-  for (const { file, wf } of workflows) {
+  for (const { file, text, wf } of workflows) {
+    // 011:T003 Guard: automation runs on the workflow token only, no stored secrets (011:SC-006)
+    it(`${file}: references no stored secrets`, () => {
+      expect(text).not.toMatch(/secrets\./);
+    });
+
     it(`${file}: grants nothing at the top level`, () => {
       expect(wf.permissions).toEqual({});
     });
@@ -102,10 +110,17 @@ describe('pipeline.yml', () => {
     expect(gate?.permissions).toEqual({});
   });
 
-  it('deploys only after the gate, only for pushes to main', () => {
+  // 011:T008 A daily run re-checks main and ships what automation merged (011:FR-009)
+  it('also runs once a day', () => {
+    const schedule = (pipeline?.on as { schedule?: { cron: string }[] } | undefined)?.schedule;
+    expect(schedule).toHaveLength(1);
+    expect(schedule?.[0]?.cron).toMatch(/^\d+ \d+ \* \* \*$/);
+  });
+
+  it('deploys only after the gate, for any run on main except a pull request', () => {
     const deploy = jobs['deploy'];
     expect([deploy?.needs].flat()).toEqual(['quality-gate']);
-    expect(deploy?.if).toContain("github.event_name == 'push'");
+    expect(deploy?.if).toContain("github.event_name != 'pull_request'");
     expect(deploy?.if).toContain("github.ref == 'refs/heads/main'");
     expect(deploy?.permissions).toEqual({ pages: 'write', 'id-token': 'write' });
     expect(deploy?.environment).toMatchObject({ name: 'github-pages' });
@@ -145,5 +160,22 @@ describe('pipeline.yml', () => {
     const steps = jobs['report']?.steps ?? [];
     expect(steps.some((s) => s.uses?.startsWith('actions/upload-pages-artifact@'))).toBe(true);
     expect(steps.map((s) => s.run ?? '').join('\n')).toContain('dist/quality/report.json');
+  });
+
+  // 011:T008 Packaging follows the deploy rule: any run on main except a pull request (011:FR-009)
+  it('packages for Pages under the same condition as the deploy', () => {
+    const steps = (jobs['report']?.steps ?? []) as (Step & { name?: string; if?: string })[];
+    for (const name of ['Add the report to the site', 'Package site for Pages']) {
+      const step = steps.find((s) => s.name === name);
+      expect(step?.if, name).toContain("github.event_name != 'pull_request'");
+      expect(step?.if, name).toContain("github.ref == 'refs/heads/main'");
+    }
+  });
+
+  // 011:T006 Known high or critical vulnerabilities in shipped dependencies fail the gate (011:FR-008)
+  it('audits shipped dependencies first, locally and in CI', () => {
+    expect(pkg.scripts['audit']).toBe('npm audit --omit=dev --audit-level=high');
+    expect(pkg.scripts['check']).toMatch(/^npm run audit && /);
+    expect(runs('checks')[0]).toBe('audit');
   });
 });
