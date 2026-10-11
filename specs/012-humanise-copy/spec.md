@@ -27,6 +27,23 @@ undermines the one thing the site exists to show: that a real person with real e
 it. Sander's own writing rules already forbid these patterns for his LinkedIn work. The site
 should follow the same rules, in both languages.
 
+## Clarifications
+
+### Session 2026-10-11
+
+- Q: Which fixed phrases must stay word for word? → A: The core message ("people take the path of
+  least resistance", "make the right thing the easy thing"), "People are inherently lazy" and the
+  four assumption statements as published. "Technically curious, not technically deep" (007) is
+  rewritten in the same spirit, without the contrast. Chris Stapper's quote and the published
+  article titles stay because they are someone else's words or already published.
+- Q: How personal may the tone become? → A: Direct and plain: first person, mixed sentence
+  lengths, an opinion where it fits. No invented anecdotes and no hedging words that weaken a
+  leader's voice.
+- Q: How does the owner review the rewritten copy? → A: A private before/after page, next to the
+  pull request.
+- Q: Should a test keep these patterns out from now on? → A: Yes, as a guard in the quality gate,
+  with exceptions for quotes, article titles and the protected phrases.
+
 ## User Scenarios & Testing *(mandatory)*
 
 ### User Story 1 - Visitors read a person, not a generator (Priority: P1)
