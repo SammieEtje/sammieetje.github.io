@@ -47,8 +47,8 @@ export const projects: readonly Project[] = [
       nl: 'Een kleine takenlijst die bestaat om een manier van werken te laten zien.',
     },
     demonstrates: {
-      en: 'Spec Kit with an AI assistant under human direction: click any element and it shows the requirement and the decisions behind it; every pull request passes code, security and usability checks.',
-      nl: 'Spec Kit met een AI-assistent onder menselijke regie: klik op een element en je ziet de eis en de beslissingen erachter; elke pull request doorloopt controles op code, security en bruikbaarheid.',
+      en: 'Spec Kit with an AI assistant, and a human in charge. Click any element and it shows the requirement and the decisions behind it. Every pull request has to pass checks on code, security and usability.',
+      nl: 'Spec Kit met een AI-assistent, en een mens aan het roer. Klik op een element en je ziet de eis en de beslissingen erachter. Elke pull request moet door controles op code, security en bruikbaarheid.',
     },
     tech: ['JavaScript', 'Vitest', 'Playwright', 'GitHub Actions', 'Spec Kit'],
     lifecycle: 'experimental',

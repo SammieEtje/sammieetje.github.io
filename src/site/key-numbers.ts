@@ -15,8 +15,8 @@ export const keyNumbers: readonly KeyNumber[] = [
     value: 10000,
     suffix: '',
     label: {
-      en: 'voluntary users on the CI/CD platform, in an IT organisation of 7,600 — without a mandate',
-      nl: 'vrijwillige gebruikers op het CI/CD-platform, in een IT-organisatie van 7.600 — zonder mandaat',
+      en: 'voluntary users on the CI/CD platform in an IT organisation of 7,600, without a mandate',
+      nl: 'vrijwillige gebruikers op het CI/CD-platform in een IT-organisatie van 7.600, zonder mandaat',
     },
     context: { en: 'Rabobank · 2016–2020', nl: 'Rabobank · 2016–2020' },
   },

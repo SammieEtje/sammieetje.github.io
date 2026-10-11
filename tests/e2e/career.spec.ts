@@ -57,7 +57,7 @@ test.describe('release notes', () => {
     await toggle.focus();
     await page.keyboard.press('Enter');
     await expect(details).toHaveAttribute('open');
-    await expect(details).toContainText('5× growth delivered with a 15% smaller team');
+    await expect(details).toContainText('The team handled 5× growth while it shrank by 15%');
     await expect(details.getByRole('heading', { level: 3 })).toHaveText([
       'Context',
       'Approach',

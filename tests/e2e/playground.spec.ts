@@ -121,7 +121,7 @@ test.describe('playground without JavaScript', () => {
       await expect(box).toBeDisabled();
     }
     await expect(page.locator('[data-spec="008:FR-006"]')).toHaveText(
-      'Changing the scenario needs JavaScript; this is the default scenario.',
+      'You need JavaScript to change the scenario. This is the default one.',
     );
     await expect(summary(page)).toContainText('never gets past its early adopters');
     await expect(adoptionPath(page)).toHaveAttribute('d', /^M/);

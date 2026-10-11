@@ -90,7 +90,8 @@ export function chartPaths(result: Result, width: number, height: number) {
   };
 }
 
-const sentences: Record<Locale, Record<'stalled' | 'voluntary' | 'mandated', string>> = {
+// 012:T003 Exported so the copy inventory checks these sentences against the house style
+export const sentences: Record<Locale, Record<'stalled' | 'voluntary' | 'mandated', string>> = {
   en: {
     stalled:
       'After a year, {a}% of the team works on the golden path. The platform never gets past its early adopters.',

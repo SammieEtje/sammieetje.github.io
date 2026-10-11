@@ -37,22 +37,22 @@ export const releases: readonly Release[] = [
     end: null,
     title: same('Manager Data & Analytics Platform'),
     summary: {
-      en: "Leading the team behind TenneT's Data & Analytics Platform: data and AI for the energy transition, with the least possible friction.",
-      nl: 'Leiding aan het team achter het Data & Analytics Platform van TenneT: data en AI voor de energietransitie, met zo min mogelijk frictie.',
+      en: "Leading the team behind TenneT's Data & Analytics Platform, which brings data and AI to the energy transition. The aim is a platform people can use with as little friction as possible.",
+      nl: 'Leiding aan het team achter het Data & Analytics Platform van TenneT, dat data en AI levert voor de energietransitie. Het doel is een platform dat mensen met zo min mogelijk frictie kunnen gebruiken.',
     },
     notes: {
       en: {
         context:
-          'The energy transition makes data, analytics and AI pivotal for a grid operator. Teams across TenneT need a platform they can trust and use without waiting.',
+          'For a grid operator in the energy transition, data, analytics and AI are becoming central to the work. Teams across TenneT need a platform they can trust and can use without waiting for anyone.',
         approach:
-          'Run the platform as a product: self-service by default, security and compliance built in, and a team that works close to its users. First: a stable team and clear ownership.',
+          'Running the platform as a product, with self-service by default, security and compliance built in, and a team that works close to its users. The first step is a stable team with clear ownership.',
         result: 'In progress. This release is still being written.',
       },
       nl: {
         context:
-          'De energietransitie maakt data, analytics en AI cruciaal voor een netbeheerder. Teams binnen TenneT hebben een platform nodig waarop ze kunnen vertrouwen en dat ze zonder wachten kunnen gebruiken.',
+          'Voor een netbeheerder in de energietransitie worden data, analytics en AI steeds centraler. Teams binnen TenneT hebben een platform nodig waarop ze kunnen vertrouwen en dat ze kunnen gebruiken zonder op iemand te wachten.',
         approach:
-          'Het platform runnen als product: standaard zelfbediening, security en compliance ingebouwd, en een team dat dicht bij zijn gebruikers werkt. Eerst: een stabiel team en helder eigenaarschap.',
+          'Het platform runnen als product, met standaard zelfbediening, ingebouwde security en compliance, en een team dat dicht bij zijn gebruikers werkt. De eerste stap is een stabiel team met helder eigenaarschap.',
         result: 'Loopt nog. Aan deze release wordt nog geschreven.',
       },
     },
@@ -70,25 +70,25 @@ export const releases: readonly Release[] = [
       nl: 'Manager Infrastructuur, Integratie & Cloud',
     },
     summary: {
-      en: 'Turned a traditional IT operations department of 130+ professionals into a platform organisation: 2.5× service volume with minimal team growth.',
-      nl: 'Maakte van een traditionele IT-beheerafdeling met ruim 130 professionals een platformorganisatie: 2,5× dienstvolume met minimale teamgroei.',
+      en: 'Turned a traditional IT operations department of 130+ professionals into a platform organisation. Service volume grew 2.5× while the team barely grew.',
+      nl: 'Maakte van een traditionele IT-beheerafdeling met ruim 130 professionals een platformorganisatie. Het dienstvolume groeide 2,5×, terwijl het team nauwelijks groeide.',
     },
     notes: {
       en: {
         context:
           "The energy transition changes how power grids operate. Volatile production and consumption demand software and data capabilities that TenneT's IT organisation was not built for.",
         approach:
-          'Stabilise and consolidate first: bring historically separate teams together and harmonise their processes. Then shift to platform thinking: self-service, automation-first delivery, and compliance built into the platform rather than layered on top.',
+          'Stabilised and consolidated first, bringing historically separate teams together and harmonising their processes. Then moved to platform thinking, with self-service, automation-first delivery and compliance built into the platform itself.',
         result:
-          'Service volume scaled 2.5× with minimal team growth, developer autonomy increased measurably, and teams improve their own ways of working instead of waiting for direction from the top.',
+          'Service volume grew 2.5× with hardly any extra people. Developers have measurably more autonomy, and teams now improve their own ways of working without waiting to be told.',
       },
       nl: {
         context:
           'De energietransitie verandert hoe elektriciteitsnetten werken. Volatiele productie en consumptie vragen om software- en datacapaciteiten waarvoor de IT-organisatie van TenneT niet was ingericht.',
         approach:
-          'Eerst stabiliseren en consolideren: historisch gescheiden teams samenbrengen en hun processen harmoniseren. Daarna de stap naar platformdenken: zelfbediening, automation-first en compliance ingebouwd in het platform in plaats van eroverheen.',
+          'Eerst gestabiliseerd en geconsolideerd, door historisch gescheiden teams samen te brengen en hun processen gelijk te trekken. Daarna de stap naar platformdenken, met zelfbediening, automation-first en compliance die in het platform zelf zit.',
         result:
-          'Het dienstvolume groeide 2,5× met minimale teamgroei, de autonomie van ontwikkelteams nam aantoonbaar toe, en teams verbeteren hun eigen manier van werken in plaats van te wachten op sturing van bovenaf.',
+          'Het dienstvolume groeide 2,5× met nauwelijks extra mensen. Ontwikkelteams hebben aantoonbaar meer autonomie, en teams verbeteren nu hun eigen manier van werken zonder te wachten tot iemand het zegt.',
       },
     },
     patterns: ['consolidate', 'stabilise', 'environment'],
@@ -102,8 +102,8 @@ export const releases: readonly Release[] = [
     end: '2023-04',
     title: same('Lead Infrastructure Services'),
     summary: {
-      en: 'Directed four infrastructure teams (60 professionals) from reactive service delivery to teams that own their improvement.',
-      nl: 'Gaf leiding aan vier infrastructuurteams (60 professionals): van reactieve dienstverlening naar teams die hun eigen verbetering bezitten.',
+      en: 'Led four infrastructure teams (60 professionals) away from reactive service delivery, towards owning their own improvement.',
+      nl: 'Gaf leiding aan vier infrastructuurteams (60 professionals) en bracht ze van reactieve dienstverlening naar eigenaarschap over hun eigen verbetering.',
     },
     notes: {
       en: {
@@ -111,15 +111,14 @@ export const releases: readonly Release[] = [
           'Four teams with 60 professionals covering networking, virtualisation, Linux and Windows services.',
         approach:
           'Introduced collaborative portfolio management, so teams could see and influence priorities across the department.',
-        result:
-          'A shift from reactive service delivery to a model in which teams take ownership of their own improvement.',
+        result: 'Teams stopped only reacting to requests and started to own their own improvement.',
       },
       nl: {
         context: 'Vier teams met 60 professionals voor netwerk, virtualisatie, Linux en Windows.',
         approach:
           'Gezamenlijk portfoliomanagement ingevoerd, zodat teams prioriteiten in de hele afdeling konden zien en beïnvloeden.',
         result:
-          'Een verschuiving van reactieve dienstverlening naar een model waarin teams eigenaar zijn van hun eigen verbetering.',
+          'Teams reageerden niet langer alleen op verzoeken en werden eigenaar van hun eigen verbetering.',
       },
     },
     patterns: ['consolidate', 'stabilise'],
@@ -133,23 +132,23 @@ export const releases: readonly Release[] = [
     end: '2022-01',
     title: same('Lead Platform Services'),
     summary: {
-      en: 'My entry into TenneT: accountable for the self-hosted platforms behind software delivery, and the first case for platforms as products.',
-      nl: 'Mijn start bij TenneT: verantwoordelijk voor de zelf gehoste platformen achter softwarelevering, en de eerste business case voor platformen als product.',
+      en: 'My first role at TenneT. I was accountable for the self-hosted platforms behind software delivery and made the first case for running platforms as products.',
+      nl: 'Mijn eerste rol bij TenneT. Ik was verantwoordelijk voor de zelf gehoste platformen achter softwarelevering en maakte de eerste business case voor platformen als product.',
     },
     notes: {
       en: {
         context:
           'Seven teams running all self-hosted middleware platforms that enable software delivery: CI/CD, monitoring, integration and service mesh.',
         approach:
-          'Built the case for treating platform services as products with real users, rather than cost centres to be minimised.',
-        result: 'The groundwork for everything that followed at TenneT.',
+          'Built the case for treating platform services as products with real users. Until then they were mostly seen as cost centres to keep as small as possible.',
+        result: 'This laid the groundwork for everything that followed at TenneT.',
       },
       nl: {
         context:
           'Zeven teams die alle zelf gehoste middlewareplatformen voor softwarelevering beheerden: CI/CD, monitoring, integratie en service mesh.',
         approach:
-          'De business case gebouwd om platformdiensten te behandelen als producten met echte gebruikers, in plaats van als kostenposten die zo klein mogelijk moeten.',
-        result: 'Het fundament voor alles wat daarna bij TenneT volgde.',
+          'De business case gebouwd om platformdiensten te behandelen als producten met echte gebruikers. Tot dan toe werden ze vooral gezien als kostenposten die zo klein mogelijk moesten blijven.',
+        result: 'Dit legde het fundament voor alles wat daarna bij TenneT volgde.',
       },
     },
     patterns: ['environment'],
@@ -163,25 +162,25 @@ export const releases: readonly Release[] = [
     end: '2020-08',
     title: same('Manager Development Automation'),
     summary: {
-      en: "Founded and scaled the department behind Rabobank's CI/CD platform: 10,000 voluntary users in an IT organisation of 7,600, without a mandate.",
-      nl: 'Richtte de afdeling achter het CI/CD-platform van Rabobank op en bouwde die uit: 10.000 vrijwillige gebruikers in een IT-organisatie van 7.600, zonder mandaat.',
+      en: "Founded and grew the department behind Rabobank's CI/CD platform. It reached 10,000 voluntary users in an IT organisation of 7,600, without a mandate.",
+      nl: 'Richtte de afdeling achter het CI/CD-platform van Rabobank op en bouwde die uit. Het platform kreeg 10.000 vrijwillige gebruikers in een IT-organisatie van 7.600, zonder mandaat.',
     },
     notes: {
       en: {
         context:
           'Regulators demanded tighter controls after the financial crisis, while fintech competitors forced rapid digitalisation. DevOps was critical, but adoption could not be mandated across 400+ systems teams.',
         approach:
-          'Built the CI/CD platform with 40 professionals in five scrum teams and drove adoption through environment design: self-service tooling, community support and visible value on the desired path; compliance burden and no support off it. Automation events, lean coffees and inner source; no forced training.',
+          'Built the CI/CD platform with 40 professionals in five scrum teams. Adoption came from environment design. On the platform, teams got self-service tooling, community support and value they could see. Off the platform, they carried the compliance burden themselves and got no support. We organised automation events, lean coffees and inner source, and never made training mandatory.',
         result:
-          '10,000 users, and business teams joined without being asked. 85% of systems teams delivered features within one week. A real-time, data-driven compliance model strengthened security while reducing manual audit work. The community still runs today.',
+          '10,000 users, and business teams joined without being asked. 85% of systems teams delivered features within a week. A real-time compliance model based on data made security stronger and cut manual audit work. The community still runs today.',
       },
       nl: {
         context:
-          'Toezichthouders eisten na de financiële crisis strengere beheersing, terwijl fintech-concurrenten snelle digitalisering afdwongen. DevOps was essentieel, maar adoptie viel niet af te dwingen bij meer dan 400 systeemteams.',
+          'Toezichthouders eisten na de financiële crisis strengere beheersing, terwijl fintech-concurrenten snelle digitalisering afdwongen. DevOps was onmisbaar, maar adoptie viel niet af te dwingen bij meer dan 400 systeemteams.',
         approach:
-          'Het CI/CD-platform gebouwd met 40 professionals in vijf scrumteams en adoptie gestuurd via omgevingsontwerp: zelfbediening, community-ondersteuning en zichtbare meerwaarde op de gewenste route; compliancelast en geen ondersteuning daarbuiten. Automation-events, lean coffees en inner source; geen verplichte trainingen.',
+          'Het CI/CD-platform gebouwd met 40 professionals in vijf scrumteams. Adoptie kwam uit omgevingsontwerp. Op het platform kregen teams zelfbediening, steun uit de community en meerwaarde die ze konden zien. Daarbuiten droegen ze zelf de compliancelast en kregen ze geen ondersteuning. We organiseerden automation-events, lean coffees en inner source, en maakten trainingen nooit verplicht.',
         result:
-          '10.000 gebruikers, en businessteams sloten zich aan zonder dat het ze gevraagd werd. 85% van de systeemteams leverde features binnen een week. Een realtime, datagedreven compliancemodel versterkte de security en verminderde handmatig auditwerk. De community draait nog steeds.',
+          '10.000 gebruikers, en businessteams sloten zich aan zonder dat iemand het vroeg. 85% van de systeemteams leverde features binnen een week. Een realtime compliancemodel op basis van data maakte de security sterker en verminderde handmatig auditwerk. De community draait nog steeds.',
       },
     },
     patterns: ['environment', 'community'],
@@ -203,17 +202,17 @@ export const releases: readonly Release[] = [
         context:
           'Infrastructure growth from 500 to 2,500 nodes was outpacing the team: costs were climbing, stability was suffering and the team was reactive.',
         approach:
-          'Not more people, but a different way of working: standardised processes, automated deployment and configuration, and self-service so users could provision what they needed without waiting in a queue.',
+          'We changed how the team worked. Processes were standardised, deployment and configuration were automated, and users got self-service, so they could provision what they needed without waiting in a queue.',
         result:
-          '5× growth delivered with a 15% smaller team. Stability improved, costs stayed flat, and the team moved from firefighting to building capability.',
+          'The team handled 5× growth while it shrank by 15%. Stability improved and costs stayed flat. Best of all, the team got out of firefighting mode and started building.',
       },
       nl: {
         context:
           'De infrastructuur groeide van 500 naar 2.500 nodes, sneller dan het team aankon: de kosten stegen, de stabiliteit leed eronder en het team was reactief.',
         approach:
-          'Niet meer mensen, maar een andere manier van werken: gestandaardiseerde processen, geautomatiseerde deployment en configuratie, en zelfbediening zodat gebruikers zonder wachtrij konden regelen wat ze nodig hadden.',
+          'We veranderden hoe het team werkte. Processen werden gestandaardiseerd, deployment en configuratie geautomatiseerd, en gebruikers kregen zelfbediening, zodat ze zonder wachtrij konden regelen wat ze nodig hadden.',
         result:
-          '5× groei met een 15% kleiner team. De stabiliteit verbeterde, de kosten bleven gelijk en het team ging van brandjes blussen naar capaciteit bouwen.',
+          'Het team verwerkte 5× groei en werd tegelijk 15% kleiner. De stabiliteit verbeterde en de kosten bleven gelijk. Het mooiste: het team kwam uit de brandjes en ging weer bouwen.',
       },
     },
     patterns: ['stabilise', 'environment'],
@@ -227,8 +226,8 @@ export const releases: readonly Release[] = [
     end: '2011-10',
     title: same('Manager Campus LAN'),
     summary: {
-      en: 'LAN, WiFi and WAN for 950 offices and 1,100 ATMs: operational control first, then improvement.',
-      nl: 'LAN, wifi en WAN voor 950 kantoren en 1.100 geldautomaten: eerst grip op de operatie, dan verbeteren.',
+      en: 'LAN, WiFi and WAN for 950 offices and 1,100 ATMs. First we got operations under control, then we improved them.',
+      nl: 'LAN, wifi en WAN voor 950 kantoren en 1.100 geldautomaten. Eerst kregen we grip op de operatie, daarna konden we verbeteren.',
     },
     notes: {
       en: {
@@ -237,7 +236,7 @@ export const releases: readonly Release[] = [
         approach:
           'Started with the basics: proper incident, problem and change management to bring operational chaos under control. Once the team felt in control of its daily work, there was room to improve.',
         result:
-          'Hardware costs down 50% through strategic procurement, and the consolidation from 1,000 to fewer than 500 locations supported without service degradation.',
+          'Hardware costs went down 50% through strategic procurement. We also supported the consolidation from 1,000 to fewer than 500 locations without the service getting worse.',
       },
       nl: {
         context:
@@ -245,7 +244,7 @@ export const releases: readonly Release[] = [
         approach:
           'Begonnen bij de basis: goed incident-, probleem- en changemanagement om de operationele chaos onder controle te krijgen. Toen het team grip had op het dagelijkse werk, ontstond ruimte om te verbeteren.',
         result:
-          'Hardwarekosten 50% lager door strategische inkoop, en de consolidatie van 1.000 naar minder dan 500 locaties ondersteund zonder verlies van dienstverlening.',
+          'De hardwarekosten gingen 50% omlaag door strategische inkoop. Ook ondersteunden we de consolidatie van 1.000 naar minder dan 500 locaties zonder dat de dienstverlening eronder leed.',
       },
     },
     patterns: ['stabilise', 'consolidate'],
@@ -270,17 +269,17 @@ export const releases: readonly Release[] = [
         context:
           'Rotations in business–IT alignment, business continuity management and department management, followed by a seat on the IT Customer Services management team.',
         approach:
-          'A close look at how a large regulated organisation actually works: the politics, the governance layers, the gap between strategy and execution.',
+          'I got a close look at how a large regulated organisation really works, including the politics, the layers of governance and the gap between strategy and execution.',
         result:
-          'The understanding of regulated organisations that shapes how I approach transformation today.',
+          'That is where I learned how regulated organisations work, and it still shapes how I approach transformation.',
       },
       nl: {
         context:
           'Rotaties in business-IT-alignment, business continuity management en afdelingsmanagement, gevolgd door een plek in het managementteam van IT Customer Services.',
         approach:
-          'Van dichtbij zien hoe een grote gereguleerde organisatie echt werkt: de politiek, de governance-lagen, de kloof tussen strategie en uitvoering.',
+          'Ik zag van dichtbij hoe een grote gereguleerde organisatie echt werkt, met de politiek, de lagen van governance en de kloof tussen strategie en uitvoering.',
         result:
-          'Het begrip van gereguleerde organisaties dat bepaalt hoe ik transformaties vandaag aanpak.',
+          'Daar leerde ik hoe gereguleerde organisaties werken, en dat bepaalt nog steeds hoe ik transformaties aanpak.',
       },
     },
     patterns: ['consolidate'],
@@ -297,8 +296,8 @@ export const releases: readonly Release[] = [
       nl: 'Beleidsmedewerker en adviseur kennismanagement',
     },
     summary: {
-      en: 'Elite sport policy and knowledge management for the Dutch Olympic Committee: where "change the environment to change behaviour" began.',
-      nl: 'Topsportbeleid en kennismanagement voor NOC*NSF: hier begon "verander de omgeving om gedrag te veranderen".',
+      en: 'Elite sport policy and knowledge management for the Dutch Olympic Committee. This is where the idea of changing the environment to change behaviour started for me.',
+      nl: 'Topsportbeleid en kennismanagement voor NOC*NSF. Hier begon voor mij het idee dat je gedrag verandert door de omgeving te veranderen.',
     },
     notes: {
       en: {
@@ -307,7 +306,7 @@ export const releases: readonly Release[] = [
         approach:
           "Moved a key subsidy process from paper to fully online, and built a BI solution to analyse the international medal chances of Dutch athletes. My thesis applied the ASE model (De Vries et al., building on Fishbein & Ajzen) to how far elite athletes' behaviour can be influenced.",
         result:
-          'Leadership gained data-driven insight into where to invest, and I gained the idea behind everything since: if you want to change behaviour, change the environment.',
+          'Management could now see in the data where to invest. I came away with the idea behind everything I have done since: if you want to change behaviour, change the environment.',
       },
       nl: {
         context:
@@ -315,7 +314,7 @@ export const releases: readonly Release[] = [
         approach:
           'Een belangrijk subsidieproces van papier naar volledig online gebracht, en een BI-oplossing gebouwd om de internationale medaillekansen van Nederlandse sporters te analyseren. Mijn afstudeeronderzoek paste het ASE-model (De Vries e.a., voortbouwend op Fishbein & Ajzen) toe op de beïnvloedbaarheid van gedrag van topsporters.',
         result:
-          'De directie kreeg datagedreven inzicht in waar te investeren, en ik het idee achter alles wat volgde: wil je gedrag veranderen, verander dan de omgeving.',
+          'De directie kon nu in de data zien waar ze moest investeren. Ik hield er het idee aan over dat achter alles zit wat ik daarna deed: wil je gedrag veranderen, verander dan de omgeving.',
       },
     },
     patterns: ['environment'],

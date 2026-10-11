@@ -14,11 +14,11 @@ const en = {
   'nav.overview.subtitle': 'who I am',
   'page.overview.title': 'Platform transformation in highly regulated contexts',
   'page.overview.description':
-    'Sander Ettema builds environments where the right thing is the easy thing: platform transformation in highly regulated contexts.',
+    'Sander Ettema leads platform transformations in highly regulated organisations. He builds environments where the right thing is the easy thing.',
   'profile.role': 'Manager Data & Analytics Platform at TenneT',
   'profile.positioning': 'Platform transformation in highly regulated contexts',
   'profile.headline':
-    'People take the path of least resistance. I build environments where the right thing is the easy thing — together.',
+    'People take the path of least resistance. So, together with my teams, I build environments where the right thing is the easy thing.',
   'profile.linkedin': 'Connect on LinkedIn',
   'entity.label': 'Catalog entity',
   'entity.kind': 'kind',
@@ -36,7 +36,7 @@ const en = {
   'card.links.title': 'Links',
   'card.links.kind': 'links',
   'about.body':
-    "For nearly twenty years I have turned IT departments in banking and energy into platform organisations that teams actually want to use. My thesis on behaviour change taught me that people take the path of least resistance, so I don't push change: I redesign the environment until the right thing is the easy thing. Today I lead the Data & Analytics Platform at TenneT, where data and AI power the energy transition.",
+    'I have been working on behaviour change in organisations for more than 25 years, starting with my thesis in 2000. It taught me that people take the path of least resistance, and I have worked with that ever since: I change the environment until the right thing is the easy thing. In banking and energy, that is how I turned IT departments into platform organisations that teams actually want to use. Today I lead the Data & Analytics Platform at TenneT, where data and AI are becoming central to the energy transition.',
   'links.linkedin': 'LinkedIn profile',
   'links.github': 'GitHub profile',
   'numbers.history': 'Full deployment history',
@@ -79,13 +79,13 @@ const en = {
   'nav.playground.subtitle': 'try it',
   'page.playground.title': 'Playground: try the path of least resistance',
   'page.playground.description':
-    "An interactive model of Sander Ettema's method: switch the levers and see how a team adopts the golden path over a year.",
+    "An interactive model of Sander Ettema's method. Switch the levers on and off and watch how a team takes up the golden path over a year.",
   'playground.heading': 'Playground',
   'playground.intro':
-    'Switch the levers from the method on and off and see how a team of engineers adopts the golden path over a year. Then try a mandate instead.',
+    'Switch the levers from the method on and off and watch how a team of engineers takes up the golden path over a year. Then see what a mandate does.',
   'playground.mandate': 'Mandate the platform',
   'playground.mandate.hint': 'top-down: announced in week 8, enforced by week 16',
-  'playground.nojs': 'Changing the scenario needs JavaScript; this is the default scenario.',
+  'playground.nojs': 'You need JavaScript to change the scenario. This is the default one.',
   'playground.chart': 'Adoption of the golden path over 52 weeks',
   'playground.legend.adoption': 'on the golden path',
   'playground.legend.reluctant': 'only because of the mandate',
@@ -93,26 +93,26 @@ const en = {
   'playground.model.title': 'How the model works',
   'playground.rule.1': 'Everyone starts on the old habit, except a few early adopters.',
   'playground.rule.2':
-    'Each lever that lowers resistance makes the golden path easier; each lever that raises resistance makes the old habit harder.',
+    'Levers that lower resistance make the golden path easier. Levers that raise it make the old habit harder.',
   'playground.rule.3':
     'Every week some people switch when the golden path is easier, and more of them when colleagues already did.',
   'playground.rule.4': 'When the golden path is harder than the habit, people drift back.',
   'playground.rule.5':
-    'A mandate pushes most of the team onto the platform from week 8; whoever would not have chosen it counts as reluctant.',
+    'From week 8, a mandate pushes most of the team onto the platform. Anyone who would not have chosen it counts as reluctant.',
   'playground.illustrative':
     'The numbers are illustrative, chosen to make the method visible. They are not measurements.',
   'playground.rabobank':
-    'At Rabobank, with all of these levers in place and no mandate, 10,000 people chose the platform. This model is illustrative, not a reconstruction.',
+    'At Rabobank, with all of these levers in place and no mandate, 10,000 people chose the platform. The model illustrates the idea and does not try to reconstruct what happened there.',
   'playground.source': 'Read the model source',
   'method.playground': 'Try it in the playground',
   'nav.plugins.term': 'Plugins',
   'nav.plugins.subtitle': 'what I build',
   'page.plugins.title': 'Plugins: what I build to stay close to the work',
   'page.plugins.description':
-    'Side projects by Sander Ettema: a spec-driven profile site, a spec-driven demo app and an F1 betting pool, built to stay close to the work.',
+    'Side projects by Sander Ettema, built to stay close to the work: a spec-driven profile site, a spec-driven demo app and an F1 betting pool.',
   'plugins.heading': 'Plugins',
   'plugins.intro':
-    "I'm technically curious, not technically deep. I build side projects to understand what my teams deal with every day, and to try new ways of working, like spec-driven development with an AI assistant, before I ask anyone else to.",
+    "I'm technically curious, and I know where my depth ends. I build side projects to understand what my teams deal with every day. They are also where I try new ways of working, such as spec-driven development with an AI assistant, before I ask anyone else to.",
   'plugins.purpose': 'What it is',
   'plugins.demonstrates': 'What it shows',
   'plugins.tech': 'Built with',
@@ -154,7 +154,7 @@ const en = {
   'nav.method.subtitle': 'how I work',
   'page.method.title': 'Golden paths: make the right thing the easy thing',
   'page.method.description':
-    "Sander Ettema's method for platform transformation: design the environment so the right thing is the easy thing. Levers, assumptions, phases, proof.",
+    'How Sander Ettema approaches platform transformation: design the environment so the right thing is the easy thing. With his levers, assumptions and phases.',
   'method.heading': 'Golden paths',
   'method.levers.title': 'Two levers',
   'method.assumptions.title': 'Four assumptions',
@@ -166,12 +166,12 @@ const en = {
   'method.proof': 'Seen in',
   'method.compliance.title': 'Compliance, built in',
   'method.compliance.intro':
-    'In regulated sectors compliance is treated as a brake. Built into the platform, it becomes an accelerator.',
+    'In a regulated sector, compliance is part of every change. Built into the platform, it gets handled along the way, and teams get faster because of it.',
   'method.deps.title': 'Dependencies',
   'method.deps.intro': 'The behavioural science this method builds on.',
   'diagram.title': 'The desired path and the current habit',
   'diagram.desc':
-    'Two routes from today to the goal. The desired path is short and smooth: self-service, defaults and community lower its resistance. The current habit is long and winding: manual work and waiting raise its resistance.',
+    'Two routes from today to the goal. The desired path is short and smooth, because self-service, defaults and community lower its resistance. The current habit is long and winding, slowed down by manual work and waiting.',
   'diagram.today': 'today',
   'diagram.goal': 'goal',
   'diagram.desired': 'desired path',
@@ -187,10 +187,10 @@ const en = {
   'nav.career.subtitle': 'my career',
   'page.career.title': 'Deployment history: a career in platform transformation',
   'page.career.description':
-    'Every role of Sander Ettema as a release, from NOC*NSF via Rabobank to TenneT: what shipped, when, and the pattern that repeats.',
+    "Sander Ettema's career as a release log, from NOC*NSF via Rabobank to TenneT, with what each role delivered and the pattern that keeps coming back.",
   'career.heading': 'Deployment history',
   'career.intro':
-    'Every role as a release: what shipped, when, and what it changed. The same pattern runs through all of them.',
+    'Each role is written up as a release, with what it delivered and what changed because of it. Looking back, I see the same pattern in all of them.',
   'legend.title': 'The pattern',
   'release.present': 'present',
   'release.latest': 'latest',
@@ -225,11 +225,11 @@ const nl: Record<UiKey, string> = {
   'nav.overview.subtitle': 'wie ik ben',
   'page.overview.title': 'Platformtransformatie in sterk gereguleerde omgevingen',
   'page.overview.description':
-    'Sander Ettema bouwt omgevingen waarin het juiste ook het makkelijkste is: platformtransformatie in sterk gereguleerde omgevingen.',
+    'Sander Ettema leidt platformtransformaties in sterk gereguleerde organisaties. Hij bouwt omgevingen waarin het juiste het makkelijkste is.',
   'profile.role': 'Manager Data & Analytics Platform bij TenneT',
   'profile.positioning': 'Platformtransformatie in sterk gereguleerde omgevingen',
   'profile.headline':
-    'Mensen kiezen de weg van de minste weerstand. Ik bouw omgevingen waarin het juiste het makkelijkste is — samen.',
+    'Mensen kiezen de weg van de minste weerstand. Daarom bouw ik, samen met mijn teams, omgevingen waarin het juiste het makkelijkste is.',
   'profile.linkedin': 'Verbind op LinkedIn',
   'entity.label': 'Catalogusentiteit',
   'entity.kind': 'soort',
@@ -247,7 +247,7 @@ const nl: Record<UiKey, string> = {
   'card.links.title': 'Links',
   'card.links.kind': 'links',
   'about.body':
-    'Al bijna twintig jaar maak ik van IT-afdelingen in bankwezen en energie platformorganisaties die teams echt willen gebruiken. Mijn afstudeeronderzoek naar gedragsverandering leerde me dat mensen de weg van de minste weerstand kiezen; daarom duw ik niet, maar herontwerp ik de omgeving tot het juiste het makkelijkste is. Vandaag leid ik het Data & Analytics Platform bij TenneT, waar data en AI de energietransitie aandrijven.',
+    'Ik werk al ruim 25 jaar aan gedragsverandering in organisaties, te beginnen met mijn afstudeeronderzoek in 2000. Dat leerde me dat mensen de weg van de minste weerstand kiezen, en daar werk ik sindsdien mee: ik verander de omgeving tot het juiste het makkelijkste is. In bankwezen en energie maakte ik zo van IT-afdelingen platformorganisaties die teams echt willen gebruiken. Nu leid ik het Data & Analytics Platform bij TenneT, waar data en AI steeds belangrijker worden voor de energietransitie.',
   'links.linkedin': 'LinkedIn-profiel',
   'links.github': 'GitHub-profiel',
   'numbers.history': 'Volledige releasegeschiedenis',
@@ -290,13 +290,14 @@ const nl: Record<UiKey, string> = {
   'nav.playground.subtitle': 'probeer het',
   'page.playground.title': 'Speeltuin: probeer de weg van de minste weerstand',
   'page.playground.description':
-    'Een interactief model van de methode van Sander Ettema: zet de hefbomen aan en zie hoe een team in een jaar het golden path adopteert.',
+    'Een interactief model van de methode van Sander Ettema. Zet de hefbomen aan en uit en kijk hoe een team in een jaar het golden path oppakt.',
   'playground.heading': 'Speeltuin',
   'playground.intro':
-    'Zet de hefbomen uit de methode aan en uit en zie hoe een team engineers in een jaar het golden path adopteert. Probeer daarna een mandaat.',
+    'Zet de hefbomen uit de methode aan en uit en kijk hoe een team engineers in een jaar het golden path oppakt. Kijk daarna wat een mandaat doet.',
   'playground.mandate': 'Verplicht het platform',
   'playground.mandate.hint': 'top-down: aangekondigd in week 8, afgedwongen in week 16',
-  'playground.nojs': 'Het scenario aanpassen vraagt JavaScript; dit is het standaardscenario.',
+  'playground.nojs':
+    'Om het scenario te veranderen heb je JavaScript nodig. Dit is het standaardscenario.',
   'playground.chart': 'Adoptie van het golden path over 52 weken',
   'playground.legend.adoption': 'via het golden path',
   'playground.legend.reluctant': 'alleen door het mandaat',
@@ -304,26 +305,26 @@ const nl: Record<UiKey, string> = {
   'playground.model.title': 'Hoe het model werkt',
   'playground.rule.1': 'Iedereen begint bij de oude gewoonte, op een paar early adopters na.',
   'playground.rule.2':
-    'Elke hefboom die weerstand verlaagt, maakt het golden path makkelijker; elke hefboom die weerstand verhoogt, maakt de oude gewoonte zwaarder.',
+    'Hefbomen die weerstand verlagen, maken het golden path makkelijker. Hefbomen die weerstand verhogen, maken de oude gewoonte zwaarder.',
   'playground.rule.3':
     'Elke week stappen mensen over als het golden path makkelijker is, en meer als collega’s het al deden.',
   'playground.rule.4': 'Is het golden path zwaarder dan de gewoonte, dan vallen mensen terug.',
   'playground.rule.5':
-    'Een mandaat duwt vanaf week 8 het grootste deel van het team het platform op; wie er zelf niet voor gekozen had, telt als onwillig.',
+    'Vanaf week 8 duwt een mandaat het grootste deel van het team het platform op. Wie er zelf niet voor gekozen had, telt als onwillig.',
   'playground.illustrative':
     'De getallen zijn illustratief, gekozen om de methode zichtbaar te maken. Het zijn geen metingen.',
   'playground.rabobank':
-    'Bij Rabobank kozen 10.000 mensen voor het platform, met al deze hefbomen en zonder mandaat. Dit model is illustratief, geen reconstructie.',
+    'Bij Rabobank kozen 10.000 mensen voor het platform, met al deze hefbomen en zonder mandaat. Het model illustreert het idee en probeert niet na te bootsen wat daar gebeurde.',
   'playground.source': 'Bekijk de broncode van het model',
   'method.playground': 'Probeer het in de speeltuin',
   'nav.plugins.term': 'Plugins',
   'nav.plugins.subtitle': 'wat ik bouw',
   'page.plugins.title': 'Plugins: wat ik bouw om dicht bij het werk te blijven',
   'page.plugins.description':
-    'Zijprojecten van Sander Ettema: een spec-driven profielsite, een spec-driven demo-app en een F1-poule, gebouwd om dicht bij het werk te blijven.',
+    'Zijprojecten van Sander Ettema, gebouwd om dicht bij het werk te blijven: een spec-driven profielsite, een spec-driven demo-app en een F1-poule.',
   'plugins.heading': 'Plugins',
   'plugins.intro':
-    'Ik ben technisch nieuwsgierig, niet technisch diepgaand. Ik bouw zijprojecten om te begrijpen waar mijn teams elke dag mee werken, en om nieuwe manieren van werken uit te proberen, zoals spec-driven development met een AI-assistent, voordat ik iemand anders daarom vraag.',
+    'Ik ben technisch nieuwsgierig en weet waar mijn diepgang ophoudt. Ik bouw zijprojecten om te begrijpen waar mijn teams elke dag mee werken. Het is ook de plek waar ik nieuwe manieren van werken uitprobeer, zoals spec-driven development met een AI-assistent, voordat ik iemand anders daarom vraag.',
   'plugins.purpose': 'Wat het is',
   'plugins.demonstrates': 'Wat het laat zien',
   'plugins.tech': 'Gebouwd met',
@@ -365,7 +366,7 @@ const nl: Record<UiKey, string> = {
   'nav.method.subtitle': 'hoe ik werk',
   'page.method.title': 'Golden paths: maak het juiste het makkelijkste',
   'page.method.description':
-    'De methode van Sander Ettema voor platformtransformatie: ontwerp de omgeving zo dat het juiste het makkelijkste is. Hefbomen, aannames, fases, bewijs.',
+    'Hoe Sander Ettema platformtransformatie aanpakt: richt de omgeving zo in dat het juiste het makkelijkste is. Met zijn hefbomen, aannames en fases.',
   'method.heading': 'Golden paths',
   'method.levers.title': 'Twee hefbomen',
   'method.assumptions.title': 'Vier aannames',
@@ -377,12 +378,12 @@ const nl: Record<UiKey, string> = {
   'method.proof': 'Zichtbaar in',
   'method.compliance.title': 'Compliance, ingebouwd',
   'method.compliance.intro':
-    'In gereguleerde sectoren geldt compliance als rem. Ingebouwd in het platform wordt het een versneller.',
+    'In een gereguleerde sector hoort compliance bij elke wijziging. Ingebouwd in het platform wordt het onderweg geregeld, en daardoor gaan teams sneller.',
   'method.deps.title': 'Afhankelijkheden',
   'method.deps.intro': 'De gedragswetenschap waarop deze methode voortbouwt.',
   'diagram.title': 'De gewenste route en de huidige gewoonte',
   'diagram.desc':
-    'Twee routes van vandaag naar het doel. De gewenste route is kort en vlak: zelfbediening, standaarden en community verlagen de weerstand. De huidige gewoonte is lang en bochtig: handwerk en wachten verhogen de weerstand.',
+    'Twee routes van vandaag naar het doel. De gewenste route is kort en vlak, omdat zelfbediening, standaarden en community de weerstand verlagen. De huidige gewoonte is lang en bochtig, en handwerk en wachten maken hem nog zwaarder.',
   'diagram.today': 'vandaag',
   'diagram.goal': 'doel',
   'diagram.desired': 'gewenste route',
@@ -398,10 +399,10 @@ const nl: Record<UiKey, string> = {
   'nav.career.subtitle': 'mijn loopbaan',
   'page.career.title': 'Releasegeschiedenis: een loopbaan in platformtransformatie',
   'page.career.description':
-    'Elke rol van Sander Ettema als release, van NOC*NSF via Rabobank naar TenneT: wat er werd opgeleverd, wanneer, en het patroon dat terugkeert.',
+    'De loopbaan van Sander Ettema als releaselog, van NOC*NSF via Rabobank naar TenneT, met wat elke rol opleverde en het patroon dat steeds terugkomt.',
   'career.heading': 'Releasegeschiedenis',
   'career.intro':
-    'Elke rol als release: wat er werd opgeleverd, wanneer, en wat het veranderde. Door alle releases loopt hetzelfde patroon.',
+    'Elke rol staat hier als release, met wat hij opleverde en wat er daardoor veranderde. Achteraf zie ik in alle rollen hetzelfde patroon.',
   'legend.title': 'Het patroon',
   'release.present': 'heden',
   'release.latest': 'actueel',

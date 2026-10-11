@@ -61,16 +61,17 @@ describe('releases', () => {
     }
   });
 
+  // 012:T005 Wording updated to the house style; the clarified facts are unchanged
   it('describes the current role exactly as clarified', () => {
     const current = releases[0]!;
     expect(current.summary.en).toBe(
-      "Leading the team behind TenneT's Data & Analytics Platform: data and AI for the energy transition, with the least possible friction.",
+      "Leading the team behind TenneT's Data & Analytics Platform, which brings data and AI to the energy transition. The aim is a platform people can use with as little friction as possible.",
     );
     expect(current.notes!.en).toEqual({
       context:
-        'The energy transition makes data, analytics and AI pivotal for a grid operator. Teams across TenneT need a platform they can trust and use without waiting.',
+        'For a grid operator in the energy transition, data, analytics and AI are becoming central to the work. Teams across TenneT need a platform they can trust and can use without waiting for anyone.',
       approach:
-        'Run the platform as a product: self-service by default, security and compliance built in, and a team that works close to its users. First: a stable team and clear ownership.',
+        'Running the platform as a product, with self-service by default, security and compliance built in, and a team that works close to its users. The first step is a stable team with clear ownership.',
       result: 'In progress. This release is still being written.',
     });
   });

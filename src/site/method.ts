@@ -9,16 +9,16 @@ type Text = Record<Locale, string>;
 
 export const premise: { premise: Text; principle: Text; diagnosis: Text } = {
   premise: {
-    en: 'People take the path of least resistance. That is not unwillingness; it is how the brain saves energy.',
-    nl: 'Mensen kiezen de weg van de minste weerstand. Dat is geen onwil; zo bespaart het brein energie.',
+    en: 'People take the path of least resistance. It is how the brain saves energy, and you can design for it.',
+    nl: 'Mensen kiezen de weg van de minste weerstand. Zo bespaart het brein energie, en daar kun je op ontwerpen.',
   },
   principle: {
     en: 'Make the right thing the easy thing.',
     nl: 'Maak het juiste het makkelijkste.',
   },
   diagnosis: {
-    en: 'Most transformations fail on the wrong image of people, not on technology. They assume people change once they are convinced or told to: mandates, control layers, mandatory tooling. Models such as ADKAR address only the conscious, individual layer of behaviour change. The alternative is not to push harder, but to redesign the environment.',
-    nl: 'De meeste transformaties falen op een verkeerd mensbeeld, niet op technologie. Ze gaan ervan uit dat mensen veranderen zodra ze overtuigd zijn of het opgedragen krijgen: mandaten, controlelagen, verplichte tooling. Modellen zoals ADKAR richten zich alleen op de bewuste, individuele laag van gedragsverandering. Het alternatief is niet harder duwen, maar de omgeving herontwerpen.',
+    en: 'In my experience, most transformations stall on how they look at people. They assume people change once they are convinced or told to, so they reach for mandates, control layers and mandatory tooling. Models such as ADKAR work on the conscious, individual side of change. I get more out of redesigning the environment, so that the change people need to make is also the easiest one.',
+    nl: 'In mijn ervaring lopen de meeste transformaties vast op hoe ze naar mensen kijken. Ze gaan ervan uit dat mensen veranderen zodra ze overtuigd zijn of het opgedragen krijgen, en grijpen dus naar mandaten, controlelagen en verplichte tooling. Modellen zoals ADKAR werken op de bewuste, individuele kant van verandering. Ik haal meer uit het herontwerpen van de omgeving, zodat de verandering die mensen moeten maken ook de makkelijkste is.',
   },
 };
 
@@ -63,8 +63,8 @@ export const levers: readonly Lever[] = [
 ];
 
 export const pragmatism: Text = {
-  en: 'And the pragmatism rule: if a team leaves the standard but stays compliant and is not more expensive, we learn from them instead of correcting them.',
-  nl: 'En de pragmatismeregel: als een team van de standaard afwijkt maar wel compliant is en niet duurder, leren we van hen in plaats van ze te corrigeren.',
+  en: 'One more rule, out of pragmatism: when a team leaves the standard but stays compliant and costs no more, we let them be and learn from what they did.',
+  nl: 'Nog één regel, uit pragmatisme: als een team van de standaard afwijkt maar compliant blijft en niet duurder is, laten we ze hun gang gaan en leren we van wat ze deden.',
 };
 
 export interface Assumption {
@@ -80,8 +80,8 @@ export const assumptions: readonly Assumption[] = [
       nl: 'Onze gebruikers zijn vakbekwame engineers met goede bedoelingen',
     },
     inPractice: {
-      en: 'Self-service and quality by default instead of gates and approvals. When people take shortcuts, the right path is too hard: a design problem, not a people problem.',
-      nl: 'Zelfbediening en kwaliteit als standaard in plaats van poortjes en goedkeuringen. Als mensen afsnijden, is de juiste route te moeilijk: een ontwerpprobleem, geen mensenprobleem.',
+      en: 'Self-service and quality by default, with as few gates and approvals as possible. When people take shortcuts, I read that as a sign that the right path is too hard, and that is something we can fix in the design.',
+      nl: 'Zelfbediening en kwaliteit als standaard, met zo min mogelijk poortjes en goedkeuringen. Als mensen afsnijden, zie ik dat als teken dat de juiste route te moeilijk is, en dat kunnen we in het ontwerp oplossen.',
     },
   },
   {
@@ -90,15 +90,15 @@ export const assumptions: readonly Assumption[] = [
       nl: 'Leren vraagt ruimte om veilig te falen',
     },
     inPractice: {
-      en: 'Cheap, safe experiments: sandboxes, test environments and easy rollback, and a culture in which sharing what went wrong is normal.',
-      nl: 'Goedkope, veilige experimenten: sandboxes, testomgevingen en eenvoudig terugdraaien, en een cultuur waarin delen wat misging normaal is.',
+      en: 'Experiments should be cheap and safe, with sandboxes, test environments and easy rollback. Sharing what went wrong is a normal part of the work.',
+      nl: 'Experimenteren moet goedkoop en veilig kunnen, met sandboxes, testomgevingen en eenvoudig terugdraaien. Delen wat er misging hoort gewoon bij het werk.',
     },
   },
   {
     statement: { en: 'People are inherently lazy', nl: 'Mensen zijn van nature lui' },
     subtitle: {
-      en: 'Not a judgement, a design constraint: people take the path of least resistance.',
-      nl: 'Geen oordeel, een ontwerpvoorwaarde: mensen kiezen de weg van de minste weerstand.',
+      en: 'I mean it as a design constraint: people take the path of least resistance.',
+      nl: 'Ik bedoel het als ontwerpvoorwaarde: mensen kiezen de weg van de minste weerstand.',
     },
     inPractice: {
       en: 'Make the easiest path the right one: golden paths, sensible defaults, self-service compliance, automated change registration.',
@@ -111,8 +111,8 @@ export const assumptions: readonly Assumption[] = [
       nl: 'Met grote vrijheid komt grote verantwoordelijkheid',
     },
     inPractice: {
-      en: 'Teams may configure, choose and deviate. Whoever leaves the golden path carries the compliance burden themselves: not as punishment, but because those controls were never automated.',
-      nl: 'Teams mogen configureren, kiezen en afwijken. Wie het golden path verlaat, draagt zelf de compliancelast: niet als straf, maar omdat die controles nooit geautomatiseerd zijn.',
+      en: 'Teams may configure, choose and deviate. Whoever leaves the golden path carries the compliance burden themselves, simply because nobody automated those controls for their route.',
+      nl: 'Teams mogen configureren, kiezen en afwijken. Wie het golden path verlaat, draagt zelf de compliancelast, gewoon omdat niemand die controles voor die route heeft geautomatiseerd.',
     },
   },
 ];
@@ -131,8 +131,8 @@ export const complianceSteps: readonly Text[] = [
     nl: 'Maak het alternatief, handmatige compliance, zwaarder dan het platform gebruiken.',
   },
   {
-    en: 'Teams choose the platform not despite compliance, but because of it.',
-    nl: 'Teams kiezen het platform niet ondanks compliance, maar vanwege compliance.',
+    en: 'Teams then choose the platform because it takes compliance off their hands.',
+    nl: 'Teams kiezen dan voor het platform omdat het de compliance voor ze regelt.',
   },
 ];
 
@@ -156,8 +156,8 @@ export const models: readonly Model[] = [
     authors: 'Kahneman',
     year: 2011,
     takeaway: {
-      en: 'Most everyday decisions are made fast and automatically. Design for System 1, not only for persuasion.',
-      nl: 'De meeste dagelijkse beslissingen gaan snel en automatisch. Ontwerp voor Systeem 1, niet alleen voor overtuiging.',
+      en: 'Most everyday decisions are made fast and on autopilot. So design for System 1 as well, and do not rely on persuasion alone.',
+      nl: 'De meeste dagelijkse beslissingen gaan snel en op de automatische piloot. Ontwerp dus ook voor Systeem 1 en reken niet alleen op overtuigen.',
     },
   },
   {
@@ -189,8 +189,8 @@ export const models: readonly Model[] = [
     authors: 'Thaler & Sunstein',
     year: 2008,
     takeaway: {
-      en: 'Defaults are the strongest instrument: people rarely leave the standard.',
-      nl: 'Standaarden zijn het sterkste instrument: mensen wijken zelden af van de standaard.',
+      en: 'Defaults are the strongest instrument, because people rarely leave the standard.',
+      nl: 'Standaarden zijn het sterkste instrument, want mensen wijken er zelden van af.',
     },
   },
   {
@@ -211,8 +211,8 @@ export const models: readonly Model[] = [
     authors: 'Duhigg',
     year: 2012,
     takeaway: {
-      en: 'Cue, routine, reward: habits run without deliberation, so design the loop, not the belief.',
-      nl: 'Aanleiding, routine, beloning: gewoontes lopen zonder nadenken, dus ontwerp de lus, niet de overtuiging.',
+      en: 'Cue, routine, reward. Habits run without thinking, so it pays to design the loop itself.',
+      nl: 'Aanleiding, routine, beloning. Gewoontes lopen zonder nadenken, dus het loont om de lus zelf te ontwerpen.',
     },
   },
 ];

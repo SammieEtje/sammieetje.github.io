@@ -18,8 +18,8 @@ export const pillars: readonly Pillar[] = [
     id: 'people',
     name: { en: 'The wrong image of people', nl: 'Het verkeerde mensbeeld' },
     intro: {
-      en: 'Why IT transformations fail on psychology, not on technology.',
-      nl: 'Waarom IT-transformaties falen op psychologie, niet op technologie.',
+      en: 'Why IT transformations so often stall on psychology.',
+      nl: 'Waarom IT-transformaties zo vaak vastlopen op psychologie.',
     },
   },
   {
@@ -34,16 +34,16 @@ export const pillars: readonly Pillar[] = [
     id: 'regulated',
     name: { en: 'Regulated and fast', nl: 'Gereguleerd én snel' },
     intro: {
-      en: 'Compliance as an accelerator, not a brake.',
-      nl: 'Compliance als versneller, niet als rem.',
+      en: 'How compliance can make a regulated organisation faster.',
+      nl: 'Hoe compliance een gereguleerde organisatie sneller kan maken.',
     },
   },
   {
     id: 'community',
     name: { en: 'Community as the engine', nl: 'Community als motor' },
     intro: {
-      en: 'Why adoption is a social phenomenon, not a roll-out project.',
-      nl: 'Waarom adoptie een sociaal verschijnsel is, geen uitrolproject.',
+      en: 'Why adoption spreads through people, and what that means for a roll-out.',
+      nl: 'Waarom adoptie zich via mensen verspreidt, en wat dat betekent voor een uitrol.',
     },
   },
 ];
@@ -78,8 +78,8 @@ export const articles: readonly Article[] = [
     minutes: 5,
     pillar: 'people',
     excerpt: {
-      en: 'When most of an intake form asks for things the platform team could resolve itself, the form is a design smell, not a process problem.',
-      nl: 'Als een intakeformulier vooral vraagt naar wat het platformteam zelf kan oplossen, is het formulier een ontwerpsignaal en geen procesprobleem.',
+      en: 'When most of an intake form asks for things the platform team could settle itself, the form is pointing at design work that is still open.',
+      nl: 'Als een intakeformulier vooral vraagt naar wat het platformteam zelf kan regelen, wijst het formulier op ontwerpwerk dat nog openligt.',
     },
   },
   {
@@ -105,8 +105,8 @@ export const articles: readonly Article[] = [
     pillar: 'environment',
     series: { id: 'platform-as-product', part: 4, total: 5 },
     excerpt: {
-      en: 'Data in a dashboard changes nothing. Leaders who ask questions, enabling teams and Scrum Masters are what turn platform signals into improvement.',
-      nl: 'Data in een dashboard verandert niets. Leiders die vragen stellen, enabling teams en Scrum Masters maken van platformsignalen verbetering.',
+      en: 'A dashboard on its own changes nothing. Improvement starts when leaders ask questions about the platform signals, and enabling teams and Scrum Masters help teams act on them.',
+      nl: 'Een dashboard alleen verandert niets. Verbetering begint als leiders vragen stellen over de platformsignalen, en enabling teams en Scrum Masters teams helpen ermee aan de slag te gaan.',
     },
   },
   {
@@ -118,8 +118,8 @@ export const articles: readonly Article[] = [
     pillar: 'environment',
     series: { id: 'platform-as-product', part: 3, total: 5 },
     excerpt: {
-      en: "Dashboards and on-call rotations don't tell you whether a platform is healthy. Google's HEART framework, applied to internal engineers, does.",
-      nl: 'Dashboards en on-call-diensten vertellen je niet of een platform gezond is. Het HEART-framework van Google, toegepast op interne engineers, doet dat wel.',
+      en: "Dashboards and on-call rotations say little about whether a platform is healthy. Google's HEART framework, applied to internal engineers, gives a much better picture.",
+      nl: 'Dashboards en on-call-diensten zeggen weinig over de gezondheid van een platform. Het HEART-framework van Google, toegepast op interne engineers, geeft een veel beter beeld.',
     },
   },
   {
@@ -131,8 +131,8 @@ export const articles: readonly Article[] = [
     pillar: 'environment',
     series: { id: 'platform-as-product', part: 2, total: 5 },
     excerpt: {
-      en: "A mature platform doesn't just run on IT4IT. It offers the building blocks, such as observability and change tracking, as golden paths every team can pick up.",
-      nl: 'Een volwassen platform draait niet alleen op IT4IT. Het biedt de bouwstenen, zoals observability en changeregistratie, aan als golden paths die elk team kan oppakken.',
+      en: 'A mature platform runs on IT4IT and also offers its building blocks, such as observability and change tracking, as golden paths that every team can pick up.',
+      nl: 'Een volwassen platform draait op IT4IT en biedt de bouwstenen ervan ook aan, zoals observability en changeregistratie, als golden paths die elk team kan oppakken.',
     },
   },
   {
@@ -144,8 +144,8 @@ export const articles: readonly Article[] = [
     pillar: 'environment',
     series: { id: 'platform-as-product', part: 1, total: 5 },
     excerpt: {
-      en: 'An internal platform is a product, not a project that shipped. IT4IT gives the platform team the improvement cycle it needs to stay honest about whether it still serves engineers.',
-      nl: 'Een intern platform is een product, geen project dat is opgeleverd. IT4IT geeft het platformteam de verbetercyclus om eerlijk te blijven over de vraag of het engineers nog dient.',
+      en: 'An internal platform is a product that keeps changing after go-live. IT4IT gives the platform team an improvement cycle that keeps it honest about whether it still serves engineers.',
+      nl: 'Een intern platform is een product dat na de livegang blijft veranderen. IT4IT geeft het platformteam een verbetercyclus die het eerlijk houdt over de vraag of het engineers nog dient.',
     },
   },
   {
@@ -156,8 +156,8 @@ export const articles: readonly Article[] = [
     minutes: 6,
     pillar: 'community',
     excerpt: {
-      en: 'Adoption is a social phenomenon, not a roll-out. How a community built around people rather than the platform kept running years after I left Rabobank.',
-      nl: 'Adoptie is een sociaal verschijnsel, geen uitrol. Hoe een community rond mensen in plaats van rond het platform bleef draaien, jaren nadat ik bij Rabobank vertrok.',
+      en: 'Adoption spreads from person to person. This is how a community built around its people kept running for years after I left Rabobank.',
+      nl: 'Adoptie gaat van mens tot mens. Zo bleef een community die rond haar mensen was gebouwd nog jaren draaien nadat ik bij Rabobank vertrok.',
     },
   },
   {

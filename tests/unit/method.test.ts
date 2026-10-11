@@ -48,7 +48,7 @@ describe('method content', () => {
       'With great freedom comes great responsibility',
     ]);
     expect(assumptions[2]!.subtitle?.en).toBe(
-      'Not a judgement, a design constraint: people take the path of least resistance.',
+      'I mean it as a design constraint: people take the path of least resistance.',
     );
     for (const a of assumptions) {
       for (const locale of locales) expect(a.inPractice[locale].trim()).not.toBe('');
