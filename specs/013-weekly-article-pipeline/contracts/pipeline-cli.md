@@ -21,8 +21,14 @@ Week      Tuesday     State    Article                                   Pillar 
 
 Missed: 19 weeks since the last article (2026-06-02, 2026-W23).
 Pillars without planned or published work: none.
+Needs attention: "<title>": ready without target_week.
 Buffer: ready 1 of 2. WARNING: fewer than 2 articles are ready.
 ```
+
+- A week with two unpublished notes shows both and the state `double-booked`.
+- "Needs attention" lists notes with an unknown status, or that are `ready` or later without
+  `target_week` or `words`, or `published` without `publish_date` or `linkedin_url`. The line
+  reads `Needs attention: none.` when there is nothing.
 
 - Horizon: the coming eight ISO weeks, starting with the current week if its Tuesday is today or
   later.
@@ -57,9 +63,13 @@ On success prints the derived record as JSON, for the skill to use:
 ## `npm run pipeline -- mark-published <note> --date <yyyy-mm-dd> --url <url>` (FR-008)
 
 Runs the same checks as `verify`, then sets `status: published`, `publish_date` and `linkedin_url`
-in the note's frontmatter. Leaves all other frontmatter and the body unchanged. For an article
-that was never planned, `--unplanned` skips the status and week checks and sets `target_week` to
-the week of the date.
+in the note's frontmatter. Leaves all other frontmatter and the body unchanged.
+
+- `--unplanned`: for an article that was never planned. Skips the status and week checks and
+  sets `target_week` to the week of the date.
+- `--backfill`: for an article that is already on the site. Like `--unplanned`, and the URL must
+  already be on the site with the same date; otherwise exit `1`. Used once to bring existing
+  notes in line.
 
 ## `npm run pipeline -- friday` (FR-026)
 

@@ -87,13 +87,19 @@ scripts/pipeline/notes.ts            new: read and write vault frontmatter
 CLAUDE.md                            new: where the pipeline lives, how to reach it (FR-025)
 README.md                            "Publishing an article" section
 package.json                         "pipeline" script
-tests/unit/article-rules.test.ts, weeks.test.ts, pipeline.test.ts, publish-skill.test.ts   new
+tests/unit/{weeks,pipeline-notes,article-rules,pipeline-overview,pipeline-cli,pipeline-publish}.test.ts   new
+tests/unit/{publish-skill,claude-md,no-rhythm-signal,no-planning-data}.test.ts   new
 tests/unit/articles.test.ts          hard-coded counts become rules (FR-018)
 tests/e2e/writing.spec.ts            data-driven; lang and "part n" cases (FR-018)
 ```
 
 **Structure Decision**: site code stays in `src/site` and `src/components` as in 006; local
 tooling goes in `scripts/` like the other scripts; the skill sits next to the Spec Kit skills.
+
+**Article pull requests**: a published article is a content change, not a feature. Its pull
+request (branch `article/<id>`) goes through the same quality gate and owner review, but has no
+spec, phase tags or task IDs, the same way Dependabot pull requests are handled (011). README and
+CLAUDE.md say so.
 
 ## Complexity Tracking
 

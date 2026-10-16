@@ -36,7 +36,8 @@ idea → draft → ready → published
 any state → withdrawn
 ```
 
-`mark-published` only accepts a note in `ready` (FR-003). Moving a ready article to another week
+`mark-published` only accepts a note in `ready` (FR-003), unless `--unplanned` or `--backfill`
+says otherwise. Moving a ready article to another week
 means editing `target_week` before publishing (edge case "published in a different week").
 
 ## Published article (`src/site/articles.ts`)
@@ -64,6 +65,7 @@ ceil(words / 230)`, `series` from `reeks`/`deel` (series id is the kebab-case of
 | excerpt at most two sentences and no `styleViolations` per language | FR-016 |
 | `pillar` is one of the four ids | FR-017 |
 | `series.id` exists in `series`; `part ≤ total` when a total is set | FR-006 (006) |
+| a record has only the `Article` fields (no body or full-text field) | FR-011 |
 
 Each problem is reported as `<article id>: <rule> (<detail>)`.
 
@@ -72,7 +74,7 @@ Each problem is reported as `<article id>: <rule> (<detail>)`.
 | Field | Rule |
 |---|---|
 | `week` | ISO week `YYYY-Www`; its slot is that week's Tuesday 08:00 Europe/Amsterdam |
-| `state` | `covered` (an article published in it), `planned` (unpublished note targets it), `missed` (in the past and not covered), `gap` (coming, nothing planned) |
+| `state` | `covered` (an article published in it), `planned` (one unpublished note targets it), `double-booked` (two or more do), `missed` (in the past and not covered), `gap` (coming, nothing planned) |
 
 Two articles in one week: the week is `covered` once; the second does not cover a later week.
 

@@ -50,14 +50,15 @@ failing first. Code carries `013:T###` comments.
   - missing or empty `excerpt.en` or `excerpt.nl`, series name, pillar name or intro (FR-015);
   - an excerpt with three sentences, or with a `styleViolations` hit such as an em dash (FR-016);
   - pillar missing or not one of the four ids (FR-017);
-  - unknown `series.id`; `part > total` when a total is set.
+  - unknown `series.id`; `part > total` when a total is set;
+  - a record with a field outside the `Article` model, such as `body` or `text` (FR-011).
 
   Also: the real `articles` give no problems.
 - [ ] T005 [P] [US3] Rewrite `tests/unit/articles.test.ts` so it holds for any correct data
   (FR-018). Replace "ten provided articles", "leave regulated without articles" and the single
   five-part series assertion with: unique ids, a complete series has parts `1..total`, and a
   running series (no total) has parts `1..n` without gaps. Keep the `elite-sports` date anchor.
-- [ ] T006 [P] [US3] Make `tests/e2e/writing.spec.ts` data-driven (FR-018). Every pillar without
+- [ ] T006 [US3] After T005 (same file), make `tests/e2e/writing.spec.ts` data-driven (FR-018). Every pillar without
   articles shows the "in the works" text and every other pillar shows none. The series-line count
   equals the number of articles with a series. Every title link's `lang` equals its article's
   `titleLang(a)`, and every series line equals `seriesLabel(a, locale)`. Then add failing unit
@@ -86,7 +87,10 @@ failing first. Code carries `013:T###` comments.
   - each week is `covered`, `planned` (with title, pillar, status) or `gap` (FR-004);
   - the missed line counts weeks without a publication since the last one (FR-005);
   - pillars without planned or published notes are listed;
-  - two notes published in one week cover that week once.
+  - two notes published in one week cover that week once;
+  - two unpublished notes with the same `target_week` both show, and the week is `double-booked`;
+  - "Needs attention" lists a note with an unknown status, a `ready` note without `target_week`
+    or `words`, and a `published` note without `publish_date` or `linkedin_url` (FR-002).
 - [ ] T011 [P] [US1] Write a failing test in `tests/unit/pipeline-cli.test.ts`: `node
   scripts/pipeline.ts` with `ARTICLE_VAULT_DIR` unset or missing exits `2` with
   `ARTICLE_VAULT_DIR is not set or not readable`; with a fixture vault it prints the overview and
@@ -122,7 +126,10 @@ run of the skill on a fixture produces a correct record.
   - on success it returns `pillar`, `minutes = ceil(words / 230)` (FR-009), `lang` from `taal`,
     and the series name, id (kebab-case) and part;
   - `markPublished` sets `status: published`, `publish_date` and `linkedin_url` and nothing else
-    (FR-008); `--unplanned` sets `target_week` to the week of the date.
+    (FR-008); it refuses a note that is not `ready` (FR-003); `--unplanned` sets `target_week`
+    to the week of the date;
+  - `--backfill` accepts a URL that is already on the site with the same date, and refuses one
+    whose site date differs or that is not on the site.
 - [ ] T016 [P] [US2] Write failing tests in `tests/unit/publish-skill.test.ts`:
   `.claude/skills/publish-article/SKILL.md` exists, names the steps from
   contracts/publish-skill.md in order (verify, excerpts, `npm run check`, one pull request,
@@ -132,7 +139,7 @@ run of the skill on a fixture produces a correct record.
   subcommands in `scripts/pipeline.ts` (makes T015 pass).
 - [ ] T018 [US2] Write `.claude/skills/publish-article/SKILL.md` from contracts/publish-skill.md
   (makes T016 pass). Excerpt rules: original summary, at most two sentences per language
-  (006:FR-007), the 012 style rules (FR-010).
+  (006:FR-007), the 012 style rules (FR-010). Include the "Changing an article later" section.
 
 ## Phase 6: User Story 5: Sander is reminded at the weekly publish moment (P3)
 
@@ -153,18 +160,26 @@ run of the skill on a fixture produces a correct record.
 - [ ] T021 [P] Write a failing test in `tests/unit/claude-md.test.ts`: `CLAUDE.md` exists, says the
   pipeline lives in the vault and is read through `om` and `ARTICLE_VAULT_DIR`, and contains no
   absolute path (`/Users/`, `~/`) (FR-025). Then write `CLAUDE.md`.
-- [ ] T022 [P] Write a failing test in `tests/unit/no-rhythm-signal.test.ts`: no `ui` key or value
-  in either language mentions publishing rhythm, cadence, streak or "every Tuesday", and the
-  scorecard data has no such metric (FR-022). It passes as soon as it runs; see it fail once by
-  adding a temporary key, then remove the key.
+- [ ] T022 [P] Write two privacy tests. They pass as soon as they run, so see each fail once on a
+  temporary change, then revert:
+  - `tests/unit/no-rhythm-signal.test.ts`: no `ui` key or value in either language mentions
+    publishing rhythm, cadence, streak or "every Tuesday", and the scorecard data has no such
+    metric (FR-022);
+  - `tests/unit/no-planning-data.test.ts`: no file under `src/` or `public/` contains
+    `target_week`, a `status: idea|draft|ready` frontmatter line, `linkedin_url:` or an absolute
+    local path (`/Users/`), and every record in `articles` has only `Article` fields (FR-001,
+    SC-005).
 - [ ] T023 [P] Add a "Publishing an article" section to `README.md`: the `/publish-article`
-  golden path, `npm run pipeline`, and that the planning lives privately in the vault.
+  golden path, `npm run pipeline`, that the planning lives privately in the vault, and that
+  article pull requests are content changes outside the Spec Kit flow (plan.md).
 - [ ] T024 Ask Sander to confirm, then bring the vault frontmatter in line through `npm run
-  pipeline -- mark-published --unplanned` for the published articles whose notes still lack
+  pipeline -- mark-published --backfill` for the published articles whose notes still lack
   `status: published`, `publish_date` or `linkedin_url` (the URLs and dates in
-  `src/site/articles.ts`). Run `npm run pipeline` and show Sander the overview.
-- [ ] T025 Run `npm run check` and the quickstart privacy scan. Record the results in
-  quickstart.md, open the pull request and confirm `quality-gate` passes.
+  `src/site/articles.ts`). Run `npm run pipeline` and show Sander the overview. Ask him which
+  "Regulated and fast" article to give a `target_week` within the horizon (SC-006).
+- [ ] T025 Run `npm run check` and the quickstart privacy scan, and time `npm run pipeline` on the
+  real vault (target under 2 seconds). Record the results in quickstart.md, open the pull request
+  and confirm `quality-gate` passes.
 
 ## Dependencies
 
@@ -179,7 +194,7 @@ run of the skill on a fixture produces a correct record.
 ## Parallel opportunities
 
 - T001 and T002.
-- T004, T005, T006 and T010, T011 (different files).
+- T004, T005 and T010, T011 (different files); T006 after T005.
 - T015 and T016.
 - T021, T022, T023.
 

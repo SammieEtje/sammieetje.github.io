@@ -34,6 +34,12 @@ article on LinkedIn: `/publish-article <LinkedIn URL> [note title]`.
 8. **Report.** The pull-request link and the new overview (`npm run pipeline`). Sander reviews and
    merges.
 
+## Changing an article later
+
+A changed LinkedIn URL or a withdrawn article is a small hand edit in `src/site/articles.ts`
+(and `status: withdrawn` in the note), through the same gate; the duplicate rule keeps URLs
+unique.
+
 ## What the skill never does
 
 - Publish on LinkedIn, or merge the pull request.

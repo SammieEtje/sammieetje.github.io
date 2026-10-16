@@ -222,10 +222,12 @@ empty buffer.
   read the pipeline from the vault through the `om` server, and MUST NOT contain the vault's
   content or local paths to it.
 - **FR-002**: Every planned article MUST have a pillar, a working title, a status (`idea`,
-  `draft`, `ready`, `published`) and a target publication week. A published article MUST also
-  record its publication date.
-- **FR-003**: Status MUST only move forward in the order `idea → draft → ready → published`,
-  except that an article may be moved back one step or withdrawn on purpose.
+  `draft`, `ready`, `published`, `withdrawn`) and, from `ready` on, a target publication week and
+  a word count. A published article MUST also record its publication date and URL. The overview
+  MUST list every note that misses a required field or has an unknown status.
+- **FR-003**: Status follows `idea → draft → ready → published`; an article may move back a step
+  or be withdrawn on purpose. The publish step MUST only mark an article published from `ready`
+  (or as an explicitly unplanned or backfilled article).
 - **FR-004**: One overview MUST show, for a horizon of the coming weeks, the planned article per
   week with its status, every week without a planned article, the ready articles not yet
   published, and every pillar without a planned or published article.
