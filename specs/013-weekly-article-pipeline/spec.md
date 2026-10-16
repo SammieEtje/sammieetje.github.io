@@ -33,6 +33,27 @@ These were settled before this spec and are not reopened in clarify:
 - Drafting happens together with Claude.
 - Sander keeps ownership of his texts, independent of LinkedIn.
 
+## Clarifications
+
+### Session 2026-10-16
+
+- Q: Where does the editorial pipeline live? → A: Split. Planning, working titles, status, target
+  weeks and drafts stay private in Sander's Obsidian vault, next to the texts and word counts.
+  Only published article metadata goes into the public repository. The agent reads the vault
+  through the `om` server, and a short note in the repository's CLAUDE.md tells it to consult the
+  vault for the pipeline.
+- Q: Is the full article text also published on the site? → A: No. Spec 006 stays: LinkedIn is
+  the place to read, and the vault is Sander's own archive of the texts.
+- Q: Which fixed weekday and time is the weekly publication slot? → A: Tuesday 08:00
+  Europe/Amsterdam (seven of the first ten articles appeared on a Tuesday).
+- Q: How is Sander reminded of the weekly publish moment? → A: Both. A recurring calendar event
+  on Tuesday 08:00 with the publish steps in it, and a scheduled check on the Friday before that
+  reads the vault and reports which article is ready for Tuesday, or that the buffer is empty.
+- Q: How many weeks of ready articles should the pipeline hold before it warns? → A: Two. The
+  warning shows when fewer than two ready, unpublished articles are in the pipeline.
+- Q: Does the public site show anything about publishing rhythm? → A: No. The writing page keeps
+  listing articles with their dates; no rhythm metric, promise or streak is added anywhere.
+
 ## User Scenarios & Testing *(mandatory)*
 
 ### User Story 1 - Sander sees what is next and where the gaps are (Priority: P1)
@@ -107,8 +128,9 @@ fail with a message naming the article and the rule; a correct article passes.
    **Then** it fails and names both articles.
 2. **Given** an article whose URL is not a LinkedIn Article URL, **When** the gate runs, **Then**
    it fails and names the article.
-3. **Given** an article whose publication date falls outside its planned week, **When** the gate
-   runs, **Then** it fails and names the article, the date and the planned week.
+3. **Given** an article whose publication date falls outside its planned week in the vault,
+   **When** the publish step runs, **Then** it stops before opening a pull request and names the
+   article, the date and the planned week.
 4. **Given** an article whose excerpt or pillar name is missing in one language, **When** the gate
    runs, **Then** it fails and names the article and the language.
 5. **Given** an article whose excerpt breaks the style rules or has more than two sentences,
@@ -120,14 +142,14 @@ fail with a message naming the article and the rule; a correct article passes.
 
 ### User Story 4 - Sander is warned before the buffer runs dry (Priority: P2)
 
-When fewer articles are ready than the agreed number of weeks ahead, Sander gets a warning while
+When fewer than two articles are ready, Sander gets a warning while
 there is still time to write.
 
 **Why this priority**: the gap after 2026-06-02 started as an empty buffer. The warning is useful
 once the overview exists, so it comes after stories 1 to 3.
 
-**Independent Test**: with a buffer target of N weeks, the warning appears when the number of
-ready, unpublished articles is below N and disappears when it reaches N.
+**Independent Test**: with the buffer target of two weeks, the warning appears with zero or one
+ready, unpublished article and disappears at two.
 
 **Acceptance Scenarios**:
 
@@ -142,19 +164,25 @@ ready, unpublished articles is below N and disappears when it reaches N.
 
 ### User Story 5 - Sander is reminded at the weekly publish moment (Priority: P3)
 
-At the agreed weekly slot Sander gets a reminder to publish the next ready article and run the
-publish step.
+On Tuesday at 08:00 Sander's calendar reminds him to publish and lists the steps. On the Friday
+before, a scheduled check tells him which article is ready for Tuesday, while there is still a
+weekend to finish one if nothing is.
 
 **Why this priority**: helpful for the habit, but the overview and buffer warning already make
 the state visible.
 
-**Independent Test**: the reminder exists, fires at the agreed slot, and points at the next
-ready article or says that none is ready.
+**Independent Test**: the calendar event exists and recurs weekly on Tuesday 08:00; the Friday
+check, run against a planning with and without a ready article, reports the right article or the
+empty buffer.
 
 **Acceptance Scenarios**:
 
-1. **Given** the agreed slot arrives, **When** the reminder fires, **Then** it names the next
-   ready article, or says that nothing is ready.
+1. **Given** a ready article planned for next Tuesday, **When** the Friday check runs, **Then** it
+   names that article.
+2. **Given** no ready article for next Tuesday, **When** the Friday check runs, **Then** it says
+   so and shows the buffer warning.
+3. **Given** it is Tuesday 08:00, **When** the calendar event starts, **Then** it lists the
+   publish steps.
 
 ---
 
@@ -175,9 +203,10 @@ ready article or says that none is ready.
 - The pillar "Regulated and fast" gets its first article. Existing checks that assume this pillar
   is empty, or that there are exactly ten articles, are updated as part of this feature, so the
   first real publish does not fail on an outdated test.
-- If the planning lives outside the public repository, the public quality gate cannot see the
-  planned week. The date check then runs where the planning is visible, or uses only what Sander
-  has decided may be public (see FR-001).
+- The planning lives in the private vault, so the public quality gate cannot see the planned
+  week. The planned-week check runs in the publish step, which can read the vault (FR-014).
+- The vault cannot be reached during the publish step. The step stops and says so; it does not
+  skip the planned-week check or the planning update.
 
 ## Requirements *(mandatory)*
 
@@ -185,11 +214,13 @@ ready article or says that none is ready.
 
 **Editorial pipeline**
 
-- **FR-001**: The planning MUST be kept in [NEEDS CLARIFICATION: where does the pipeline live:
-  the public repository, Sander's private Obsidian vault, or split, with planning private and only
-  published metadata public? If the vault, is the `om` server registered for this repository with
-  a short CLAUDE.md note?]. Unpublished titles, drafts and planning MUST NOT become visible on the
-  site or in the public repository unless Sander has decided they may.
+- **FR-001**: The planning MUST be kept in Sander's private Obsidian vault. Only the metadata of
+  published articles goes into the public repository. Unpublished titles, drafts and planning
+  MUST NOT become visible on the site or in the public repository unless Sander has decided they
+  may.
+- **FR-025**: The repository MUST contain a short instruction for the agent (in CLAUDE.md) to
+  read the pipeline from the vault through the `om` server, and MUST NOT contain the vault's
+  content or local paths to it.
 - **FR-002**: Every planned article MUST have a pillar, a working title, a status (`idea`,
   `draft`, `ready`, `published`) and a target publication week. A published article MUST also
   record its publication date.
@@ -214,19 +245,19 @@ ready article or says that none is ready.
   of Sander's own text divided by 230, rounded up), so all articles on the page are comparable.
 - **FR-010**: Excerpts MUST be original summaries of at most two sentences per language (006:FR-007)
   and MUST follow the site's style rules (spec 012).
-- **FR-011**: Whether the full article text is also published on the site MUST follow
-  [NEEDS CLARIFICATION: keep 006 (LinkedIn is the place to read, the vault is the private archive),
-  or publish the full text on the site as well, with LinkedIn as the distribution channel?]. Any
-  change to 006's "no full-text copies" decision MUST come from that answer, never as a side effect.
+- **FR-011**: The site MUST NOT publish the full text of an article. The writing page keeps
+  linking to LinkedIn as the place to read (spec 006); Sander's own copy of each text stays in the
+  vault.
 
 **Guardrails**
 
 - **FR-012**: The quality gate MUST fail when two articles share a URL, and name both.
 - **FR-013**: The quality gate MUST fail when an article URL is not a LinkedIn Article URL
   (`https://www.linkedin.com/pulse/<slug>`), and name the article.
-- **FR-014**: The quality gate MUST fail when an article's publication date does not fall in its
-  planned week, and name the article, the date and the week, wherever the planned week is visible
-  under FR-001.
+- **FR-014**: The publish step MUST refuse to open a pull request when the publication date does
+  not fall in the article's planned week in the vault, and name the article, the date and the
+  week. The public quality gate MUST fail when a publication date is not a valid date, lies in the
+  future, or is before the first article (2026-03-09).
 - **FR-015**: The quality gate MUST fail when any visitor-facing article field (excerpt, series
   name, pillar name or intro) is missing or empty in either language, and name the article and
   the language.
@@ -239,16 +270,18 @@ ready article or says that none is ready.
 
 **Buffer and rhythm**
 
-- **FR-019**: The overview MUST warn when the number of ready, unpublished articles is below the
-  buffer target of [NEEDS CLARIFICATION: how many weeks of ready articles should the pipeline hold
-  before it warns?] weeks, and show both numbers.
-- **FR-020**: The planning MUST record a fixed weekly publication slot (weekday and time,
-  Europe/Amsterdam), agreed in clarify (open question 3).
-- **FR-021**: Sander MUST be reminded at that slot by the mechanism agreed in clarify (open
-  question 4), and the reminder MUST name the next ready article or say that none is ready.
-- **FR-022**: What the public site shows about publishing rhythm MUST follow the decision taken in
-  clarify (open question 6); if anything is shown, it MUST exist in both languages and add no
-  client-side JavaScript.
+- **FR-019**: The overview MUST warn when fewer than two ready, unpublished articles are in the
+  pipeline (buffer target: two weeks), and show both the number ready and the target.
+- **FR-020**: The weekly publication slot MUST be Tuesday 08:00 Europe/Amsterdam. A planned
+  article's target week is the ISO week that contains that Tuesday.
+- **FR-021**: Sander's calendar MUST hold a recurring event on Tuesday 08:00 Europe/Amsterdam that
+  lists the publish steps.
+- **FR-026**: A scheduled check MUST run every Friday before the slot, read the planning in the
+  vault, and report to Sander the article that is ready for next Tuesday, or that none is ready
+  together with the buffer warning (FR-019). The report MUST stay private to Sander.
+- **FR-022**: The public site MUST NOT show a publishing-rhythm signal (no cadence metric on the
+  scorecard, no publishing promise, no streak). The planning, the buffer and missed weeks stay
+  private to Sander.
 
 **Cross-cutting**
 
@@ -261,15 +294,15 @@ ready article or says that none is ready.
 ### Key Entities
 
 - **Planned article**: one entry in the editorial pipeline. Working title, pillar, status, target
-  week, and once published its publication date and a link to the published article. Private
-  unless Sander decides otherwise (FR-001).
+  week, and once published its publication date and a link to the published article. Lives in
+  Sander's private vault (FR-001).
 - **Published article**: the public record on the writing page, as defined in spec 006: title,
   LinkedIn URL, date, reading time, pillar, optional series and part, excerpt per language.
 - **Pillar**: one of the four content pillars; every article belongs to exactly one.
 - **Publication week**: an ISO week in Europe/Amsterdam. Each week in the horizon is covered,
   planned, missed or a gap.
-- **Publication slot**: the fixed weekday and time at which Sander publishes.
-- **Buffer target**: the number of ready articles the pipeline should hold.
+- **Publication slot**: Tuesday 08:00 Europe/Amsterdam, the moment Sander publishes each week.
+- **Buffer target**: two ready, unpublished articles.
 
 ## Success Criteria *(mandatory)*
 
@@ -278,7 +311,8 @@ ready article or says that none is ready.
 - **SC-001**: Registering a published article on the site takes Sander one command and at most
   5 minutes of his own time, from LinkedIn URL to an open pull request.
 - **SC-002**: Each of the six guardrail mistakes in User Story 3, introduced on purpose, is caught
-  by the quality gate in 100% of cases, with a message that names the article.
+  in 100% of cases (the planned-week check by the publish step, the others by the quality gate),
+  with a message that names the article.
 - **SC-003**: In the eight weeks after the feature is live, at least seven articles are published,
   and no gap of two or more weeks goes by without a buffer warning first.
 - **SC-004**: At any moment, Sander can answer "what do I publish next week, and what is ready?"
@@ -289,26 +323,17 @@ ready article or says that none is ready.
 - **SC-006**: The pillar "Regulated and fast" has a planned article within the horizon of the
   overview.
 
-## Open questions for `/speckit-clarify`
-
-These are deliberately left open and are asked one at a time in clarify. Questions 1, 2 and 5 are
-also marked in the requirements above.
-
-1. Where does the pipeline live (FR-001)?
-2. Full text on the site, or keep 006 (FR-011)?
-3. Fixed publication slot: which weekday and time (FR-020)?
-4. Reminder: a recurring calendar event, a scheduled task, or something else (FR-021)?
-5. Buffer size: how many weeks of ready articles before it warns (FR-019)?
-6. Public cadence signal: should the site show anything about publishing rhythm, for example on
-   the scorecard, or explicitly not (FR-022)?
-
 ## Assumptions
 
 - The writing page, pillars, series and article data from spec 006 stay as they are; this feature
   adds to them and does not redesign the page.
 - Weeks are ISO weeks (Monday to Sunday) in Europe/Amsterdam.
-- The overview's horizon is the coming eight weeks, unless clarify picks the buffer target larger
-  than that.
+- The overview's horizon is the coming eight weeks.
+- The overview is private to Sander and lives where the planning lives; it is not a page on the
+  public site.
+- The Friday check runs in the morning, Europe/Amsterdam. Creating the calendar event and the
+  scheduled check touches Sander's own accounts, so both are confirmed with him when they are
+  set up.
 - The publish step runs on Sander's machine with Claude, and uses the same pull request and quality
   gate as every other change. Sander reviews and merges the pull request himself.
 - Excerpts are drafted together with Claude and approved by Sander in the pull request.

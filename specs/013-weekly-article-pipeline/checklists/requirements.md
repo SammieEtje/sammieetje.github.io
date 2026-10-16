@@ -13,7 +13,7 @@
 
 ## Requirement Completeness
 
-- [ ] No [NEEDS CLARIFICATION] markers remain
+- [x] No [NEEDS CLARIFICATION] markers remain
 - [x] Requirements are testable and unambiguous
 - [x] Success criteria are measurable
 - [x] Success criteria are technology-agnostic (no implementation details)
@@ -41,3 +41,7 @@
   read by the public gate.
 - SC-003 is measured over the eight weeks after release, not at merge.
 - Validation passed on the first iteration, apart from the deliberate open markers.
+- Clarify (2026-10-16) settled all six questions: split pipeline (vault private, published
+  metadata public), keep 006, Tuesday 08:00, calendar event plus Friday check, buffer of two, no
+  public rhythm signal. New requirements got plain IDs (FR-025, FR-026) so the trace check can
+  reference them.
