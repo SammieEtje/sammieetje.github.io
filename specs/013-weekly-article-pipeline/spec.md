@@ -249,6 +249,12 @@ empty buffer.
   linking to LinkedIn as the place to read (spec 006); Sander's own copy of each text stays in the
   vault.
 
+- **FR-027**: While a series is still running, its articles MUST show "part n" ("deel n") without
+  a total, so the site does not reveal how many parts are planned. Once the last part is
+  published, every part shows "part n of total" as in 006:FR-006.
+- **FR-028**: An article written in Dutch MUST be marked as Dutch on the site (the language of its
+  title link), so assistive technology reads it correctly; English stays the default.
+
 **Guardrails**
 
 - **FR-012**: The quality gate MUST fail when two articles share a URL, and name both.
