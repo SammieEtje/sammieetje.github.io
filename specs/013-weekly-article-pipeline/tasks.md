@@ -16,14 +16,14 @@ failing first. Code carries `013:T###` comments.
 
 ## Phase 1: Foundation: weeks and notes
 
-- [ ] T001 [P] Write failing tests in `tests/unit/weeks.test.ts` for `src/site/weeks.ts`:
+- [X] T001 [P] Write failing tests in `tests/unit/weeks.test.ts` for `src/site/weeks.ts`:
   - `isoWeek('2026-10-16')` is `2026-W42`, `isoWeek('2026-06-02')` is `2026-W23`, and a year
     boundary case (`2026-12-31` → `2026-W53`, `2027-01-04` → `2027-W01`);
   - `slotOf('2026-W44')` is `2026-10-27` (the Tuesday, FR-020);
   - `todayIn('Europe/Amsterdam', now)` gives the Amsterdam date for `2026-10-16T22:30:00Z`
     (`2026-10-17`);
   - `weeksBetween('2026-W23', '2026-W42')` is 19.
-- [ ] T002 [P] Write failing tests in `tests/unit/pipeline-notes.test.ts` for
+- [X] T002 [P] Write failing tests in `tests/unit/pipeline-notes.test.ts` for
   `scripts/pipeline/notes.ts` against a temporary vault:
   - only notes with `platform: LinkedIn` and `type` `article` or `content`, outside `archive/`
     and `analytics/`, are read;
@@ -33,7 +33,7 @@ failing first. Code carries `013:T###` comments.
   - a note without `status` counts as `draft`; an unknown status is reported;
   - `writeFrontmatter` changes only the given keys and leaves the other frontmatter lines and the
     body byte for byte the same.
-- [ ] T003 Implement `src/site/weeks.ts` and `scripts/pipeline/notes.ts` (makes T001 and T002
+- [X] T003 Implement `src/site/weeks.ts` and `scripts/pipeline/notes.ts` (makes T001 and T002
   pass). Use `yaml` `parseDocument` for frontmatter so untouched keys keep their formatting.
 
 ## Phase 2: User Story 3: The gate catches the mistakes made by hand (P1)
@@ -41,7 +41,7 @@ failing first. Code carries `013:T###` comments.
 **Goal**: every listed mistake fails the gate with a message that names the article.
 **Independent test**: one broken fixture per rule fails; the real data passes.
 
-- [ ] T004 [P] [US3] Write failing tests in `tests/unit/article-rules.test.ts` for
+- [X] T004 [P] [US3] Write failing tests in `tests/unit/article-rules.test.ts` for
   `articleProblems(articles, today)` in `src/site/article-rules.ts`. One fixture per rule; each
   message starts with the article id:
   - duplicate `id`, duplicate `url` naming both articles (FR-012);
@@ -54,11 +54,11 @@ failing first. Code carries `013:T###` comments.
   - a record with a field outside the `Article` model, such as `body` or `text` (FR-011).
 
   Also: the real `articles` give no problems.
-- [ ] T005 [P] [US3] Rewrite `tests/unit/articles.test.ts` so it holds for any correct data
+- [X] T005 [P] [US3] Rewrite `tests/unit/articles.test.ts` so it holds for any correct data
   (FR-018). Replace "ten provided articles", "leave regulated without articles" and the single
   five-part series assertion with: unique ids, a complete series has parts `1..total`, and a
   running series (no total) has parts `1..n` without gaps. Keep the `elite-sports` date anchor.
-- [ ] T006 [US3] After T005 (same file), make `tests/e2e/writing.spec.ts` data-driven (FR-018). Every pillar without
+- [X] T006 [US3] After T005 (same file), make `tests/e2e/writing.spec.ts` data-driven (FR-018). Every pillar without
   articles shows the "in the works" text and every other pillar shows none. The series-line count
   equals the number of articles with a series. Every title link's `lang` equals its article's
   `titleLang(a)`, and every series line equals `seriesLabel(a, locale)`. Then add failing unit
@@ -66,14 +66,14 @@ failing first. Code carries `013:T###` comments.
   - `titleLang(a)` is `a.lang ?? 'en'`, so an article with `lang: 'nl'` gets `nl` (FR-028);
   - `seriesLabel(a, locale)` gives "Running the platform as a product · part 1 of 5" for a
     complete series and "<name> · part 2" / "<naam> · deel 2" without a total (FR-027).
-- [ ] T007 [US3] Implement `src/site/article-rules.ts` (makes T004 pass). In `src/site/articles.ts`
+- [X] T007 [US3] Implement `src/site/article-rules.ts` (makes T004 pass). In `src/site/articles.ts`
   add `lang?: 'en' | 'nl'` and optional `series.total` to `Article`, and the helpers `titleLang`
   and `seriesLabel` (makes the T006 unit tests pass).
-- [ ] T008 [US3] Update `src/components/WritingPage.astro` to use `titleLang(a)` on the title link
+- [X] T008 [US3] Update `src/components/WritingPage.astro` to use `titleLang(a)` on the title link
   (`data-spec="013:FR-028"`) and `seriesLabel(a, locale)` for the series line (the element keeps
   `data-spec="006:FR-006"`; a wrapper or the label span carries `013:FR-027`). Makes the T006 e2e
   tests pass.
-- [ ] T009 [US3] Prove each guard once by hand: break one real article per rule, run
+- [X] T009 [US3] Prove each guard once by hand: break one real article per rule, run
   `npm run test:unit`, see the named message, revert. Record the messages in quickstart.md.
 
 ## Phase 3: User Story 1: Sander sees what is next and where the gaps are (P1) 🎯 MVP
@@ -81,7 +81,7 @@ failing first. Code carries `013:T###` comments.
 **Goal**: one private overview of the coming eight weeks.
 **Independent test**: a fixture vault with notes in every state gives the expected table.
 
-- [ ] T010 [P] [US1] Write failing tests in `tests/unit/pipeline-overview.test.ts` for
+- [X] T010 [P] [US1] Write failing tests in `tests/unit/pipeline-overview.test.ts` for
   `overview(notes, today)` in `scripts/pipeline/overview.ts`, against fixture notes:
   - eight weeks from the current week (when today is on or before its Tuesday) or the next one;
   - each week is `covered`, `planned` (with title, pillar, status) or `gap` (FR-004);
@@ -91,11 +91,11 @@ failing first. Code carries `013:T###` comments.
   - two unpublished notes with the same `target_week` both show, and the week is `double-booked`;
   - "Needs attention" lists a note with an unknown status, a `ready` note without `target_week`
     or `words`, and a `published` note without `publish_date` or `linkedin_url` (FR-002).
-- [ ] T011 [P] [US1] Write a failing test in `tests/unit/pipeline-cli.test.ts`: `node
+- [X] T011 [P] [US1] Write a failing test in `tests/unit/pipeline-cli.test.ts`: `node
   scripts/pipeline.ts` with `ARTICLE_VAULT_DIR` unset or missing exits `2` with
   `ARTICLE_VAULT_DIR is not set or not readable`; with a fixture vault it prints the overview and
   exits `0`.
-- [ ] T012 [US1] Implement `scripts/pipeline/overview.ts`, `scripts/pipeline.ts` (subcommand
+- [X] T012 [US1] Implement `scripts/pipeline/overview.ts`, `scripts/pipeline.ts` (subcommand
   dispatch, text rendering as in contracts/pipeline-cli.md) and the `"pipeline": "node
   scripts/pipeline.ts"` script in `package.json` (makes T010 and T011 pass).
 
@@ -104,12 +104,12 @@ failing first. Code carries `013:T###` comments.
 **Goal**: a warning when fewer than two articles are ready.
 **Independent test**: zero, one and two ready notes give warning, warning, no warning.
 
-- [ ] T013 [P] [US4] Extend `tests/unit/pipeline-overview.test.ts`, failing first: the buffer line
+- [X] T013 [P] [US4] Extend `tests/unit/pipeline-overview.test.ts`, failing first: the buffer line
   reads `Buffer: ready <n> of 2.` and adds `WARNING: fewer than 2 articles are ready.` for n < 2
   (FR-019); a missed week stays missed and is not moved forward. Extend
   `tests/unit/pipeline-cli.test.ts`: `pipeline friday` names next Tuesday's ready article, or says
   `nothing is ready`, followed by the buffer line (FR-026).
-- [ ] T014 [US4] Implement the buffer line and the `friday` subcommand in
+- [X] T014 [US4] Implement the buffer line and the `friday` subcommand in
   `scripts/pipeline/overview.ts` and `scripts/pipeline.ts` (makes T013 pass).
 
 ## Phase 5: User Story 2: Registering a published article is one step (P1)
@@ -118,7 +118,7 @@ failing first. Code carries `013:T###` comments.
 **Independent test**: `verify` and `mark-published` behave as the contract says on fixtures; a dry
 run of the skill on a fixture produces a correct record.
 
-- [ ] T015 [P] [US2] Write failing tests in `tests/unit/pipeline-publish.test.ts` for `verify`
+- [X] T015 [P] [US2] Write failing tests in `tests/unit/pipeline-publish.test.ts` for `verify`
   and `markPublished` in `scripts/pipeline/publish.ts`:
   - `verify` fails when the note is not `ready`, when the date is outside `target_week` (message
     `<title>: published <date> is not in planned week <week> (<tuesday>)`, FR-014), when the URL
@@ -130,14 +130,14 @@ run of the skill on a fixture produces a correct record.
     to the week of the date;
   - `--backfill` accepts a URL that is already on the site with the same date, and refuses one
     whose site date differs or that is not on the site.
-- [ ] T016 [P] [US2] Write failing tests in `tests/unit/publish-skill.test.ts`:
+- [X] T016 [P] [US2] Write failing tests in `tests/unit/publish-skill.test.ts`:
   `.claude/skills/publish-article/SKILL.md` exists, names the steps from
   contracts/publish-skill.md in order (verify, excerpts, `npm run check`, one pull request,
   mark-published), and its commit and pull-request templates contain no `claude.ai/code`,
   `Claude-Session` or other session-link pattern (FR-024).
-- [ ] T017 [US2] Implement `scripts/pipeline/publish.ts` and the `verify` and `mark-published`
+- [X] T017 [US2] Implement `scripts/pipeline/publish.ts` and the `verify` and `mark-published`
   subcommands in `scripts/pipeline.ts` (makes T015 pass).
-- [ ] T018 [US2] Write `.claude/skills/publish-article/SKILL.md` from contracts/publish-skill.md
+- [X] T018 [US2] Write `.claude/skills/publish-article/SKILL.md` from contracts/publish-skill.md
   (makes T016 pass). Excerpt rules: original summary, at most two sentences per language
   (006:FR-007), the 012 style rules (FR-010). Include the "Changing an article later" section.
 
@@ -146,10 +146,10 @@ run of the skill on a fixture produces a correct record.
 **Goal**: a Tuesday calendar event and a Friday check.
 **Independent test**: both exist; a manual run of the Friday check reports correctly.
 
-- [ ] T019 [US5] Ask Sander to confirm, then create the recurring Google Calendar event "Publish
+- [X] T019 [US5] Ask Sander to confirm, then create the recurring Google Calendar event "Publish
   this week's article", every Tuesday 08:00–08:30 Europe/Amsterdam, with the publish steps in the
   description (FR-021).
-- [ ] T020 [US5] Ask Sander to confirm, then create the Friday 09:00 Europe/Amsterdam routine with
+- [X] T020 [US5] Ask Sander to confirm, then create the Friday 09:00 Europe/Amsterdam routine with
   `/schedule`. It checks out this repository and the vault repository, runs `npm ci` and `npm run
   pipeline -- friday` with `ARTICLE_VAULT_DIR` on the vault checkout, and notifies Sander
   (FR-026). If the routine cannot read the vault repository, install the local fallback instead
@@ -157,10 +157,10 @@ run of the skill on a fixture produces a correct record.
 
 ## Phase 7: Polish and cross-cutting
 
-- [ ] T021 [P] Write a failing test in `tests/unit/claude-md.test.ts`: `CLAUDE.md` exists, says the
+- [X] T021 [P] Write a failing test in `tests/unit/claude-md.test.ts`: `CLAUDE.md` exists, says the
   pipeline lives in the vault and is read through `om` and `ARTICLE_VAULT_DIR`, and contains no
   absolute path (`/Users/`, `~/`) (FR-025). Then write `CLAUDE.md`.
-- [ ] T022 [P] Write two privacy tests. They pass as soon as they run, so see each fail once on a
+- [X] T022 [P] Write two privacy tests. They pass as soon as they run, so see each fail once on a
   temporary change, then revert:
   - `tests/unit/no-rhythm-signal.test.ts`: no `ui` key or value in either language mentions
     publishing rhythm, cadence, streak or "every Tuesday", and the scorecard data has no such
@@ -169,15 +169,15 @@ run of the skill on a fixture produces a correct record.
     `target_week`, a `status: idea|draft|ready` frontmatter line, `linkedin_url:` or an absolute
     local path (`/Users/`), and every record in `articles` has only `Article` fields (FR-001,
     SC-005).
-- [ ] T023 [P] Add a "Publishing an article" section to `README.md`: the `/publish-article`
+- [X] T023 [P] Add a "Publishing an article" section to `README.md`: the `/publish-article`
   golden path, `npm run pipeline`, that the planning lives privately in the vault, and that
   article pull requests are content changes outside the Spec Kit flow (plan.md).
-- [ ] T024 Ask Sander to confirm, then bring the vault frontmatter in line through `npm run
+- [X] T024 Ask Sander to confirm, then bring the vault frontmatter in line through `npm run
   pipeline -- mark-published --backfill` for the published articles whose notes still lack
   `status: published`, `publish_date` or `linkedin_url` (the URLs and dates in
   `src/site/articles.ts`). Run `npm run pipeline` and show Sander the overview. Ask him which
   "Regulated and fast" article to give a `target_week` within the horizon (SC-006).
-- [ ] T025 Run `npm run check` and the quickstart privacy scan, and time `npm run pipeline` on the
+- [X] T025 Run `npm run check` and the quickstart privacy scan, and time `npm run pipeline` on the
   real vault (target under 2 seconds). Record the results in quickstart.md, open the pull request
   and confirm `quality-gate` passes.
 

@@ -24,8 +24,18 @@ Existing fields are reused under their current names; new fields are marked **ne
 | `linkedin_url` **new** | `https://www.linkedin.com/pulse/<slug>` | set by `mark-published` |
 
 Notes are in scope when they live in the content folder (not in `archive/` or `analytics/`),
-have `platform: LinkedIn`, and have `type` `article` or `content`. Short posts from the weeks with
-two posts are published history and only count as covered weeks.
+have `platform: LinkedIn` (any case), and have `type` `article`, `artikel` or `content`. Short
+posts (`type: post`) are out of scope; the pipeline is for Articles only.
+
+What the real vault needed (found during implement, 2026-10-16):
+
+- The older Dutch statuses are read as their equivalent: `gepubliceerd` → `published`,
+  `ingepland` and `scheduled` → `ready`, `geparkeerd` → `withdrawn`. Any other value is
+  `unknown` and listed under "Needs attention".
+- Notes may start with a byte order mark; it is accepted and kept on write.
+- A `publish_date` with a time (`2026-05-13 08:00`) counts by its date; a value that is no date is
+  listed under "Needs attention".
+- A note whose frontmatter is not valid YAML is listed, not skipped and not fatal.
 
 ### State transitions
 

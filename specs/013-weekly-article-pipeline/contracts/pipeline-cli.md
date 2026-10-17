@@ -21,7 +21,8 @@ Week      Tuesday     State    Article                                   Pillar 
 
 Missed: 19 weeks since the last article (2026-06-02, 2026-W23).
 Pillars without planned or published work: none.
-Needs attention: "<title>": ready without target_week.
+Needs attention:
+- "<title>": ready without target_week
 Buffer: ready 1 of 2. WARNING: fewer than 2 articles are ready.
 ```
 

@@ -2,7 +2,7 @@
 // 006:T004 TechDocs: articles grouped by pillar, linking out to LinkedIn (006:FR-001 – 006:FR-007)
 import type { Locale } from '../i18n/ui.ts';
 import { t } from '../i18n/utils.ts';
-import { articlesFor, pillars, series } from '../site/articles.ts';
+import { articlesFor, pillars, seriesLabel, titleLang } from '../site/articles.ts';
 
 interface Props {
   locale: Locale;
@@ -39,8 +39,9 @@ const formatDate = (iso: string) => date.format(new Date(`${iso}T00:00:00Z`));
               <li data-article={a.id} data-spec="006:FR-004">
                 <article aria-labelledby={`a-${a.id}`}>
                   <h3 id={`a-${a.id}`}>
-                    <a href={a.url} lang="en" rel="noopener" data-spec="006:FR-005">
-                      {a.title}
+                    <a href={a.url} lang={titleLang(a)} rel="noopener" data-spec="006:FR-005">
+                      {/* 013:T008 the title in the language it is written in (013:FR-028) */}
+                      <span data-spec="013:FR-028">{a.title}</span>
                       <span class="visually-hidden" lang={locale}>
                         {' '}
                         {t(locale, 'writing.onLinkedIn')}
@@ -53,8 +54,8 @@ const formatDate = (iso: string) => date.format(new Date(`${iso}T00:00:00Z`));
                   </p>
                   {a.series && (
                     <p class="series" data-spec="006:FR-006">
-                      {series[a.series.id].name[locale]} · {t(locale, 'writing.part')}{' '}
-                      {a.series.part} {t(locale, 'writing.of')} {a.series.total}
+                      {/* 013:T008 no total while the series runs (013:FR-027) */}
+                      <span data-spec="013:FR-027">{seriesLabel(a, locale)}</span>
                     </p>
                   )}
                   <p class="excerpt">{a.excerpt[locale]}</p>

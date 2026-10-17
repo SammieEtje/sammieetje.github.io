@@ -30,7 +30,9 @@ article on LinkedIn: `/publish-article <LinkedIn URL> [note title]`.
    Pull-request title `Add article: <title>`; body lists title, URL, date, pillar, series and both
    excerpts. No session links and no session trailers in either, also when the tooling adds one
    by default.
-7. **Mark published.** `npm run pipeline -- mark-published "<note>" --date … --url …`.
+7. **Mark published.** `npm run pipeline -- mark-published "<note>" --date … --url …`, then commit
+   only that note in the vault (`git -C "$ARTICLE_VAULT_DIR" commit … -- "<note file>"`). The
+   vault's post-commit hook pushes it, so the Friday check reads the current planning.
 8. **Report.** The pull-request link and the new overview (`npm run pipeline`). Sander reviews and
    merges.
 
