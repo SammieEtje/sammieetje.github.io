@@ -126,6 +126,23 @@ default chart at build time re-runs in the browser. The scorecard loads the live
 Each ships about 1 KB compressed. Every other page ships zero scripts, and a test keeps it that
 way.
 
+## Publishing an article
+
+<!-- 013:T023 The weekly publish step (013:FR-006) -->
+
+One LinkedIn Article a week, on Tuesday at 08:00. The planning (working titles, status, target
+weeks) stays private in Sander's notes; only published articles come into this repository.
+
+- `npm run pipeline` shows the coming eight weeks, gaps, missed weeks and the ready buffer. It
+  reads the notes from the directory in `ARTICLE_VAULT_DIR` and needs nothing else.
+- After publishing on LinkedIn, `/publish-article <url>` checks the article against the plan,
+  drafts the two-language excerpt with Sander, adds it to `src/site/articles.ts`, runs
+  `npm run check` and opens one pull request.
+- Article pull requests are content changes: they go through the same gate and review, without a
+  spec of their own.
+- The gate checks every article: unique LinkedIn Article URL, a real date that is not in the
+  future, a pillar, both languages, and excerpts of at most two sentences in the house style.
+
 ## Content
 
 The text and identity on this site describe a real person and are not licensed for reuse.

@@ -1,6 +1,6 @@
 // 006:T003 TechDocs: pillars, articles, links out, series (006:FR-001 – 006:FR-006, 006:SC-001, 006:SC-002)
 import { expect, test } from '@playwright/test';
-import { articles, articlesFor, pillars } from '../../src/site/articles.ts';
+import { articles, articlesFor, pillars, seriesLabel, titleLang } from '../../src/site/articles.ts';
 
 test.describe('TechDocs', () => {
   test('shows the four pillars with their introductions', async ({ page }) => {
@@ -49,13 +49,17 @@ test.describe('TechDocs', () => {
     await expect(page.locator('[data-article="elite-sports"] time')).toHaveText('9 March 2026');
   });
 
-  test('a pillar without articles says one is coming', async ({ page }) => {
+  // 013:T006 Data-driven, so a new article never fails on a count (013:FR-018)
+  test('a pillar without articles says one is coming, and only then', async ({ page }) => {
     await page.goto('/writing/');
-    const regulated = page.locator('#pillar-regulated');
-    await expect(regulated.locator('[data-article]')).toHaveCount(0);
-    await expect(regulated.locator('.soon')).toHaveText(
-      'An article on this theme is in the works.',
-    );
+    for (const p of pillars) {
+      const soon = page.locator(`#pillar-${p.id} .soon`);
+      if (articlesFor(p.id).length === 0) {
+        await expect(soon).toHaveText('An article on this theme is in the works.');
+      } else {
+        await expect(soon).toHaveCount(0);
+      }
+    }
   });
 
   test('series articles show the series name and part', async ({ page }) => {
@@ -63,7 +67,24 @@ test.describe('TechDocs', () => {
     await expect(
       page.locator('[data-article="shipped-platform"] [data-spec="006:FR-006"]'),
     ).toHaveText('Running the platform as a product · part 1 of 5');
-    await expect(page.locator('[data-spec="006:FR-006"]')).toHaveCount(5);
+    const inSeries = articles.filter((a) => a.series);
+    await expect(page.locator('[data-spec="006:FR-006"]')).toHaveCount(inSeries.length);
+    for (const a of inSeries) {
+      await expect(page.locator(`[data-article="${a.id}"] [data-spec="006:FR-006"]`)).toHaveText(
+        seriesLabel(a, 'en'),
+      );
+    }
+  });
+
+  // 013:T006 Each title is marked in the language it is written in (013:FR-028)
+  test('every title link carries the language of its article', async ({ page }) => {
+    await page.goto('/writing/');
+    for (const a of articles) {
+      await expect(
+        page.locator(`[data-article="${a.id}"] a[data-spec="006:FR-005"]`),
+      ).toHaveAttribute('lang', titleLang(a));
+    }
+    await expect(page.locator('[data-spec="013:FR-028"]')).toHaveCount(articles.length);
   });
 });
 

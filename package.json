@@ -18,6 +18,7 @@
     "typecheck": "astro check",
     "test:unit": "vitest run",
     "trace": "node scripts/trace-check.ts",
+    "pipeline": "node scripts/pipeline.ts",
     "test:e2e": "playwright test",
     "links": "linkinator ./dist --recurse --check-fragments --skip \"^https?://(?!localhost|127\\.0\\.0\\.1)\"",
     "budgets": "lhci collect && lhci upload && node scripts/quality-report.ts && lhci assert",

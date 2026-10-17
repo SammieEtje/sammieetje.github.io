@@ -1,6 +1,7 @@
 // 006:T002 Published articles, grouped by content pillar (006:FR-002 – 006:FR-007)
 // Titles, URLs and dates: public LinkedIn article metadata (fetched 2026-10-10); dates in
 // Europe/Amsterdam. Reading time: vault word count / 230, rounded up. Excerpts are original summaries.
+import { t } from '../i18n/utils.ts';
 import type { Locale } from '../i18n/ui.ts';
 
 type Text = Record<Locale, string>;
@@ -63,8 +64,11 @@ export interface Article {
   published: string;
   minutes: number;
   pillar: PillarId;
-  series?: { id: SeriesId; part: number; total: number };
+  // 013:T007 No total while a series is still running (013:FR-027)
+  series?: { id: SeriesId; part: number; total?: number };
   excerpt: Text;
+  // 013:T007 The language the article is written in; English unless set (013:FR-028)
+  lang?: Locale;
 }
 
 const pulse = (slug: string) => `https://www.linkedin.com/pulse/${slug}`;
@@ -208,4 +212,20 @@ export function articleById(id: string): Article {
   const article = articles.find((a) => a.id === id);
   if (!article) throw new Error(`Unknown article: ${id}`);
   return article;
+}
+
+// 013:T007 The language of an article's title and text (013:FR-028)
+export function titleLang(article: Article): Locale {
+  return article.lang ?? 'en';
+}
+
+// 013:T007 "part n of total" once a series is complete, "part n" while it runs (013:FR-027)
+export function seriesLabel(article: Article, locale: Locale): string {
+  if (!article.series) return '';
+  const { id, part, total } = article.series;
+  const position =
+    total === undefined
+      ? `${t(locale, 'writing.part')} ${part}`
+      : `${t(locale, 'writing.part')} ${part} ${t(locale, 'writing.of')} ${total}`;
+  return `${series[id].name[locale]} · ${position}`;
 }
