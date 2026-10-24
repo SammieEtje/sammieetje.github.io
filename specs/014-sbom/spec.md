@@ -27,6 +27,19 @@ versions it carried, and a visitor cannot see what the site is built from. This 
 record to the golden path, publishes it with the site, and lets the gate refuse a build whose record
 is missing or incomplete.
 
+## Clarifications
+
+### Session 2026-10-24
+
+- Q: Which components does the SBOM cover? → A: Everything installed: shipped dependencies and the
+  development tooling, in one SBOM, with tooling marked as not shipped.
+- Q: Does the SBOM also cover the GitHub Actions the pipeline runs? → A: Yes, as pipeline components
+  with their pinned commit, marked as not shipped.
+- Q: Does the SBOM record licences, and what if one is missing? → A: Record the licence where the
+  package declares one; a missing licence is shown but does not fail the gate.
+- Q: What does the scorecard page show about the SBOM besides the explanation and link? → A: Two
+  counts from the published SBOM: shipped components and pipeline components, rendered statically.
+
 ## User Scenarios & Testing *(mandatory)*
 
 ### User Story 1 - Every build produces a bill of materials (Priority: P1)
@@ -114,9 +127,12 @@ that resolves to the published SBOM.
 **Acceptance Scenarios**:
 
 1. **Given** the scorecard page in either language, **When** a visitor reads it, **Then** it explains
-   in one or two sentences what the SBOM is and links to it.
-2. **Given** a visitor without JavaScript, **When** they open the scorecard page, **Then** the link
-   to the SBOM is still there.
+   in one or two sentences what the SBOM is, links to it, and shows how many shipped and pipeline
+   components it lists.
+2. **Given** the published SBOM, **When** its components are counted, **Then** the counts equal
+   the ones the scorecard page shows.
+3. **Given** a visitor without JavaScript, **When** they open the scorecard page, **Then** the link
+   to the SBOM and both counts are still there.
 
 ### Edge Cases
 
@@ -145,30 +161,36 @@ that resolves to the published SBOM.
   package identifier (package URL) usable for vulnerability lookups. Development tooling MUST be
   marked as not shipped, so the SBOM answers both "do we ship X?" and "does X run anywhere in our
   pipeline?".
-- **FR-003**: The SBOM MUST identify the build it describes (the site, its version and the commit it
+- **FR-003**: The SBOM MUST also list every GitHub Action the pipeline workflows use, with the
+  commit it is pinned to and its release tag, marked as not shipped.
+- **FR-004**: The SBOM MUST record each component's licence where the package declares one; a
+  missing licence MUST NOT fail the gate, and the check MUST report how many components lack one.
+- **FR-005**: The SBOM MUST identify the build it describes (the site, its version and the commit it
   was built from) and MUST NOT contain local absolute paths or machine-specific details.
-- **FR-004**: The quality gate MUST fail when the SBOM cannot be generated, is not valid in the
+- **FR-006**: The quality gate MUST fail when the SBOM cannot be generated, is not valid in the
   CycloneDX format, omits an installed component or its version, or marks a shipped component as
   not shipped; the failure MUST name the cause.
-- **FR-005**: The local check command MUST generate and check the SBOM in the same way as the
+- **FR-007**: The local check command MUST generate and check the SBOM in the same way as the
   pipeline.
-- **FR-006**: The run summary MUST show the outcome of the SBOM check and the command to run it
+- **FR-008**: The run summary MUST show the outcome of the SBOM check and the command to run it
   locally.
-- **FR-007**: Every run MUST keep its SBOM with the run's results; runs on main MUST publish it with
+- **FR-009**: Every run MUST keep its SBOM with the run's results; runs on main MUST publish it with
   the deployed site at a stable address next to the quality report.
-- **FR-008**: The published SBOM and the published quality report MUST refer to the same build.
-- **FR-009**: The scorecard page MUST explain, in English and Dutch, what the SBOM is and link to the
-  published file, also without JavaScript.
-- **FR-010**: The README MUST describe the SBOM: what it contains, where it is published and how to
+- **FR-010**: The published SBOM and the published quality report MUST refer to the same build.
+- **FR-011**: The scorecard page MUST explain, in English and Dutch, what the SBOM is, link to the
+  published file and show two counts that match the published SBOM: shipped components and
+  pipeline components. All of it MUST be rendered statically, so it works without JavaScript.
+- **FR-012**: The README MUST describe the SBOM: what it contains, where it is published and how to
   generate and check it locally.
 
 ### Key Entities
 
 - **Bill of materials**: per build; identifies the site, version and commit; lists components.
-- **Component**: a package the build contains; has a name, an exact version, a package URL and,
-  where known, a licence.
+- **Component**: an npm package or a pipeline action the build uses; has a name, an exact version
+  (for an action, its pinned commit and release tag), a package URL, whether it is shipped and,
+  where declared, a licence.
 - **SBOM check**: per run; passes when the SBOM is valid and complete against the installed
-  dependencies, fails with a named cause otherwise.
+  dependencies and the actions in the workflows, fails with a named cause otherwise.
 
 ## Success Criteria *(mandatory)*
 
@@ -176,7 +198,7 @@ that resolves to the published SBOM.
 
 - **SC-001**: 100% of quality gate runs produce an SBOM; 0 deploys happen without one.
 - **SC-002**: 100% of installed components appear in the SBOM with their exact version, and 100% of
-  development tooling is marked as not shipped.
+  development tooling and pipeline actions are marked as not shipped.
 - **SC-003**: "Do we ship component X, and which version?" is answered from the published SBOM in
   under one minute, without access to the repository.
 - **SC-004**: The published SBOM always describes the build that is live: 0 mismatches with the
