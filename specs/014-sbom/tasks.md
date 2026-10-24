@@ -31,16 +31,16 @@ and every test is seen failing first. Code carries `014:T###` comments. Contract
 component is listed with its version, purl and correct scope, plus the pinned actions and the
 build's commit.
 
-- [ ] T003 [P] [US1] Write failing tests in `tests/unit/sbom.test.ts` for `markScope(bom, installed)`
-  with small fixtures of an npm SBOM and a hidden lockfile:
+- [ ] T003 [P] [US1] Write failing tests in `tests/unit/sbom-generate.test.ts` for
+  `markScope(bom, installed)` with small fixtures of an npm SBOM and a hidden lockfile:
   - an entry with `dev: true` gets `scope: "excluded"` and keeps `cdx:npm:package:development`;
   - entries with `devOptional: true` or no flag get `scope: "required"`, and the development
     property is removed when npm set it;
   - duplicates of one `name@version` at different paths are treated as one;
   - nested `node_modules/a/node_modules/b` paths resolve the name from the last segment unless
     `name` is set.
-- [ ] T004 [P] [US1] Write failing tests in `tests/unit/sbom.test.ts` for `pinnedActions(texts)` and
-  `actionComponent(action)`:
+- [ ] T004 [P] [US1] Write failing tests in `tests/unit/sbom-actions.test.ts` for
+  `pinnedActions(texts)` and `actionComponent(action)`:
   - `uses: actions/checkout@<40-hex> # v7.0.1` gives one action, with owner, repo, sha and tag;
   - a subpath action keeps its path in `name` and as a purl subpath;
   - the same action and commit in two workflows counts once;
@@ -50,35 +50,47 @@ build's commit.
   - each component follows data-model "Action component": `type: application`,
     `scope: excluded`, `purl` `pkg:github/<owner>/<repo>@<sha>`, `version` = tag, property
     `cdx:github:action:commit` = sha, and a `vcs` reference.
-- [ ] T005 [P] [US1] Write failing tests in `tests/unit/sbom.test.ts` for
+- [ ] T005 [P] [US1] Write failing tests in `tests/unit/sbom-stamp.test.ts` for
   `stamp(bom, { commit, repoUrl })`:
   - it adds `metadata.properties` entry `sammieetje:build:commit`;
   - it adds a `vcs` external reference on `metadata.component`;
-  - it is idempotent;
-  - the CLI takes its commit from the exported `currentCommit()`. Assert that `scripts/sbom.ts`
-    imports it from `./quality-report.ts`.
-- [ ] T006 [US1] Implement `markScope`, `pinnedActions`, `actionComponent` and `stamp` in
+  - it is idempotent.
+
+  Also test the shared build identity (FR-010):
+  - `scripts/sbom.ts` imports `currentCommit` from `./quality-report.ts`;
+  - with `GITHUB_SHA` set, `currentCommit()` returns exactly that value, so both files of one run
+    carry the same commit.
+- [ ] T006 [P] [US3] Write a failing e2e test in `tests/e2e/sbom.spec.ts` against the built site:
+  - `GET /quality/sbom.cdx.json` returns JSON with `bomFormat` `CycloneDX`;
+  - it has a `sammieetje:build:commit` property;
+  - it has at least one `required` and one `excluded` component.
+
+  This test is written here, before the CLI exists, so it is seen failing. US3 completes it.
+- [ ] T007 [US1] Implement `markScope`, `pinnedActions`, `actionComponent` and `stamp` in
   `scripts/sbom.ts`, with types from data-model.md (makes T003–T005 pass).
-- [ ] T007 [US1] Add the CLI to `scripts/sbom.ts`. It runs `npm sbom --sbom-format cyclonedx` with
-  `execFileSync`, reads `node_modules/.package-lock.json` and `.github/workflows/*.yml`, applies
-  T006, and writes `public/quality/sbom.cdx.json` pretty-printed with a trailing newline. On a
-  generation error it exits 1, prints npm's message and writes nothing. Add `"sbom":
-  "node scripts/sbom.ts"` to `package.json`, change `dev` to `npm run sbom && astro dev`, and
-  check the result by hand with quickstart steps 1–2.
+- [ ] T008 [US1] Add the CLI to `scripts/sbom.ts`:
+  - it runs `npm sbom --sbom-format cyclonedx` with `execFileSync`;
+  - it reads `node_modules/.package-lock.json` and `.github/workflows/*.yml` and applies T007;
+  - it writes `public/quality/sbom.cdx.json` pretty-printed with a trailing newline;
+  - on a generation error it exits 1, prints npm's message and writes nothing.
+
+  Add `"sbom": "node scripts/sbom.ts"` to `package.json`, and change `dev` to
+  `npm run sbom && astro dev`. Check the result by hand with quickstart steps 1–2, then run
+  `npm run sbom && npm run build && npx playwright test tests/e2e/sbom.spec.ts`. T006 now passes.
 
 ## Phase 4: User Story 2 - The gate refuses a build without a complete bill of materials (P1)
 
 **Independent test**: an invalid, incomplete or wrongly marked SBOM fails `npm run sbom` locally
-and in `checks`, naming the cause; the summary shows the check.
+and in `checks`, naming the cause. The summary shows the check.
 
-- [ ] T008 [P] [US2] Write failing tests in `tests/unit/sbom.test.ts` for `validate(bom)` against the
-  vendored schema:
+- [ ] T009 [P] [US2] Write failing tests in `tests/unit/sbom-validate.test.ts` for `validate(bom)`
+  against the vendored schema:
   - a minimal valid CycloneDX 1.5 document passes;
   - one without `bomFormat` fails, and so does one with a component lacking `name`;
   - formats `iri-reference` and `idn-email` do not make validation throw.
-- [ ] T009 [P] [US2] Write failing tests in `tests/unit/sbom.test.ts` for
-  `check(bom, installed, actions)`, returning data-model "SBOM check result". Each failure must
-  produce exactly the named problem:
+- [ ] T010 [P] [US2] Write failing tests in `tests/unit/sbom-check.test.ts` for
+  `check(bom, installed, actions)`, which returns data-model "SBOM check result". Each failure
+  must produce exactly the named problem:
   - a component missing for an installed `name@version` → `missing`;
   - a component that is not installed → `not installed`;
   - no `version` → `no version`;
@@ -91,12 +103,13 @@ and in `checks`, naming the cause; the summary shows the check.
   Also cover the passing and counting rules:
   - a missing licence leaves `passed` true and increments `counts.withoutLicence`;
   - `counts.shipped`, `counts.pipeline` and `counts.actions` are correct.
-- [ ] T010 [P] [US2] Write failing tests in `tests/unit/sbom.test.ts` for `renderSummary(result)`:
+- [ ] T011 [P] [US2] Write failing tests in `tests/unit/sbom-summary.test.ts` for
+  `renderSummary(result)`:
   - the heading `### Bill of materials`;
   - the four count rows from the contract;
   - the line `✅ Bill of materials complete and valid (CycloneDX 1.5).` when passing;
-  - on failure, `❌ Bill of materials incomplete or invalid.` and one line per problem.
-- [ ] T011 [P] [US2] Extend `tests/unit/workflow-policy.test.ts` with failing tests:
+  - on failure, the line `❌ Bill of materials incomplete or invalid.` and one line per problem.
+- [ ] T012 [P] [US2] Extend `tests/unit/workflow-policy.test.ts` with failing tests:
   - the `checks` job has a step `Bill of materials` with `id: sbom` and `run: npm run sbom`,
     after `Traceability` and before `Build`;
   - the summary step has `SBOM: ${{ steps.sbom.outcome }}` and a row with `npm run sbom`;
@@ -104,83 +117,83 @@ and in `checks`, naming the cause; the summary shows the check.
     upload steps;
   - `package.json` `check` runs `npm run sbom` after `npm run trace` and before `npm run build`.
     The existing parity test then covers the order in CI.
-- [ ] T012 [US2] Implement `validate` (Ajv with `ajv-formats`, the vendored schemas registered by
-  their file names, `iri-reference` and `idn-email` accepted), `check` and `renderSummary` in
-  `scripts/sbom.ts`. Wire them into the CLI: append the summary to `$GITHUB_STEP_SUMMARY` when it
-  is set, and set the exit status from `passed` (makes T008–T010 pass).
-- [ ] T013 [US2] Update `package.json` `check`, and add the step, the summary row and the artifact
-  upload to `.github/workflows/pipeline.yml` with `014:T013` comments (makes T011 pass). Run
-  quickstart step 3 (negative checks) by hand.
+- [ ] T013 [US2] Implement `validate`, `check` and `renderSummary` in `scripts/sbom.ts` (makes
+  T009–T011 pass):
+  - `validate` uses Ajv with `ajv-formats`, registers the vendored schemas by their file names,
+    and accepts `iri-reference` and `idn-email`;
+  - in the CLI, the summary is appended to `$GITHUB_STEP_SUMMARY` when it is set, and the exit
+    status follows `passed`.
+- [ ] T014 [US2] Update `check` in `package.json`, and add the step, the summary row and the
+  artifact upload to `.github/workflows/pipeline.yml` with `014:T014` comments (makes T012 pass).
+  Run quickstart step 3 (negative checks) by hand.
 
 ## Phase 5: User Story 3 - Visitors can inspect what the live site is built from (P2)
 
-**Independent test**: after `npm run build`, `dist/quality/sbom.cdx.json` exists and carries the
-same commit as the quality report of that run.
+**Independent test**: after `npm run build`, `dist/quality/sbom.cdx.json` exists (T006). It ships
+inside the `dist` artifact that was checked, so it carries the same commit as the quality report
+of that run.
 
-- [ ] T014 [US3] Write a failing e2e test in `tests/e2e/scorecard.spec.ts`:
-  - `GET /quality/sbom.cdx.json` on the built site returns JSON with `bomFormat` `CycloneDX`;
-  - it has a `sammieetje:build:commit` property;
-  - it has at least one `required` and one `excluded` component.
-
-  Also add a unit test in `tests/unit/sbom.test.ts` asserting that the pipeline's report job
-  packages the `dist` that came from `checks` (the `Get the tested build` download precedes
-  `Package site for Pages`), so the published SBOM is the checked one. Then make the e2e test pass
-  by running `npm run sbom` before `npm run build` (already wired by T013). Confirm that
-  `npm run links` accepts the new file.
+- [ ] T015 [US3] Add a guard test to `tests/unit/workflow-policy.test.ts`: in the `report` job,
+  `Get the tested build` (the `dist` download) comes before `Package site for Pages`, so the
+  published SBOM is the checked one (FR-009, FR-010). The test passes today. Prove it can fail by
+  temporarily swapping the two steps and seeing it fail, as in 011:T003. Then run `npm run links`
+  and confirm that it accepts `/quality/sbom.cdx.json`.
 
 ## Phase 6: User Story 4 - The site shows where to find it (P3)
 
 **Independent test**: the scorecard page in EN and NL shows the section, both counts and the link,
 also without JavaScript, and the counts equal the built file.
 
-- [ ] T015 [P] [US4] Write failing tests in `tests/unit/sbom.test.ts` for `sbomCounts(path)` in
-  `src/site/sbom.ts`:
+- [ ] T016 [P] [US4] Write failing tests in `tests/unit/sbom-counts.test.ts` for `sbomCounts(path)`
+  in `src/site/sbom.ts`:
   - it returns `{ shipped, pipeline }` from a fixture file;
   - it throws `Run \`npm run sbom\` first` when the file is missing.
-- [ ] T016 [P] [US4] Write failing e2e tests in `tests/e2e/scorecard.spec.ts` for `/scorecard/` and
+- [ ] T017 [P] [US4] Write failing e2e tests in `tests/e2e/scorecard.spec.ts` for `/scorecard/` and
   `/nl/scorecard/`:
   - a section with `data-spec="014:FR-011"`, a heading and text in the page's language;
   - two figures equal to the `required` and `excluded` counts in `dist/quality/sbom.cdx.json`;
   - a link with `href="/quality/sbom.cdx.json"`;
   - all of it visible in a context with `javaScriptEnabled: false`.
-- [ ] T017 [US4] Implement `sbomCounts` in `src/site/sbom.ts`. Add the `scorecard.sbom.heading`,
-  `scorecard.sbom.text`, `scorecard.sbom.shipped`, `scorecard.sbom.pipeline` and
-  `scorecard.sbom.link` strings in EN and NL to `src/i18n/ui.ts`. The copy must pass the style
-  guard (no em dashes, no contrasts, first person). Render the static section in
-  `src/components/ScorecardPage.astro` with `014:T017` and `data-spec="014:FR-011"` (makes T015
-  and T016 pass; the axe run stays at zero violations).
+- [ ] T018 [US4] Implement the scorecard section (makes T016 and T017 pass; the axe run stays at
+  zero violations):
+  - implement `sbomCounts` in `src/site/sbom.ts`;
+  - add the `scorecard.sbom.heading`, `scorecard.sbom.text`, `scorecard.sbom.shipped`,
+    `scorecard.sbom.pipeline` and `scorecard.sbom.link` strings in EN and NL to `src/i18n/ui.ts`.
+    The copy must pass the style guard: no em dashes, no contrasts, first person;
+  - render the static section in `src/components/ScorecardPage.astro` with `014:T018` and
+    `data-spec="014:FR-011"`.
 
 ## Phase 7: Polish & Cross-Cutting
 
-- [ ] T018 [P] Write a failing test in `tests/unit/sbom.test.ts` that `README.md` has a section
-  `## Bill of materials` mentioning `npm run sbom`, `/quality/sbom.cdx.json`, `CycloneDX` and
+- [ ] T019 Write a failing test in `tests/unit/repo-readme.test.ts`: `README.md` has a section
+  `## Bill of materials` that mentions `npm run sbom`, `/quality/sbom.cdx.json`, `CycloneDX` and
   `not shipped`, and a roadmap row for 014. Then write the section and the row in `README.md`
   (FR-012). The roadmap still ends at 011 marked `this PR`: set 011 to `live`, add 012 and 013
   as `live`, and add 014 as `this PR`.
-- [ ] T019 Run `npm run check` locally and see it pass end to end. Record the counts the summary
+- [ ] T020 Run `npm run check` locally and see it pass end to end. Record the counts the summary
   prints in the pull request description.
-- [ ] T020 Open the pull request. Then, after the owner merges, run quickstart steps 8–9 on the
-  live site and record the result in a follow-up docs commit.
+- [ ] T021 Open the pull request. After the owner merges, run quickstart steps 8–9 on the live site
+  and record the result in a follow-up docs commit.
 
 ## Dependencies & Execution Order
 
-- T001 → T002 → US1 (T003–T007) → US2 (T008–T013) → US3 (T014) → US4 (T015–T017) → Polish
-  (T018–T020).
-- US2 needs US1's file. US3 needs US2's pipeline step. US4 needs the built file from US3.
-- Within a phase, the `[P]` test tasks touch different `describe` blocks or files and can be
-  written together. The implementation tasks after them are sequential.
+- T001 → T002 → US1 (T003–T008, including the US3 e2e test T006) → US2 (T009–T014) → US3 (T015)
+  → US4 (T016–T018) → Polish (T019–T021).
+- US2 needs US1's file. US3's guard needs US2's pipeline step. US4 needs the built file.
+- Within a phase, the `[P]` test tasks write different files and can be done together. The
+  implementation tasks after them are sequential.
 
 ## Parallel Example: User Story 2
 
 ```text
-T008 validate tests  ┐
-T009 check tests     ├─ together, then T012 → T013
-T010 summary tests   │
-T011 workflow tests  ┘
+T009 validate tests  ┐
+T010 check tests     ├─ together, then T013 → T014
+T011 summary tests   │
+T012 workflow tests  ┘
 ```
 
 ## Implementation Strategy
 
 - **MVP**: Phases 1–3 (US1). `npm run sbom` produces a correct, queryable SBOM locally.
-- **Then**: US2 makes it a gate, US3 publishes it, and US4 makes it findable. Each is verifiable
-  on its own before the next starts. Everything ships in one pull request (constitution III).
+- **Then**: US2 makes it a gate, US3 guards publishing, and US4 makes it findable. Each can be
+  verified before the next starts. Everything ships in one pull request (constitution III).

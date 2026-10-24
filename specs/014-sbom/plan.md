@@ -69,9 +69,10 @@ src/i18n/ui.ts                        + scorecard.sbom.* strings, EN and NL
 package.json                          + "sbom"; check runs it before build; dev runs it first; + ajv, ajv-formats
 .gitignore, .prettierignore           + public/quality/sbom.cdx.json; + scripts/sbom-schema/
 README.md                             SBOM section; roadmap 014
-tests/unit/sbom.test.ts               new: fixtures for every rule in research R2–R5
+tests/unit/sbom-*.test.ts             new: generate, actions, stamp, validate, check, summary, counts
 tests/unit/workflow-policy.test.ts    + step order, summary row, artifact; check order
-tests/unit/readme.test.ts             + SBOM section
+tests/unit/repo-readme.test.ts        new: README SBOM section and roadmap
+tests/e2e/sbom.spec.ts                new: the published file on the built site
 tests/e2e/scorecard.spec.ts           + section, link and counts in both languages, without JavaScript
 ```
 

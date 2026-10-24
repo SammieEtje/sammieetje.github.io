@@ -172,8 +172,8 @@ that resolves to the published SBOM.
 - **FR-005**: The SBOM MUST identify the build it describes (the site, its version and the commit it
   was built from) and MUST NOT contain local absolute paths or machine-specific details.
 - **FR-006**: The quality gate MUST fail when the SBOM cannot be generated, is not valid in the
-  CycloneDX format, omits an installed component or its version, or marks a shipped component as
-  not shipped; the failure MUST name the cause.
+  CycloneDX format, omits an installed component or its version, or marks a component's shipped
+  status wrongly; the failure MUST name the cause.
 - **FR-007**: The local check command MUST generate and check the SBOM in the same way as the
   pipeline.
 - **FR-008**: The run summary MUST show the outcome of the SBOM check and the command to run it
@@ -216,8 +216,8 @@ that resolves to the published SBOM.
   for the pipeline. The owner chose (2026-10-24) one SBOM covering both, with tooling marked.
 - The package manager's built-in SBOM generation is acceptable if it meets the requirements; the
   plan decides the tool.
-- The stable address is a sibling of the published quality report, for example `/quality/sbom.json`;
-  the exact path is a plan decision.
+- The stable address is a sibling of the published quality report, `/quality/sbom.cdx.json`
+  (the plan chose CycloneDX's recommended extension).
 - Signing or attesting the SBOM and the build is out of scope; it is the next feature.
 - Earlier builds' SBOMs do not need to stay published; the run's kept results cover recent history
   (retention is a separate feature).
