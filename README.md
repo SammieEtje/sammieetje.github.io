@@ -31,6 +31,7 @@ audit needs network access to the npm advisory database):
 | `npm run typecheck`    | `astro check`, TypeScript strict, translation completeness           |
 | `npm run test:unit`    | Vitest: dictionaries, routes, metadata, trace check, workflow policy |
 | `npm run trace`        | Every `data-spec` and task reference exists in the specs             |
+| `npm run sbom`         | Bill of materials of the build: complete, correctly marked, valid    |
 | `npm run build`        | Static build into `dist/`                                            |
 | `npm run test:e2e`     | Playwright + axe: behaviour, both languages, both colour schemes     |
 | `npm run links`        | Internal links in the built site                                     |
@@ -89,6 +90,29 @@ Routine updates do not wait for a person; the quality gate approves them.
   - Development tooling is covered by Dependabot alerts and security updates.
   - Secret scanning with push protection is on.
 
+## Bill of materials
+
+Every build gets a software bill of materials (SBOM) in the CycloneDX 1.5 format, so the question
+"do we ship this component, and which version?" is answered by a query.
+
+- **What it contains**: every installed npm package with its exact version, package URL, hash and
+  declared licence, and every GitHub Action the workflows use, with its pinned commit and tag.
+  Packages a production install installs are marked `required`. Development tooling and the
+  pipeline actions are marked `excluded`: they run in the pipeline but are not shipped to visitors.
+  The site's commit is recorded in the metadata.
+- **The gate**: `npm run sbom` generates the file with `npm sbom`, then checks it against the
+  installed tree and the workflows and validates it against the official CycloneDX schema
+  (vendored in [`scripts/sbom-schema/`](scripts/sbom-schema/)). A missing or extra component, a
+  missing version, a wrong marking, an action without a tag or a local path in the file fails the
+  gate and names the cause. A missing licence is counted but does not fail it.
+- **Where it is**: the file is written to `public/quality/sbom.cdx.json`, ships inside the tested
+  build, and is published at
+  [`/quality/sbom.cdx.json`](https://sammieetje.github.io/quality/sbom.cdx.json), next to the
+  quality report and with the same commit. Every run also keeps it as the `sbom` artifact. The
+  [scorecard](https://sammieetje.github.io/scorecard/) shows the counts and links to it.
+- Local runs list the platform-specific binaries of your own machine; the published file always
+  comes from the pipeline.
+
 ## Spec-driven
 
 Every feature is built with [Spec Kit](https://github.com/github/spec-kit):
@@ -114,7 +138,10 @@ nowhere.
 | 008  | Playground: the path of least resistance  | live    |
 | 009  | Scorecard: live quality metrics           | live    |
 | 010  | Exact JavaScript measurement on scorecard | live    |
-| 011  | Automatic dependency updates              | this PR |
+| 011  | Automatic dependency updates              | live    |
+| 012  | Humanised site copy                       | live    |
+| 013  | Weekly article pipeline                   | live    |
+| 014  | Software bill of materials                | this PR |
 
 ## Stack
 

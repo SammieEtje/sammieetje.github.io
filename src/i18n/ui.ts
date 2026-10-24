@@ -73,6 +73,13 @@ const en = {
     'JavaScript: the compressed size of all script a page delivers, embedded in the page and in separate files.',
   'scorecard.within': 'within budget',
   'scorecard.over': 'over budget',
+  // 014:T018 The bill of materials (014:FR-011)
+  'scorecard.sbom.heading': 'Bill of materials',
+  'scorecard.sbom.text':
+    'Every build of this site comes with a software bill of materials in the CycloneDX standard. It lists each package with its exact version, and says whether it reaches visitors or only runs in the pipeline. When a vulnerability in a package becomes public, one look at this file tells me whether the site uses it.',
+  'scorecard.sbom.shipped': 'Shipped components',
+  'scorecard.sbom.pipeline': 'Pipeline components',
+  'scorecard.sbom.link': 'Download the bill of materials (JSON)',
   'footer.scorecard': 'Scorecard',
   'nav.playground.term': 'Playground',
   'nav.playground.subtitle': 'try it',
@@ -283,6 +290,12 @@ const nl: Record<UiKey, string> = {
     'JavaScript: de gecomprimeerde omvang van alle scripts die een pagina levert, in de pagina zelf en in aparte bestanden.',
   'scorecard.within': 'binnen budget',
   'scorecard.over': 'boven budget',
+  'scorecard.sbom.heading': 'Stuklijst',
+  'scorecard.sbom.text':
+    'Bij elke build van deze site hoort een software-stuklijst (SBOM) in de CycloneDX-standaard. Die noemt elk pakket met de exacte versie, en zegt of het bij bezoekers terechtkomt of alleen in de pipeline draait. Wordt er een kwetsbaarheid in een pakket bekend, dan zie ik in dit bestand meteen of de site het gebruikt.',
+  'scorecard.sbom.shipped': 'Componenten in de site',
+  'scorecard.sbom.pipeline': 'Componenten in de pipeline',
+  'scorecard.sbom.link': 'Download de stuklijst (JSON)',
   'footer.scorecard': 'Scorecard',
   'nav.playground.term': 'Speeltuin',
   'nav.playground.subtitle': 'probeer het',

@@ -4,6 +4,8 @@ import type { Locale } from '../i18n/ui.ts';
 import { t } from '../i18n/utils.ts';
 import { repoUrl, specsUrl } from '../site/build-info.ts';
 import { readSpecs, shippedSpecs } from '../site/specs.ts';
+import { formatNumber } from '../site/format.ts';
+import { sbomCounts, sbomUrl } from '../site/sbom.ts';
 
 interface Props {
   locale: Locale;
@@ -11,6 +13,7 @@ interface Props {
 
 const { locale } = Astro.props;
 const shipped = shippedSpecs(readSpecs()).length;
+const sbom = sbomCounts();
 const columns = [
   ['performance', 'scorecard.col.performance'],
   ['accessibility', 'scorecard.col.accessibility'],
@@ -100,6 +103,27 @@ const columns = [
     <!-- 010:T006 What the JavaScript value counts (010:FR-005) -->
     <p class="note" data-spec="010:FR-005">
       {t(locale, 'scorecard.jsNote')}
+    </p>
+  </section>
+
+  <!-- 014:T018 The bill of materials of this build, rendered at build time (014:FR-011) -->
+  <section class="sbom" aria-labelledby="sbom-title" data-spec="014:FR-011">
+    <h2 id="sbom-title">{t(locale, 'scorecard.sbom.heading')}</h2>
+    <p class="intro">{t(locale, 'scorecard.sbom.text')}</p>
+    <ul class="tiles">
+      <li>
+        <span class="label">{t(locale, 'scorecard.sbom.shipped')}</span>
+        <strong data-count="shipped">{formatNumber(sbom.shipped, locale)}</strong>
+      </li>
+      <li>
+        <span class="label">{t(locale, 'scorecard.sbom.pipeline')}</span>
+        <strong data-count="pipeline">{formatNumber(sbom.pipeline, locale)}</strong>
+      </li>
+    </ul>
+    <p>
+      <a href={sbomUrl} class="mono">
+        {t(locale, 'scorecard.sbom.link')}
+      </a>
     </p>
   </section>
 </div>
@@ -280,6 +304,15 @@ const columns = [
 
   .live[hidden] {
     display: none;
+  }
+
+  .sbom {
+    display: grid;
+    gap: var(--space-3);
+  }
+
+  .sbom h2 {
+    margin: 0;
   }
 
   .verdict {

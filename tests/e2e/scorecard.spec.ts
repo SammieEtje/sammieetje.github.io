@@ -1,6 +1,9 @@
 // 009:T007 Scorecard: renders the deployed report honestly (009:FR-006 – 009:FR-008, 009:FR-011, 009:SC-004)
+import { readFileSync } from 'node:fs';
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test, type Page } from '@playwright/test';
+import { formatNumber } from '../../src/site/format.ts';
+import type { Locale } from '../../src/i18n/ui.ts';
 import { readSpecs, shippedSpecs } from '../../src/site/specs.ts';
 
 const sha = '0123456789abcdef0123456789abcdef01234567';
@@ -186,3 +189,32 @@ for (const [path, text] of [
     await expect(page.locator('[data-spec="010:FR-005"]')).toContainText(text);
   });
 }
+
+// 014:T017 The scorecard says what the bill of materials is, how much it lists, and where it is (014:FR-011)
+test.describe('bill of materials on the scorecard', () => {
+  const bom = JSON.parse(readFileSync('dist/quality/sbom.cdx.json', 'utf8')) as {
+    components: { scope?: string }[];
+  };
+  const shipped = bom.components.filter((c) => c.scope === 'required').length;
+  const pipeline = bom.components.filter((c) => c.scope === 'excluded').length;
+  const format = (locale: Locale, n: number) => formatNumber(n, locale);
+
+  for (const [path, locale, heading] of [
+    ['/scorecard/', 'en', 'Bill of materials'],
+    ['/nl/scorecard/', 'nl', 'Stuklijst'],
+  ] as const) {
+    test(`${path}: shows the section, both counts and the link without JavaScript`, async ({
+      browser,
+    }) => {
+      const context = await browser.newContext({ javaScriptEnabled: false });
+      const page = await context.newPage();
+      await page.goto(path);
+      const section = page.locator('[data-spec="014:FR-011"]');
+      await expect(section.getByRole('heading', { name: heading })).toBeVisible();
+      await expect(section.locator('[data-count="shipped"]')).toHaveText(format(locale, shipped));
+      await expect(section.locator('[data-count="pipeline"]')).toHaveText(format(locale, pipeline));
+      await expect(section.locator('a[href="/quality/sbom.cdx.json"]')).toBeVisible();
+      await context.close();
+    });
+  }
+});
