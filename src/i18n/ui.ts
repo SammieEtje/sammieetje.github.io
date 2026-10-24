@@ -5,7 +5,6 @@ export const defaultLocale: Locale = 'en';
 
 const en = {
   'site.name': 'Sander Ettema',
-  'site.home': 'Sander Ettema, home',
   'skip.link': 'Skip to content',
   'nav.label': 'Primary',
   'nav.menu': 'Menu',
@@ -216,7 +215,6 @@ export type UiKey = keyof typeof en;
 
 const nl: Record<UiKey, string> = {
   'site.name': 'Sander Ettema',
-  'site.home': 'Sander Ettema, startpagina',
   'skip.link': 'Naar de inhoud',
   'nav.label': 'Hoofdmenu',
   'nav.menu': 'Menu',

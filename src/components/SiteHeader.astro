@@ -1,7 +1,6 @@
 ---
 // 001:T027 Top bar with site identity (001:FR-002)
 import type { Locale } from '../i18n/ui.ts';
-import { t } from '../i18n/utils.ts';
 import { routes } from '../site/routes.ts';
 import { profile } from '../site/profile.ts';
 
@@ -16,7 +15,8 @@ const home = routes[0]!.paths[locale];
 
 <header class="topbar" data-spec="001:FR-002">
   <div class="inner">
-    <a class="identity" href={home} aria-label={t(locale, 'site.home')}>
+    <!-- WCAG 2.5.3: no aria-label, so the link is named by the name it shows -->
+    <a class="identity" href={home}>
       <span class="mark mono" aria-hidden="true">
         {profile.initials}
       </span>

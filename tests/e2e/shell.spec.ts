@@ -10,6 +10,20 @@ test.describe('portal shell', () => {
     await expect(page.locator('[data-spec="001:FR-002"]')).not.toHaveCount(0);
   });
 
+  // WCAG 2.5.3 Label in Name: the home link is named by the text it shows (001:FR-002)
+  for (const path of ['/', '/nl/']) {
+    test(`${path}: the site name in the top bar is a link named by its visible name`, async ({
+      page,
+    }) => {
+      await page.goto(path);
+      const identity = page.locator('.topbar a.identity');
+      await expect(identity).not.toHaveAttribute('aria-label');
+      await expect(
+        page.locator('.topbar').getByRole('link', { name: 'Sander Ettema', exact: true }),
+      ).toBeVisible();
+    });
+  }
+
   test('navigation shows portal term and plain subtitle, and marks the current page', async ({
     page,
   }) => {
