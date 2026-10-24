@@ -62,7 +62,8 @@ for a known component returns its version.
 2. **Given** the SBOM of a run, **When** someone looks up a component the site ships, **Then** it is
    listed with its exact installed version and a package identifier that vulnerability databases use.
 3. **Given** the same commit, **When** the check runs locally or in the pipeline, **Then** both
-   produce an SBOM with the same components and versions.
+   produce an SBOM with the same components and versions, except platform-specific binaries
+   (packages built for one operating system or processor).
 
 ---
 
@@ -149,6 +150,9 @@ that resolves to the published SBOM.
   that built it.
 - A daily run without changes produces a fresh SBOM with the same components; only the generation
   time and build reference differ.
+- Local machines and the pipeline install different platform-specific binaries (for example a
+  macOS build of an image library on a laptop, the Linux build in CI). Each SBOM lists what its own
+  build installed; the published SBOM always comes from the pipeline.
 
 ## Requirements *(mandatory)*
 
