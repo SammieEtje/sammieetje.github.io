@@ -172,7 +172,7 @@ also without JavaScript, and the counts equal the built file.
   as `live`, and add 014 as `this PR`.
 - [x] T020 Run `npm run check` locally and see it pass end to end. Record the counts the summary
   prints in the pull request description.
-- [ ] T021 Open the pull request. After the owner merges, run quickstart steps 8–9 on the live site
+- [x] T021 Open the pull request. After the owner merges, run quickstart steps 8–9 on the live site
   and record the result in a follow-up docs commit.
 
 ## Dependencies & Execution Order
