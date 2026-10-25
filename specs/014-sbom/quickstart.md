@@ -31,3 +31,16 @@
 9. The live scorecard counts equal the counts in the live file.
 10. Optional: validate the live file with an independent CycloneDX tool, for example
     `cyclonedx validate`. It reports a valid 1.5 document.
+
+## Validation record (2026-10-25, after merge)
+
+The pipeline run on `main` for merge commit `735b65d` passed every job and deployed.
+
+- `https://sammieetje.github.io/quality/sbom.cdx.json` returns a CycloneDX 1.5 document with 718
+  components: 198 `required` and 520 `excluded`.
+- Its `sammieetje:build:commit` equals the `commit` in `/quality/report.json` (`735b65d…`).
+- `/scorecard/` and `/nl/scorecard/` show 198 shipped and 520 pipeline components, and both link
+  to the file.
+- Querying the live file: `astro 7.4.2 required`, `checkout v7.0.1 excluded`.
+- The local SBOM from the same commit listed 199 shipped components. The difference is the
+  platform-specific binaries (macOS on the laptop, Linux in CI), as expected by research R6.
