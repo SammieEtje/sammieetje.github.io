@@ -10,7 +10,8 @@
 the pipeline keeps its artifacts for 7 days and each deploy overwrites the quality report. Store
 the evidence of every deploy permanently and unalterably." Owner's choices on 2026-10-25: an
 immutable release per deploy plus a signed evidence record in the public transparency log; a full
-record including where the change came from; a fixed retention period of five years.
+record including where the change came from; a fixed retention period (two years, see
+Clarifications).
 
 ## Context
 
@@ -24,6 +25,16 @@ evidence have been altered afterwards? Can I follow one change from its pull req
 production? The site cannot answer those yet for anything older than a week. This feature keeps a
 complete, signed evidence record of every deploy. It lives somewhere that neither the pipeline nor
 the owner can quietly change, for a fixed period.
+
+## Clarifications
+
+### Session 2026-10-25
+
+- Q: Who switches on immutable releases? → A: Claude, through the API, with the owner's consent; it
+  was switched on the same day. The README and quickstart name it as a precondition.
+- Q: How do records appear in the release list? → A: As pre-releases tagged
+  `evidence/<date>-<run id>`, never marked latest.
+- Q: What is the exact retention period? → A: Two years from the deploy.
 
 ## User Scenarios & Testing *(mandatory)*
 
@@ -79,21 +90,21 @@ detectable trace.
 
 ---
 
-### User Story 3 - Evidence is kept for five years, and no longer (Priority: P2)
+### User Story 3 - Evidence is kept for two years, and no longer (Priority: P2)
 
-Records are kept for five years from their deploy. A scheduled clean-up removes older records,
+Records are kept for two years from their deploy. A scheduled clean-up removes older records,
 and only those, and logs what it removed.
 
 **Why this priority**: a fixed retention period is a policy the owner chose; it also bounds what
 the repository accumulates.
 
-**Independent Test**: with records older and younger than five years, the clean-up removes only
+**Independent Test**: with records older and younger than two years, the clean-up removes only
 the older ones, says which, and leaves the transparency log entries in place.
 
 **Acceptance Scenarios**:
 
-1. **Given** records younger than five years, **When** the clean-up runs, **Then** none is removed.
-2. **Given** a record older than five years, **When** the clean-up runs, **Then** it is removed and
+1. **Given** records younger than two years, **When** the clean-up runs, **Then** none is removed.
+2. **Given** a record older than two years, **When** the clean-up runs, **Then** it is removed and
    the run lists it by tag, deploy date and commit.
 3. **Given** a clean-up run, **When** it ends, **Then** its own run is the evidence of what was
    removed.
@@ -114,7 +125,7 @@ list of releases, and the verification command works on the latest record.
 **Acceptance Scenarios**:
 
 1. **Given** the scorecard in either language, **When** a visitor reads it, **Then** it explains the
-   records, the five-year retention and links to them, also without JavaScript.
+   records, the two-year retention and links to them, also without JavaScript.
 2. **Given** the README, **When** an auditor reads it, **Then** it states what a record contains,
    where it is, that it cannot be changed, and how to verify it.
 
@@ -129,8 +140,8 @@ list of releases, and the verification command works on the latest record.
 - A deploy triggered manually: the record names the person who started it.
 - Test result files that contain local paths or personal data: the record contains only what the
   pipeline publishes today, and is checked for local paths like the SBOM (014).
-- The five-year boundary falls between two scheduled clean-ups: the record is removed at the next
-  run after it turns five.
+- The two-year boundary falls between two scheduled clean-ups: the record is removed at the next
+  run after it turns two.
 
 ## Requirements *(mandatory)*
 
@@ -148,10 +159,11 @@ list of releases, and the verification command works on the latest record.
 - **FR-004**: A record MUST be signed with the pipeline's own identity, without a stored key, and
   logged in the public transparency log.
 - **FR-005**: A record MUST be stored as an immutable release, so its files and tag cannot be
-  changed, replaced, added to or moved after publication.
+  changed, replaced, added to or moved after publication. It MUST be a pre-release tagged
+  `evidence/<date>-<run id>` and MUST NOT be marked as the latest release.
 - **FR-006**: Only the job that publishes records MAY have permission to create releases, and only
   on main; only the clean-up job MAY delete them.
-- **FR-007**: Records MUST be kept for five years from their deploy. A scheduled clean-up MUST
+- **FR-007**: Records MUST be kept for two years from their deploy. A scheduled clean-up MUST
   remove records older than that, only those, and MUST list each removed record by tag, date and
   commit in its run.
 - **FR-008**: The record MUST NOT contain local absolute paths or stored secrets; a record that
@@ -175,19 +187,19 @@ list of releases, and the verification command works on the latest record.
 - **SC-001**: 100% of deploys from main have exactly one evidence record within 15 minutes of going
   live.
 - **SC-002**: 0 changes to a published record's files or tag succeed.
-- **SC-003**: For any live version in the past five years, an auditor finds its record and follows
+- **SC-003**: For any live version in the past two years, an auditor finds its record and follows
   it to the pull request in under five minutes.
-- **SC-004**: 0 records older than five years remain after the next scheduled clean-up; 0 younger
+- **SC-004**: 0 records older than two years remain after the next scheduled clean-up; 0 younger
   records are removed.
 - **SC-005**: The feature adds 0 stored secrets and 0 client-side JavaScript.
 
 ## Assumptions
 
-- The repository setting for immutable releases is switched on by the owner's decision. It is off
-  today; whether the pipeline or the owner switches it on is a clarify question.
+- The repository setting for immutable releases is on (switched on 2026-10-25 with the owner's
+  consent). Records rely on it; the README names it as a precondition.
 - Removing an immutable release is possible; its tag name then cannot be reused, and its
   transparency log entry stays.
-- About two deploys a day (push and daily run) give about 730 releases a year at roughly 1–2 MB
+- About two deploys a day (push and daily run) give about 730 releases a year, about 1,460 kept at any time, at roughly 1–2 MB
   each.
 - Retaining data beyond the platform's own guarantees (for example an off-platform copy) is out of
   scope.
