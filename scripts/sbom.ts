@@ -7,6 +7,7 @@ import { dirname, join } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { Ajv, type ValidateFunction } from 'ajv';
 import addFormatsModule from 'ajv-formats';
+import { LOCAL_PATH } from './local-path.ts';
 import { currentCommit } from './quality-report.ts';
 
 // ajv-formats is CommonJS: its default export arrives as the module object under Node's ESM loader.
@@ -204,8 +205,6 @@ export interface CheckResult {
 }
 
 const ACTION_REF = 'github-action:';
-// 016:T001 Shared with the evidence record (016:FR-008)
-export const LOCAL_PATH = /\/Users\/|\/home\/|[A-Za-z]:\\\\/;
 const actionKey = (a: Action) => `${a.owner}/${a.repo}${a.path ? `/${a.path}` : ''}@${a.sha}`;
 
 /** Complete and correct against the installed tree and the workflows; every gap is named. */
