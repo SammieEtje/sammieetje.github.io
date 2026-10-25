@@ -87,7 +87,8 @@ describe('pipeline.yml', () => {
   });
 
   // 015:T004 A signing job between the gate and the deploy (015:FR-002, 015:FR-005)
-  it('has checks, three budget shards, a report, the gate, a signing job and a deploy', () => {
+  // 016:T004 ...and the evidence record last (016:FR-001)
+  it('has checks, budget shards, a report, the gate, signing, a deploy and the evidence', () => {
     expect(Object.keys(jobs)).toEqual([
       'checks',
       'budgets',
@@ -95,6 +96,7 @@ describe('pipeline.yml', () => {
       'quality-gate',
       'sign',
       'deploy',
+      'evidence',
     ]);
     expect(jobs['budgets']?.strategy?.matrix?.shard).toEqual(['1/3', '2/3', '3/3']);
     expect([jobs['budgets']?.needs].flat()).toEqual(['checks']);
@@ -262,9 +264,10 @@ describe('signing job', () => {
     });
   });
 
-  it('is the only job that can sign', () => {
+  // 016:T010 The evidence job signs its own record too; no other job may (016:FR-004)
+  it('is, with the evidence job, the only job that can sign', () => {
     for (const [name, job] of Object.entries(jobs)) {
-      if (name === 'sign') continue;
+      if (name === 'sign' || name === 'evidence') continue;
       expect(job.permissions?.['attestations'], name).toBeUndefined();
       if (name !== 'deploy') expect(job.permissions?.['id-token'], name).toBeUndefined();
     }
@@ -343,5 +346,106 @@ describe('links check', () => {
       '/quality/manifest\\.sha256$',
       '/quality/[^/]+\\.sigstore\\.json$',
     ]);
+  });
+});
+
+// 016:T004 The evidence record: after a live deploy, main only, the permissions it needs (016:FR-001, 016:FR-004, 016:FR-006)
+describe('evidence job', () => {
+  type EvidenceStep = Step & { name?: string; with?: Record<string, string | boolean> };
+  const jobs = (pipeline?.jobs ?? {}) as Record<string, Job>;
+  const evidence = jobs['evidence'];
+  const steps = (evidence?.steps ?? []) as EvidenceStep[];
+  const names = steps.map((s) => s.name);
+
+  it('runs only after a deploy, on main only', () => {
+    expect([evidence?.needs].flat()).toEqual(['deploy']);
+    expect(evidence?.if).toBe(jobs['deploy']?.if);
+  });
+
+  it('has exactly the permissions a record needs', () => {
+    expect(evidence?.permissions).toEqual({
+      contents: 'write',
+      actions: 'read',
+      checks: 'read',
+      'pull-requests': 'read',
+      'id-token': 'write',
+      attestations: 'write',
+    });
+  });
+
+  it('follows the contract: published files, test results, record, signature', () => {
+    expect(names.slice(0, 7)).toEqual([
+      'Check out',
+      'Set up Node',
+      'Get the published site',
+      'Take the published evidence files',
+      'Get the test results',
+      'Write the record',
+      'Sign the record',
+    ]);
+    expect(steps[0]?.with?.['persist-credentials']).toBe(false);
+    expect(steps.find((s) => s.name === 'Get the published site')?.with?.['name']).toBe(
+      'github-pages',
+    );
+    expect(steps.find((s) => s.name === 'Write the record')?.run).toBe(
+      'node scripts/evidence.ts record evidence',
+    );
+    const sign = steps.find((s) => s.name === 'Sign the record');
+    expect(sign?.uses).toBe('actions/attest@1e69f48acb82d1966a394da916b4c1698aa569d6');
+    expect(sign?.with).toEqual({ 'subject-path': 'evidence/*' });
+  });
+});
+
+// 016:T008 Published, then verified; and no other pipeline job can write to the repository (016:FR-005, 016:FR-006)
+describe('evidence publishing', () => {
+  type NamedStep = Step & { name?: string };
+  const jobs = (pipeline?.jobs ?? {}) as Record<string, Job>;
+  const steps = (jobs['evidence']?.steps ?? []) as NamedStep[];
+  const names = steps.map((s) => s.name);
+
+  it('publishes the record, then verifies it, after signing', () => {
+    expect(names.slice(-2)).toEqual(['Publish the record', 'Verify the release']);
+    expect(steps.at(-2)?.run).toBe('node scripts/evidence.ts publish evidence');
+    expect(steps.at(-1)?.run).toBe('node scripts/evidence.ts verify evidence');
+    expect(names.indexOf('Publish the record')).toBeGreaterThan(names.indexOf('Sign the record'));
+  });
+
+  it('gives write access to the repository to the evidence job only', () => {
+    for (const [name, job] of Object.entries(jobs)) {
+      if (name !== 'evidence') expect(job.permissions?.['contents'], name).not.toBe('write');
+    }
+  });
+});
+
+// 016:T012 The weekly clean-up is the only place that deletes releases (016:FR-006, 016:FR-007)
+describe('evidence retention workflow', () => {
+  interface Retention {
+    on: { schedule?: { cron: string }[]; workflow_dispatch?: unknown };
+    permissions?: Record<string, string>;
+    jobs: Record<string, Job>;
+  }
+  const retention = workflows.find((w) => w.file === 'evidence-retention.yml');
+  const wf = retention?.wf as unknown as Retention | undefined;
+
+  it('runs weekly and by hand', () => {
+    expect(wf?.on.schedule).toHaveLength(1);
+    expect(wf?.on.schedule?.[0]?.cron).toMatch(/^\d+ \d+ \* \* [0-6]$/);
+    expect(wf?.on).toHaveProperty('workflow_dispatch');
+  });
+
+  it('has one clean-up job that may write contents and nothing else', () => {
+    expect(wf?.permissions).toEqual({});
+    expect(Object.keys(wf?.jobs ?? {})).toEqual(['clean-up']);
+    expect(wf?.jobs['clean-up']?.permissions).toEqual({ contents: 'write' });
+    expect((wf?.jobs['clean-up']?.steps ?? []).map((s) => s.run ?? '').join('\n')).toContain(
+      'node scripts/evidence.ts clean-up',
+    );
+  });
+
+  it('is the only workflow that deletes releases', () => {
+    for (const { file, text } of workflows) {
+      if (file !== 'evidence-retention.yml') expect(text, file).not.toContain('release delete');
+    }
+    expect(readFileSync('scripts/evidence.ts', 'utf8')).toContain("'release', 'delete'");
   });
 });

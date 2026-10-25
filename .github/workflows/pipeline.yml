@@ -334,3 +334,62 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5.0.1
+
+  # 016:T010 One immutable, signed evidence record per live deploy: every job and step, the
+  # published files, the test results and where the change came from. Main only (016:FR-001 – 016:FR-006)
+  evidence:
+    name: evidence
+    needs: deploy
+    if: ${{ github.event_name != 'pull_request' && github.ref == 'refs/heads/main' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+      actions: read
+      checks: read
+      pull-requests: read
+      id-token: write
+      attestations: write
+    steps:
+      - name: Check out
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Set up Node
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+      - name: Get the published site
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: github-pages
+          path: published
+      # The files exactly as Pages serves them, from the artifact that was deployed
+      - name: Take the published evidence files
+        run: |
+          mkdir -p evidence
+          tar -xf published/artifact.tar -C evidence --strip-components=2 ./quality
+          ls -l evidence
+      - name: Get the test results
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: test-reports
+          path: reports
+      - name: Write the record
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: node scripts/evidence.ts record evidence
+      - name: Sign the record
+        id: record
+        uses: actions/attest@1e69f48acb82d1966a394da916b4c1698aa569d6 # v4.2.2
+        with:
+          subject-path: evidence/*
+      - name: Publish the record
+        env:
+          GH_TOKEN: ${{ github.token }}
+          BUNDLE_PATH: ${{ steps.record.outputs.bundle-path }}
+        run: node scripts/evidence.ts publish evidence
+      - name: Verify the release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: node scripts/evidence.ts verify evidence

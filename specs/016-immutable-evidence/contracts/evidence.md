@@ -14,17 +14,17 @@
 Its steps, in order:
 
 1. `Check out` (`persist-credentials: false`) and `Set up Node`;
-2. `Get the published site` (artifact `github-pages`), then extract `quality/` from `artifact.tar`
-   into `evidence/`;
+2. `Get the published site` (artifact `github-pages`), then `Take the published evidence files`:
+   extract `quality/` from `artifact.tar` into `evidence/`;
 3. `Get the test results` (artifact `test-reports` into `reports/`);
 4. `Write the record`: `node scripts/evidence.ts record evidence`, with `GH_TOKEN` set to the
    workflow token. It writes `evidence/evidence.json` and the normalised `unit.json` and
    `e2e.json`, and checks every asset for local paths;
 5. `Sign the record`: `actions/attest` (same pin as 015) with `subject-path: evidence/*`;
-6. `Publish the record`: copies the bundle to `evidence/evidence.sigstore.json`, then runs
-   `gh release create <tag> evidence/* --prerelease --latest=false --target <sha> --title …
-   --notes-file …`;
-7. `Verify the release`: `gh release verify <tag>`, plus
+6. `Publish the record`: `node scripts/evidence.ts publish evidence` copies the bundle to
+   `evidence/evidence.sigstore.json`, then runs `gh release create <tag> <every file>
+   --prerelease --latest=false --target <sha> --title … --notes-file …`;
+7. `Verify the release`: `node scripts/evidence.ts verify evidence` runs `gh release verify <tag>`, plus
    `gh attestation verify evidence/evidence.json --bundle evidence/evidence.sigstore.json` with
    the 015 signer arguments.
 

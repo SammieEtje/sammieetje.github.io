@@ -52,6 +52,32 @@ describe('README provenance', () => {
   it('lists 014 as live and 015 as this PR', () => {
     const roadmap = section('Roadmap');
     expect(roadmap).toMatch(/\| 014 +\|[^\n]*\| live +\|/);
-    expect(roadmap).toMatch(/\| 015 +\|[^\n]*\| this PR +\|/);
+    expect(roadmap).toMatch(/\| 015 +\|[^\n]*\| (this PR|live) +\|/);
+  });
+});
+
+// 016:T014 The README describes the evidence records (016:FR-009)
+describe('README evidence', () => {
+  it('has an evidence section: where, immutable, two years, how to verify', () => {
+    const evidence = section('Evidence');
+    for (const term of [
+      'evidence/',
+      'immutable',
+      'two years',
+      'gh attestation verify',
+      'gh release verify',
+    ]) {
+      expect(evidence, term).toContain(term);
+    }
+  });
+
+  it('shows the evidence job last in the pipeline diagram', () => {
+    expect(section('Pipeline')).toMatch(/sign ──► deploy ──► evidence/);
+  });
+
+  it('lists 015 as live and 016 as this PR', () => {
+    const roadmap = section('Roadmap');
+    expect(roadmap).toMatch(/\| 015 +\|[^\n]*\| live +\|/);
+    expect(roadmap).toMatch(/\| 016 +\|[^\n]*\| this PR +\|/);
   });
 });

@@ -6,6 +6,7 @@ import { formatNumber } from '../../src/site/format.ts';
 import type { Locale } from '../../src/i18n/ui.ts';
 import { readSpecs, shippedSpecs } from '../../src/site/specs.ts';
 import { statements, visitorCommands } from '../../src/site/provenance.ts';
+import { evidenceCommands, releasesUrl } from '../../src/site/evidence.ts';
 
 const sha = '0123456789abcdef0123456789abcdef01234567';
 const good = { performance: 1, accessibility: 1, 'best-practices': 1, seo: 1 };
@@ -238,6 +239,27 @@ test.describe('signed provenance on the scorecard', () => {
         await expect(section.locator(`a[href="/${file}"]`)).toHaveCount(1);
       }
       await expect(section.locator('pre code')).toHaveText(visitorCommands());
+      await context.close();
+    });
+  }
+});
+
+// 016:T014 The scorecard says where the evidence of every deploy is and how to check it (016:FR-009)
+test.describe('evidence records on the scorecard', () => {
+  for (const [path, heading] of [
+    ['/scorecard/', 'Evidence of every deploy'],
+    ['/nl/scorecard/', 'Bewijs van elke uitrol'],
+  ] as const) {
+    test(`${path}: explains, links to the records and shows the check, without JavaScript`, async ({
+      browser,
+    }) => {
+      const context = await browser.newContext({ javaScriptEnabled: false });
+      const page = await context.newPage();
+      await page.goto(path);
+      const section = page.locator('[data-spec="016:FR-009"]');
+      await expect(section.getByRole('heading', { name: heading })).toBeVisible();
+      await expect(section.locator(`a[href="${releasesUrl}"]`)).toHaveCount(1);
+      await expect(section.locator('pre code')).toHaveText(evidenceCommands());
       await context.close();
     });
   }
