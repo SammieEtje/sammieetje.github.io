@@ -5,6 +5,7 @@ import { expect, test, type Page } from '@playwright/test';
 import { formatNumber } from '../../src/site/format.ts';
 import type { Locale } from '../../src/i18n/ui.ts';
 import { readSpecs, shippedSpecs } from '../../src/site/specs.ts';
+import { statements, visitorCommands } from '../../src/site/provenance.ts';
 
 const sha = '0123456789abcdef0123456789abcdef01234567';
 const good = { performance: 1, accessibility: 1, 'best-practices': 1, seo: 1 };
@@ -214,6 +215,29 @@ test.describe('bill of materials on the scorecard', () => {
       await expect(section.locator('[data-count="shipped"]')).toHaveText(format(locale, shipped));
       await expect(section.locator('[data-count="pipeline"]')).toHaveText(format(locale, pipeline));
       await expect(section.locator('a[href="/quality/sbom.cdx.json"]')).toBeVisible();
+      await context.close();
+    });
+  }
+});
+
+// 015:T015 The scorecard says what the provenance proves and how anyone verifies it (015:FR-010)
+test.describe('signed provenance on the scorecard', () => {
+  for (const [path, heading] of [
+    ['/scorecard/', 'Signed provenance'],
+    ['/nl/scorecard/', 'Ondertekende herkomst'],
+  ] as const) {
+    test(`${path}: explains, links and shows the commands without JavaScript`, async ({
+      browser,
+    }) => {
+      const context = await browser.newContext({ javaScriptEnabled: false });
+      const page = await context.newPage();
+      await page.goto(path);
+      const section = page.locator('[data-spec="015:FR-010"]');
+      await expect(section.getByRole('heading', { name: heading })).toBeVisible();
+      for (const file of new Set(statements.flatMap((s) => [s.subject, s.bundle]))) {
+        await expect(section.locator(`a[href="/${file}"]`)).toHaveCount(1);
+      }
+      await expect(section.locator('pre code')).toHaveText(visitorCommands());
       await context.close();
     });
   }

@@ -24,9 +24,34 @@ describe('README', () => {
 
   it('lists 014 on the roadmap and no older spec as this PR', () => {
     const roadmap = section('Roadmap');
-    expect(roadmap).toMatch(/\| 014 +\|[^\n]*\| this PR +\|/);
+    expect(roadmap).toMatch(/\| 014 +\|[^\n]*\| (this PR|live) +\|/);
     for (const spec of ['011', '012', '013']) {
       expect(roadmap).toMatch(new RegExp(`\\| ${spec} +\\|[^\\n]*\\| live +\\|`));
     }
+  });
+});
+
+// 015:T016 The README describes the provenance and shows sign in the pipeline (015:FR-011)
+describe('README provenance', () => {
+  it('has a provenance section: what is signed, where, and how to verify without an account', () => {
+    const provenance = section('Provenance');
+    for (const term of [
+      'manifest.sha256',
+      'sigstore.json',
+      'gh attestation verify',
+      'no account',
+    ]) {
+      expect(provenance, term).toContain(term);
+    }
+  });
+
+  it('shows the signing job in the pipeline diagram', () => {
+    expect(section('Pipeline')).toMatch(/quality-gate ──► sign ──► deploy/);
+  });
+
+  it('lists 014 as live and 015 as this PR', () => {
+    const roadmap = section('Roadmap');
+    expect(roadmap).toMatch(/\| 014 +\|[^\n]*\| live +\|/);
+    expect(roadmap).toMatch(/\| 015 +\|[^\n]*\| this PR +\|/);
   });
 });

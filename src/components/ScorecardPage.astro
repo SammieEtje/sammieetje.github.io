@@ -6,6 +6,7 @@ import { repoUrl, specsUrl } from '../site/build-info.ts';
 import { readSpecs, shippedSpecs } from '../site/specs.ts';
 import { formatNumber } from '../site/format.ts';
 import { sbomCounts, sbomUrl } from '../site/sbom.ts';
+import { statements, visitorCommands } from '../site/provenance.ts';
 
 interface Props {
   locale: Locale;
@@ -14,6 +15,7 @@ interface Props {
 const { locale } = Astro.props;
 const shipped = shippedSpecs(readSpecs()).length;
 const sbom = sbomCounts();
+const signedFiles = [...new Set(statements.flatMap((s) => [s.subject, s.bundle]))];
 const columns = [
   ['performance', 'scorecard.col.performance'],
   ['accessibility', 'scorecard.col.accessibility'],
@@ -125,6 +127,22 @@ const columns = [
         {t(locale, 'scorecard.sbom.link')}
       </a>
     </p>
+  </section>
+
+  <!-- 015:T017 How every deploy is signed and how anyone checks it, rendered at build time (015:FR-010) -->
+  <section class="provenance" aria-labelledby="provenance-title" data-spec="015:FR-010">
+    <h2 id="provenance-title">{t(locale, 'scorecard.provenance.heading')}</h2>
+    <p class="intro">{t(locale, 'scorecard.provenance.text')}</p>
+    <h3>{t(locale, 'scorecard.provenance.files')}</h3>
+    <ul class="files mono">
+      {signedFiles.map((file) => (
+        <li>
+          <a href={`/${file}`}>{file}</a>
+        </li>
+      ))}
+    </ul>
+    <h3 id="provenance-commands">{t(locale, 'scorecard.provenance.commands')}</h3>
+    <pre tabindex="0" aria-labelledby="provenance-commands"><code>{visitorCommands()}</code></pre>
   </section>
 </div>
 
@@ -313,6 +331,38 @@ const columns = [
 
   .sbom h2 {
     margin: 0;
+  }
+
+  .provenance {
+    display: grid;
+    gap: var(--space-3);
+  }
+
+  .provenance h2,
+  .provenance h3 {
+    margin: 0;
+  }
+
+  .provenance h3 {
+    font-size: var(--text-base);
+  }
+
+  .files {
+    margin: 0;
+    padding-left: var(--space-6);
+    font-size: var(--text-sm);
+    overflow-wrap: anywhere;
+  }
+
+  .provenance pre {
+    margin: 0;
+    padding: var(--space-4);
+    overflow-x: auto;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: calc(var(--radius) * 2);
+    font-size: var(--text-xs);
+    line-height: 1.6;
   }
 
   .verdict {

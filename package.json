@@ -21,7 +21,7 @@
     "sbom": "node scripts/sbom.ts",
     "pipeline": "node scripts/pipeline.ts",
     "test:e2e": "playwright test",
-    "links": "linkinator ./dist --recurse --check-fragments --skip \"^https?://(?!localhost|127\\.0\\.0\\.1)\"",
+    "links": "linkinator ./dist --recurse --check-fragments --skip \"^https?://(?!localhost|127\\.0\\.0\\.1)\" --skip \"/quality/manifest\\.sha256$\" --skip \"/quality/[^/]+\\.sigstore\\.json$\"",
     "budgets": "lhci collect && lhci upload && node scripts/quality-report.ts && lhci assert",
     "audit": "npm audit --omit=dev --audit-level=high",
     "check": "npm run audit && npm run format:check && npm run lint && npm run typecheck && npm run test:unit && npm run trace && npm run sbom && npm run build && npm run test:e2e && npm run links && npm run budgets"

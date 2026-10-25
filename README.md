@@ -42,10 +42,10 @@ Use `npm run dev` for a local server at <http://localhost:4321>.
 ## Pipeline
 
 [`.github/workflows/pipeline.yml`](.github/workflows/pipeline.yml) runs the gate on every pull
-request, every push to `main` and once a day on `main`, as five jobs:
+request, every push to `main` and once a day on `main`, as six jobs:
 
 ```text
-checks ──► budgets 1/3 · 2/3 · 3/3 (parallel Lighthouse shards) ──► report ──► quality-gate ──► deploy
+checks ──► budgets 1/3 · 2/3 · 3/3 (parallel Lighthouse shards) ──► report ──► quality-gate ──► sign ──► deploy
 ```
 
 `checks` runs everything except the budgets and uploads the built site; the budget shards measure
@@ -53,7 +53,8 @@ that exact build in parallel; `report` merges their results with the test counts
 timing into one quality report, which on `main` is deployed with the site at
 [`/quality/report.json`](https://sammieetje.github.io/quality/report.json) and shown on the
 [scorecard](https://sammieetje.github.io/scorecard/). `quality-gate` is the single required check:
-it is green only when every job above succeeded. `main` is protected: nothing merges without it,
+it is green only when every job above succeeded. On `main`, `sign` then signs the exact site that
+goes live and verifies it before `deploy` publishes it (see [Provenance](#provenance)). `main` is protected: nothing merges without it,
 administrators included, and a merge is live within ten minutes.
 
 Guardrails that are tested, not just agreed:
@@ -113,6 +114,39 @@ Every build gets a software bill of materials (SBOM) in the CycloneDX 1.5 format
 - Local runs list the platform-specific binaries of your own machine; the published file always
   comes from the pipeline.
 
+## Provenance
+
+Every deploy from `main` is signed by the pipeline itself, so anyone can check that the live site
+and its bill of materials were built from this repository on `main` and have not changed since.
+
+- **What is signed**: the `sign` job writes `/quality/manifest.sha256`, a `sha256sum`-style list of
+  every published file with its checksum. It then signs SLSA build provenance for that manifest
+  and for `/quality/sbom.cdx.json`, and a CycloneDX SBOM attestation that says the bill of
+  materials describes the build in the manifest. Each statement names the repository, commit,
+  workflow and run.
+- **How**: [`actions/attest`](https://github.com/actions/attest) signs with the job's own
+  short-lived identity through Sigstore. There is no stored key, and every signature is recorded
+  in the public Rekor transparency log. Only `sign` has the permissions to sign, and only on `main`.
+- **Checked before it ships**: `sign` verifies all three statements with `gh attestation verify`
+  (signer workflow, `main`, predicate type) and re-hashes every file against the manifest. Any
+  failure stops the deploy, and the live site stays on the last verified build.
+- **Check it yourself**: the three Sigstore bundles are published next to the files
+  (`/quality/*.sigstore.json`), so verification needs no account and works offline. The
+  [scorecard](https://sammieetje.github.io/scorecard/) shows the exact commands, generated from
+  the same code the pipeline runs ([`src/site/provenance.ts`](src/site/provenance.ts)). In short:
+
+  ```sh
+  curl -sO https://sammieetje.github.io/quality/manifest.sha256
+  curl -sO https://sammieetje.github.io/quality/manifest.sha256.sigstore.json
+  gh attestation verify manifest.sha256 --bundle manifest.sha256.sigstore.json \
+    --repo SammieEtje/sammieetje.github.io \
+    --signer-workflow SammieEtje/sammieetje.github.io/.github/workflows/pipeline.yml \
+    --source-ref refs/heads/main --deny-self-hosted-runners && echo verified
+  ```
+
+  Then compare any page with its line in the manifest:
+  `curl -s https://sammieetje.github.io/career/ | shasum -a 256`.
+
 ## Spec-driven
 
 Every feature is built with [Spec Kit](https://github.com/github/spec-kit):
@@ -141,7 +175,8 @@ nowhere.
 | 011  | Automatic dependency updates              | live    |
 | 012  | Humanised site copy                       | live    |
 | 013  | Weekly article pipeline                   | live    |
-| 014  | Software bill of materials                | this PR |
+| 014  | Software bill of materials                | live    |
+| 015  | Signed build provenance                   | this PR |
 
 ## Stack
 

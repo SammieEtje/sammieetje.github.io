@@ -80,6 +80,12 @@ const en = {
   'scorecard.sbom.shipped': 'Shipped components',
   'scorecard.sbom.pipeline': 'Pipeline components',
   'scorecard.sbom.link': 'Download the bill of materials (JSON)',
+  // 015:T017 Signed provenance (015:FR-010)
+  'scorecard.provenance.heading': 'Signed provenance',
+  'scorecard.provenance.text':
+    'Every deploy is signed by the pipeline of this site. A manifest lists every published file with its checksum. The pipeline signs that manifest and the bill of materials with a short-lived identity of its own, so there is no stored key. The signatures are recorded in a public transparency log and their bundles are published here, so you can check without an account that what you received was built from this repository on main.',
+  'scorecard.provenance.files': 'Signed files and their signatures',
+  'scorecard.provenance.commands': 'Check it yourself',
   'footer.scorecard': 'Scorecard',
   'nav.playground.term': 'Playground',
   'nav.playground.subtitle': 'try it',
@@ -296,6 +302,11 @@ const nl: Record<UiKey, string> = {
   'scorecard.sbom.shipped': 'Componenten in de site',
   'scorecard.sbom.pipeline': 'Componenten in de pipeline',
   'scorecard.sbom.link': 'Download de stuklijst (JSON)',
+  'scorecard.provenance.heading': 'Ondertekende herkomst',
+  'scorecard.provenance.text':
+    'Elke uitrol is ondertekend door de pipeline van deze site. Een manifest noemt elk gepubliceerd bestand met zijn checksum. De pipeline ondertekent dat manifest en de stuklijst met een eigen, kortlevende identiteit, dus er is geen opgeslagen sleutel. De handtekeningen staan in een openbaar transparantielog en hun bundels staan hier, zodat je zonder account kunt nagaan dat wat je ontving uit deze repository op main is gebouwd.',
+  'scorecard.provenance.files': 'Ondertekende bestanden en hun handtekeningen',
+  'scorecard.provenance.commands': 'Zelf controleren',
   'footer.scorecard': 'Scorecard',
   'nav.playground.term': 'Speeltuin',
   'nav.playground.subtitle': 'probeer het',
