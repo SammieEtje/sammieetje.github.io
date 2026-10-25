@@ -8,7 +8,7 @@ import { join } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { tagPrefix } from '../src/site/evidence.ts';
 import { verifyArgs } from '../src/site/provenance.ts';
-import { LOCAL_PATH } from './sbom.ts';
+import { LOCAL_PATH } from './local-path.ts';
 
 export type Trigger = 'push' | 'schedule' | 'workflow_dispatch';
 

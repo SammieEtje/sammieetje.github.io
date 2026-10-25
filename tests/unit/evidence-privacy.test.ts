@@ -24,8 +24,10 @@ describe('findLocalPaths', () => {
   });
 
   it('uses the same pattern as the bill of materials', () => {
-    expect(readFileSync('scripts/evidence.ts', 'utf8')).toMatch(
-      /import \{[^}]*\bLOCAL_PATH\b[^}]*\} from '\.\/sbom\.ts'/,
-    );
+    for (const script of ['scripts/evidence.ts', 'scripts/sbom.ts']) {
+      expect(readFileSync(script, 'utf8'), script).toMatch(
+        /import \{[^}]*\bLOCAL_PATH\b[^}]*\} from '\.\/local-path\.ts'/,
+      );
+    }
   });
 });

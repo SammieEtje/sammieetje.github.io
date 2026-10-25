@@ -449,3 +449,34 @@ describe('evidence retention workflow', () => {
     expect(readFileSync('scripts/evidence.ts', 'utf8')).toContain("'release', 'delete'");
   });
 });
+
+// 016 fix: a job that installs no packages may only run scripts that need none
+describe('scripts in jobs without npm ci', () => {
+  const imports = (file: string, seen = new Set<string>()): string[] => {
+    if (seen.has(file)) return [];
+    seen.add(file);
+    const text = readFileSync(file, 'utf8');
+    return [...text.matchAll(/^import [^;]*? from '([^']+)'/gm)].flatMap(([, spec]) => {
+      if (spec!.startsWith('node:')) return [];
+      if (spec!.startsWith('.')) return imports(join(file, '..', spec!), seen);
+      return [`${file} imports ${spec}`];
+    });
+  };
+
+  for (const { file, wf } of workflows) {
+    for (const [name, job] of Object.entries(wf.jobs)) {
+      const steps = job.steps ?? [];
+      if (steps.some((s) => s.run?.includes('npm ci'))) continue;
+      const scripts = new Set(
+        steps.flatMap((s) =>
+          [...(s.run ?? '').matchAll(/node (scripts\/[\w-]+\.ts)/g)].map((m) => m[1]!),
+        ),
+      );
+      for (const script of scripts) {
+        it(`${file} ${name}: ${script} needs no installed package`, () => {
+          expect(imports(script)).toEqual([]);
+        });
+      }
+    }
+  }
+});
