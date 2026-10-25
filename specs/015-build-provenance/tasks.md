@@ -46,6 +46,7 @@ job's own identity and no secret. Pull requests sign nothing.
     `if` as `deploy` (main only, never a pull request);
   - its permissions are exactly `{ contents: read, id-token: write, attestations: write }`;
   - no other job has `id-token` or `attestations`, except `deploy`'s existing `id-token: write`;
+    this part passes today, so prove it can fail by temporarily giving `report` `id-token: write`;
   - its steps follow the contract in order: three `actions/attest` steps, each pinned to the T001
     SHA, with the `subject-path`/`sbom-path` inputs from the contract;
   - the `Publish the signatures` step copies each `steps.<id>.outputs.bundle-path` to the
