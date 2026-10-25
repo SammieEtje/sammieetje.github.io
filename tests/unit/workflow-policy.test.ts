@@ -179,3 +179,49 @@ describe('pipeline.yml', () => {
     expect(runs('checks')[0]).toBe('audit');
   });
 });
+
+// 014:T012 The bill of materials is a gate step before the build, locally and in CI (014:FR-001, 014:FR-007 – 014:FR-009)
+describe('bill of materials in the pipeline', () => {
+  type NamedStep = Step & { name?: string; id?: string; with?: Record<string, unknown> };
+  const steps = (pipeline?.jobs['checks']?.steps ?? []) as NamedStep[];
+  const index = (name: string) => steps.findIndex((s) => s.name === name);
+
+  it('runs `npm run sbom` as its own step after traceability and before the build', () => {
+    const step = steps[index('Bill of materials')];
+    expect(step).toMatchObject({ id: 'sbom', run: 'npm run sbom' });
+    expect(index('Bill of materials')).toBeGreaterThan(index('Traceability'));
+    expect(index('Bill of materials')).toBeLessThan(index('Build'));
+  });
+
+  it('shows the outcome in the run summary with the local command', () => {
+    const summary = steps.find((s) => s.name === 'Summary') as NamedStep & {
+      env?: Record<string, string>;
+    };
+    expect(summary.env?.['SBOM']).toBe('${{ steps.sbom.outcome }}');
+    expect(summary.run).toContain('| Bill of materials | $SBOM | \\`npm run sbom\\` |');
+  });
+
+  it('keeps the SBOM of every run as its own artifact', () => {
+    const keep = steps.find(
+      (s) => s.uses?.startsWith('actions/upload-artifact@') && s.with?.['name'] === 'sbom',
+    );
+    expect(keep?.with?.['path']).toBe('public/quality/sbom.cdx.json');
+  });
+
+  it('runs `npm run sbom` in `npm run check` after trace and before build', () => {
+    const local = [...pkg.scripts['check']!.matchAll(/npm run ([\w:]+)/g)].map((m) => m[1]);
+    expect(local.indexOf('sbom')).toBe(local.indexOf('trace') + 1);
+    expect(local.indexOf('build')).toBe(local.indexOf('sbom') + 1);
+  });
+});
+
+// 014:T015 What Pages publishes is the dist that checks built, SBOM included (014:FR-009, 014:FR-010)
+describe('published bill of materials', () => {
+  it('packages the tested build: the dist download comes before packaging for Pages', () => {
+    const steps = (pipeline?.jobs['report']?.steps ?? []) as (Step & { name?: string })[];
+    const get = steps.findIndex((s) => s.name === 'Get the tested build');
+    const pack = steps.findIndex((s) => s.name === 'Package site for Pages');
+    expect(get).toBeGreaterThanOrEqual(0);
+    expect(pack).toBeGreaterThan(get);
+  });
+});

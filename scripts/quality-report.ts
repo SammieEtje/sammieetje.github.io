@@ -185,7 +185,8 @@ export function countTests(unitPath: string, e2ePath: string): TestCounts {
   };
 }
 
-function currentCommit(): string {
+// 014:T002 Shared with the SBOM, so both files of one run name the same build (014:FR-010)
+export function currentCommit(): string {
   if (process.env['GITHUB_SHA']) return process.env['GITHUB_SHA'];
   try {
     return execSync('git rev-parse HEAD', { encoding: 'utf8' }).trim();

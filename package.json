@@ -9,7 +9,7 @@
     "node": ">=24"
   },
   "scripts": {
-    "dev": "astro dev",
+    "dev": "npm run sbom && astro dev",
     "build": "astro build",
     "preview": "astro preview",
     "format": "prettier --write .",
@@ -18,12 +18,13 @@
     "typecheck": "astro check",
     "test:unit": "vitest run",
     "trace": "node scripts/trace-check.ts",
+    "sbom": "node scripts/sbom.ts",
     "pipeline": "node scripts/pipeline.ts",
     "test:e2e": "playwright test",
     "links": "linkinator ./dist --recurse --check-fragments --skip \"^https?://(?!localhost|127\\.0\\.0\\.1)\"",
     "budgets": "lhci collect && lhci upload && node scripts/quality-report.ts && lhci assert",
     "audit": "npm audit --omit=dev --audit-level=high",
-    "check": "npm run audit && npm run format:check && npm run lint && npm run typecheck && npm run test:unit && npm run trace && npm run build && npm run test:e2e && npm run links && npm run budgets"
+    "check": "npm run audit && npm run format:check && npm run lint && npm run typecheck && npm run test:unit && npm run trace && npm run sbom && npm run build && npm run test:e2e && npm run links && npm run budgets"
   },
   "dependencies": {
     "@astrojs/sitemap": "3.7.4",
@@ -39,6 +40,8 @@
     "@playwright/test": "1.64.1",
     "@resvg/resvg-js": "2.6.2",
     "@types/node": "24.19.2",
+    "ajv": "8.20.0",
+    "ajv-formats": "3.0.1",
     "eslint": "10.13.0",
     "eslint-plugin-astro": "3.2.1",
     "linkinator": "8.1.0",

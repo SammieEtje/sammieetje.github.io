@@ -11,3 +11,5 @@ quality-report.json
 .claude/
 specs/
 reports/
+# 014:T001 Vendored CycloneDX schemas stay byte-identical to the source
+scripts/sbom-schema/
