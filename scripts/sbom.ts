@@ -204,7 +204,8 @@ export interface CheckResult {
 }
 
 const ACTION_REF = 'github-action:';
-const LOCAL_PATH = /\/Users\/|\/home\/|[A-Za-z]:\\\\/;
+// 016:T001 Shared with the evidence record (016:FR-008)
+export const LOCAL_PATH = /\/Users\/|\/home\/|[A-Za-z]:\\\\/;
 const actionKey = (a: Action) => `${a.owner}/${a.repo}${a.path ? `/${a.path}` : ''}@${a.sha}`;
 
 /** Complete and correct against the installed tree and the workflows; every gap is named. */

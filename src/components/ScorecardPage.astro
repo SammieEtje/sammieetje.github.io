@@ -7,6 +7,7 @@ import { readSpecs, shippedSpecs } from '../site/specs.ts';
 import { formatNumber } from '../site/format.ts';
 import { sbomCounts, sbomUrl } from '../site/sbom.ts';
 import { statements, visitorCommands } from '../site/provenance.ts';
+import { evidenceCommands, releasesUrl } from '../site/evidence.ts';
 
 interface Props {
   locale: Locale;
@@ -143,6 +144,17 @@ const columns = [
     </ul>
     <h3 id="provenance-commands">{t(locale, 'scorecard.provenance.commands')}</h3>
     <pre tabindex="0" aria-labelledby="provenance-commands"><code>{visitorCommands()}</code></pre>
+  </section>
+
+  <!-- 016:T015 Every deploy's signed, immutable evidence record, rendered at build time (016:FR-009) -->
+  <section class="provenance" aria-labelledby="evidence-title" data-spec="016:FR-009">
+    <h2 id="evidence-title">{t(locale, 'scorecard.evidence.heading')}</h2>
+    <p class="intro">{t(locale, 'scorecard.evidence.text')}</p>
+    <p>
+      <a href={releasesUrl}>{t(locale, 'scorecard.evidence.link')}</a>
+    </p>
+    <h3 id="evidence-commands">{t(locale, 'scorecard.evidence.commands')}</h3>
+    <pre tabindex="0" aria-labelledby="evidence-commands"><code>{evidenceCommands()}</code></pre>
   </section>
 </div>
 

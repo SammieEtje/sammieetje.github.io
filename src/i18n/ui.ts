@@ -86,6 +86,12 @@ const en = {
     'Every deploy is signed by the pipeline of this site. A manifest lists every published file with its checksum. The pipeline signs that manifest and the bill of materials with a short-lived identity of its own, so there is no stored key. The signatures are recorded in a public transparency log and their bundles are published here, so you can check without an account that what you received was built from this repository on main.',
   'scorecard.provenance.files': 'Signed files and their signatures',
   'scorecard.provenance.commands': 'Check it yourself',
+  // 016:T015 Evidence of every deploy (016:FR-009)
+  'scorecard.evidence.heading': 'Evidence of every deploy',
+  'scorecard.evidence.text':
+    'Every deploy leaves an evidence record: the outcome of every job and step, the quality report, the test results, the bill of materials, the manifest with its signatures, and the pull request the change came from. The record is signed and stored as an immutable release, so nobody can change it afterwards, me included. Records are kept for two years.',
+  'scorecard.evidence.link': 'All evidence records',
+  'scorecard.evidence.commands': 'Check a record',
   'footer.scorecard': 'Scorecard',
   'nav.playground.term': 'Playground',
   'nav.playground.subtitle': 'try it',
@@ -307,6 +313,11 @@ const nl: Record<UiKey, string> = {
     'Elke uitrol is ondertekend door de pipeline van deze site. Een manifest noemt elk gepubliceerd bestand met zijn checksum. De pipeline ondertekent dat manifest en de stuklijst met een eigen, kortlevende identiteit, dus er is geen opgeslagen sleutel. De handtekeningen staan in een openbaar transparantielog en hun bundels staan hier, zodat je zonder account kunt nagaan dat wat je ontving uit deze repository op main is gebouwd.',
   'scorecard.provenance.files': 'Ondertekende bestanden en hun handtekeningen',
   'scorecard.provenance.commands': 'Zelf controleren',
+  'scorecard.evidence.heading': 'Bewijs van elke uitrol',
+  'scorecard.evidence.text':
+    'Elke uitrol laat een bewijsrecord achter: de uitkomst van elke job en stap, het qualityrapport, de testresultaten, de stuklijst, het manifest met zijn handtekeningen, en de pull request waar de wijziging vandaan kwam. Het record is ondertekend en staat als onveranderbare release opgeslagen, dus niemand kan het achteraf wijzigen, ik ook niet. Records blijven twee jaar bewaard.',
+  'scorecard.evidence.link': 'Alle bewijsrecords',
+  'scorecard.evidence.commands': 'Een record controleren',
   'footer.scorecard': 'Scorecard',
   'nav.playground.term': 'Speeltuin',
   'nav.playground.subtitle': 'probeer het',

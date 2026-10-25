@@ -42,10 +42,10 @@ Use `npm run dev` for a local server at <http://localhost:4321>.
 ## Pipeline
 
 [`.github/workflows/pipeline.yml`](.github/workflows/pipeline.yml) runs the gate on every pull
-request, every push to `main` and once a day on `main`, as six jobs:
+request, every push to `main` and once a day on `main`, as seven jobs:
 
 ```text
-checks ──► budgets 1/3 · 2/3 · 3/3 (parallel Lighthouse shards) ──► report ──► quality-gate ──► sign ──► deploy
+checks ──► budgets 1/3 · 2/3 · 3/3 (parallel Lighthouse shards) ──► report ──► quality-gate ──► sign ──► deploy ──► evidence
 ```
 
 `checks` runs everything except the budgets and uploads the built site; the budget shards measure
@@ -54,7 +54,8 @@ timing into one quality report, which on `main` is deployed with the site at
 [`/quality/report.json`](https://sammieetje.github.io/quality/report.json) and shown on the
 [scorecard](https://sammieetje.github.io/scorecard/). `quality-gate` is the single required check:
 it is green only when every job above succeeded. On `main`, `sign` then signs the exact site that
-goes live and verifies it before `deploy` publishes it (see [Provenance](#provenance)). `main` is protected: nothing merges without it,
+goes live and verifies it before `deploy` publishes it (see [Provenance](#provenance)), and
+`evidence` keeps an immutable record of the deploy (see [Evidence](#evidence)). `main` is protected: nothing merges without it,
 administrators included, and a merge is live within ten minutes.
 
 Guardrails that are tested, not just agreed:
@@ -147,6 +148,33 @@ and its bill of materials were built from this repository on `main` and have not
   Then compare any page with its line in the manifest:
   `curl -s https://sammieetje.github.io/career/ | shasum -a 256`.
 
+## Evidence
+
+Every deploy from `main` leaves an evidence record that nobody can change afterwards, the owner
+included, so an auditor can follow any live version back to the pull request it came from.
+
+- **What a record holds**: `evidence.json` lists the outcome of every job and step of the run (from
+  the platform's own API, with the local command of each gate check), the commit, the run, the
+  trigger and who started it, and the change: the pull request, its author, who merged it and its
+  gate result, or for a daily run every commit since the previous record. Next to it are the
+  quality report, the SBOM, the manifest and its three signatures exactly as published, and the
+  unit and end-to-end test results (with the runner's paths replaced by `.`).
+- **Where**: as a pre-release `evidence/<date>-<run id>` on the deployed commit, never marked
+  latest ([all records](https://github.com/SammieEtje/sammieetje.github.io/releases?q=evidence&expanded=true)).
+  Each record names its predecessor, so a missing record shows as a gap.
+- **Unchangeable**: immutable releases are switched on for this repository (a precondition), so a
+  published record's files and tag cannot be changed, replaced or moved. The record is signed by
+  the pipeline through Sigstore (`evidence.sigstore.json`), and GitHub adds its own release
+  attestation. Only the `evidence` job can create releases.
+- **Kept for two years**: the weekly
+  [`evidence-retention.yml`](.github/workflows/evidence-retention.yml) deletes records older than
+  two years, and only those, and lists each one it removed. It is the only workflow that deletes
+  releases.
+- **Check one yourself**: download `evidence.json` and `evidence.sigstore.json` from a record and
+  run `gh attestation verify` with the same signer rules as the provenance above; that needs no
+  account. With a GitHub login, `gh release verify <tag>` also checks GitHub's attestation of the
+  whole release. The scorecard shows the exact commands.
+
 ## Spec-driven
 
 Every feature is built with [Spec Kit](https://github.com/github/spec-kit):
@@ -176,7 +204,8 @@ nowhere.
 | 012  | Humanised site copy                       | live    |
 | 013  | Weekly article pipeline                   | live    |
 | 014  | Software bill of materials                | live    |
-| 015  | Signed build provenance                   | this PR |
+| 015  | Signed build provenance                   | live    |
+| 016  | Immutable evidence of every deploy        | this PR |
 
 ## Stack
 

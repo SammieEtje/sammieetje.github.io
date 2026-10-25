@@ -1,0 +1,36 @@
+# 016:T013 Evidence records are kept for two years from their deploy; this weekly clean-up removes
+# older ones, only those, and lists them in its run (016:FR-006, 016:FR-007).
+# Contract: specs/016-immutable-evidence/contracts/evidence.md
+name: Evidence retention
+
+on:
+  schedule:
+    - cron: '41 5 * * 0'
+  workflow_dispatch:
+
+permissions: {}
+
+concurrency:
+  group: evidence-retention
+  cancel-in-progress: false
+
+jobs:
+  clean-up:
+    name: clean-up
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    steps:
+      - name: Check out
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Set up Node
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+      - name: Remove records older than two years
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: node scripts/evidence.ts clean-up
