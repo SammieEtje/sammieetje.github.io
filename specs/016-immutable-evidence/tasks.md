@@ -38,7 +38,7 @@ except `evidence`, the change details and every file digest.
     `originalSha256`.
   - **Chain**: the tag is `evidence/<UTC date>-<run id>`, and `previous` is the latest earlier
     record's tag, or `null`.
-- [ ] T003 [P] [US1] Write failing tests in `tests/unit/evidence-record.test.ts` for
+- [ ] T003 [P] [US1] Write failing tests in `tests/unit/evidence-privacy.test.ts` for
   `normaliseReport(text, workdir)` and `findLocalPaths(files)`:
   - normalising replaces every occurrence of the work directory with `.`;
   - a file that still contains `/Users/`, `/home/` or `C:\` is named;
@@ -98,7 +98,8 @@ and the retention workflow is the only place that deletes releases.
   - it is triggered by a weekly schedule and by `workflow_dispatch`;
   - it has top-level `permissions: {}` and one job `clean-up` with `{ contents: write }`;
   - it runs `node scripts/evidence.ts clean-up`;
-  - no other workflow contains `gh release delete`.
+  - no other workflow contains `gh release delete`. This guard passes today: prove it can fail by
+    temporarily adding the command to `pipeline.yml`.
 - [ ] T013 [US3] Implement `expired` and the CLI `expired` and `clean-up` (delete each with
   `gh release delete <tag> --yes --cleanup-tag`, and summarise tag, date and commit, or "nothing
   to remove") in `scripts/evidence.ts`. Create `.github/workflows/evidence-retention.yml` (makes
@@ -133,5 +134,4 @@ the same.
 
 - T001 → US1 (T002–T006) → US2 (T007–T010) → US3 (T011–T013) → US4 (T014–T015) → Polish
   (T016–T017).
-- Within a phase, `[P]` tasks write different files or different test files. T002 and T003 share
-  `evidence-record.test.ts` in separate `describe` blocks and are written in one sitting.
+- Within a phase, `[P]` tasks write different files.

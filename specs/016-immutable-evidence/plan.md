@@ -69,6 +69,7 @@ src/i18n/ui.ts                             + scorecard.evidence.* strings, EN an
 .github/workflows/evidence-retention.yml   new: weekly clean-up
 README.md                                  Evidence section; pipeline diagram; roadmap 015 live, 016 this PR
 tests/unit/evidence-record.test.ts         new
+tests/unit/evidence-privacy.test.ts        new
 tests/unit/evidence-retention.test.ts      new
 tests/unit/workflow-policy.test.ts         evidence job; retention workflow; who may write releases
 tests/unit/repo-readme.test.ts             + Evidence section, diagram, roadmap
