@@ -181,8 +181,9 @@ to the manifest, and verification commands that work when copied as they are.
 - **FR-009**: A visitor MUST be able to verify the live manifest and SBOM with standard public
   tooling, without access to the repository, following the published instructions. The
   signature bundle of each signed file MUST be published next to it, so verification needs no
-  account and works offline. To check a single page, the instructions MUST use standard commands only (download, SHA-256,
-  compare with the manifest); the site MUST NOT ship its own verification script.
+  account and works offline. To check a single page, the instructions MUST use standard
+  commands only (download, SHA-256, compare with the manifest); the site MUST NOT ship its own
+  verification script.
 - **FR-010**: The scorecard page MUST explain, in English and Dutch, what the provenance proves,
   link to the manifest, and show the verification commands; all of it MUST work without
   JavaScript.
@@ -191,12 +192,13 @@ to the manifest, and verification commands that work when copied as they are.
 
 ### Key Entities
 
-- **Manifest**: per deploy; the commit, and every published file with its path and SHA-256.
+- **Manifest**: per deploy; every published file with its path and SHA-256, except the manifest
+  and the signature bundles themselves. The commit it belongs to is stated in its provenance.
 - **Provenance statement**: per signed file (manifest, SBOM), plus one SBOM attestation per deploy
   with the manifest as subject and the SBOM as content. Each names the subject checksum and the
   repository, commit, workflow and run, and is signed with a transparency log entry.
-- **Signature bundle**: per statement (three per deploy); the statement with its signature, certificate
-  and transparency log proof, in the standard Sigstore bundle format, published next to the file.
+- **Signature bundle**: per statement (three per deploy); the statement with its signature,
+  certificate and transparency log proof, in the standard Sigstore bundle format, published next to the file.
 - **Verification result**: per deploy; passes when signer, predicate, subjects and every file
   check out, fails with a named cause otherwise.
 
