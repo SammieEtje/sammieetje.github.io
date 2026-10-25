@@ -149,9 +149,10 @@ list of releases, and the verification command works on the latest record.
 
 - **FR-001**: Every deploy from main MUST produce exactly one evidence record, published after the
   site is live.
-- **FR-002**: A record MUST contain the outcome of every gate check, the quality report, the unit
-  and end-to-end test results, the SBOM, and the manifest with its three signature bundles,
-  byte-identical to what was published.
+- **FR-002**: A record MUST contain the outcome of every gate check, the quality report, the SBOM
+  and the manifest with its three signature bundles, byte-identical to what was published, and
+  the unit and end-to-end test results with the runner's work directory replaced by `.`, together
+  with the SHA-256 of the original test result files.
 - **FR-003**: A record MUST name the commit, the run, the trigger and the time. For a deploy of a
   merged pull request, it MUST also name the pull request, its author, the person who merged it and
   the gate outcome on the pull request. For a deploy without a new pull request, it MUST name the
