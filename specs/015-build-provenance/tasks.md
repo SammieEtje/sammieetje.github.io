@@ -147,7 +147,7 @@ commands, also without JavaScript. The README describes the provenance.
 - [x] T019 Run `npm run check` locally and see it pass end to end. Push the branch and confirm on
   the pull request that `sign` and `deploy` are skipped and `quality-gate` is green (quickstart
   4).
-- [ ] T020 Open the pull request. After the owner merges, run quickstart steps 5–9 against the
+- [x] T020 Open the pull request. After the owner merges, run quickstart steps 5–9 against the
   live site without a GitHub login, and record the result in a follow-up docs commit.
 
 ## Dependencies & Execution Order
