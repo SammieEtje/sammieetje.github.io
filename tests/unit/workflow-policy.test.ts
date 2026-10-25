@@ -4,6 +4,7 @@ import { createRequire } from 'node:module';
 import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { parse } from 'yaml';
+import { statements } from '../../src/site/provenance.ts';
 
 interface Step {
   uses?: string;
@@ -85,8 +86,16 @@ describe('pipeline.yml', () => {
     expect(pipeline?.on['push']?.branches).toEqual(['main']);
   });
 
-  it('has checks, three budget shards, a report, the aggregate gate and a deploy', () => {
-    expect(Object.keys(jobs)).toEqual(['checks', 'budgets', 'report', 'quality-gate', 'deploy']);
+  // 015:T004 A signing job between the gate and the deploy (015:FR-002, 015:FR-005)
+  it('has checks, three budget shards, a report, the gate, a signing job and a deploy', () => {
+    expect(Object.keys(jobs)).toEqual([
+      'checks',
+      'budgets',
+      'report',
+      'quality-gate',
+      'sign',
+      'deploy',
+    ]);
     expect(jobs['budgets']?.strategy?.matrix?.shard).toEqual(['1/3', '2/3', '3/3']);
     expect([jobs['budgets']?.needs].flat()).toEqual(['checks']);
     expect([jobs['report']?.needs].flat().sort()).toEqual(['budgets', 'checks']);
@@ -117,9 +126,9 @@ describe('pipeline.yml', () => {
     expect(schedule?.[0]?.cron).toMatch(/^\d+ \d+ \* \* \*$/);
   });
 
-  it('deploys only after the gate, for any run on main except a pull request', () => {
+  it('deploys only after the gate and signing, for any run on main except a pull request', () => {
     const deploy = jobs['deploy'];
-    expect([deploy?.needs].flat()).toEqual(['quality-gate']);
+    expect([deploy?.needs].flat()).toEqual(['sign']);
     expect(deploy?.if).toContain("github.event_name != 'pull_request'");
     expect(deploy?.if).toContain("github.ref == 'refs/heads/main'");
     expect(deploy?.permissions).toEqual({ pages: 'write', 'id-token': 'write' });
@@ -156,16 +165,20 @@ describe('pipeline.yml', () => {
     ]);
   });
 
-  it('packages the site with the merged report for Pages, from the report job', () => {
-    const steps = jobs['report']?.steps ?? [];
-    expect(steps.some((s) => s.uses?.startsWith('actions/upload-pages-artifact@'))).toBe(true);
+  // 015:T004 report hands the site with its report to sign; only sign packages for Pages (015:FR-005)
+  it('keeps the site with the merged report for signing, from the report job', () => {
+    const steps = (jobs['report']?.steps ?? []) as (Step & { with?: Record<string, unknown> })[];
+    expect(steps.some((s) => s.uses?.startsWith('actions/upload-pages-artifact@'))).toBe(false);
     expect(steps.map((s) => s.run ?? '').join('\n')).toContain('dist/quality/report.json');
+    const keep = steps.at(-1);
+    expect(keep?.uses).toMatch(/^actions\/upload-artifact@/);
+    expect(keep?.with).toMatchObject({ name: 'site', path: 'dist' });
   });
 
   // 011:T008 Packaging follows the deploy rule: any run on main except a pull request (011:FR-009)
-  it('packages for Pages under the same condition as the deploy', () => {
+  it('prepares the site for Pages under the same condition as the deploy', () => {
     const steps = (jobs['report']?.steps ?? []) as (Step & { name?: string; if?: string })[];
-    for (const name of ['Add the report to the site', 'Package site for Pages']) {
+    for (const name of ['Add the report to the site', 'Keep the site']) {
       const step = steps.find((s) => s.name === name);
       expect(step?.if, name).toContain("github.event_name != 'pull_request'");
       expect(step?.if, name).toContain("github.ref == 'refs/heads/main'");
@@ -217,11 +230,118 @@ describe('bill of materials in the pipeline', () => {
 
 // 014:T015 What Pages publishes is the dist that checks built, SBOM included (014:FR-009, 014:FR-010)
 describe('published bill of materials', () => {
-  it('packages the tested build: the dist download comes before packaging for Pages', () => {
+  it('packages the tested build: the dist download comes before the site is kept for signing', () => {
     const steps = (pipeline?.jobs['report']?.steps ?? []) as (Step & { name?: string })[];
     const get = steps.findIndex((s) => s.name === 'Get the tested build');
-    const pack = steps.findIndex((s) => s.name === 'Package site for Pages');
+    const pack = steps.findIndex((s) => s.name === 'Keep the site');
     expect(get).toBeGreaterThanOrEqual(0);
     expect(pack).toBeGreaterThan(get);
+  });
+});
+
+// 015:T004 Signing: one job, main only, the pipeline's own identity, three statements (015:FR-002 – 015:FR-004, 015:FR-008)
+describe('signing job', () => {
+  type SignStep = Step & { name?: string; id?: string; with?: Record<string, string> };
+  type SignJob = Job & { needs?: string | string[] };
+  const jobs = (pipeline?.jobs ?? {}) as Record<string, SignJob>;
+  const sign = jobs['sign'];
+  const steps = (sign?.steps ?? []) as SignStep[];
+  const names = steps.map((s) => s.name);
+  const attest = 'actions/attest@1e69f48acb82d1966a394da916b4c1698aa569d6';
+
+  it('runs after the gate, on main only, never for a pull request', () => {
+    expect([sign?.needs].flat()).toEqual(['quality-gate']);
+    expect(sign?.if).toBe(jobs['deploy']?.if);
+  });
+
+  it('has exactly the permissions signing needs', () => {
+    expect(sign?.permissions).toEqual({
+      contents: 'read',
+      'id-token': 'write',
+      attestations: 'write',
+    });
+  });
+
+  it('is the only job that can sign', () => {
+    for (const [name, job] of Object.entries(jobs)) {
+      if (name === 'sign') continue;
+      expect(job.permissions?.['attestations'], name).toBeUndefined();
+      if (name !== 'deploy') expect(job.permissions?.['id-token'], name).toBeUndefined();
+    }
+  });
+
+  it('writes the manifest of the site it got from report, then signs three statements', () => {
+    const get = steps.find((s) => s.name === 'Get the site');
+    expect(get?.uses).toMatch(/^actions\/download-artifact@/);
+    expect(get?.with).toMatchObject({ name: 'site', path: 'dist' });
+    expect(steps.find((s) => s.name === 'Write the manifest')?.run).toBe(
+      'node scripts/manifest.ts write dist dist/quality/manifest.sha256',
+    );
+    const signing = steps.filter((s) => s.uses?.startsWith('actions/attest@'));
+    expect(signing.map((s) => [s.name, s.uses, s.with])).toEqual([
+      ['Sign the manifest', attest, { 'subject-path': 'dist/quality/manifest.sha256' }],
+      ['Sign the bill of materials', attest, { 'subject-path': 'dist/quality/sbom.cdx.json' }],
+      [
+        'Attest the bill of materials',
+        attest,
+        {
+          'subject-path': 'dist/quality/manifest.sha256',
+          'sbom-path': 'dist/quality/sbom.cdx.json',
+        },
+      ],
+    ]);
+    expect(names.indexOf('Write the manifest')).toBeGreaterThan(names.indexOf('Get the site'));
+    expect(names.indexOf('Sign the manifest')).toBeGreaterThan(names.indexOf('Write the manifest'));
+  });
+
+  it('publishes each bundle at its path next to the signed file', () => {
+    const publish = steps.find((s) => s.name === 'Publish the signatures');
+    for (const { id, bundle } of statements) {
+      const step = steps.find((s) => s.uses?.startsWith('actions/attest@') && s.id === id);
+      expect(step, id).toBeDefined();
+      expect(publish?.run).toContain(`"\${{ steps.${id}.outputs.bundle-path }}" "dist/${bundle}"`);
+    }
+    expect(names.indexOf('Publish the signatures')).toBeGreaterThan(
+      names.indexOf('Attest the bill of materials'),
+    );
+  });
+
+  // 015:T010 Nothing is packaged before all three statements and every file have been verified (015:FR-005 – 015:FR-007)
+  it('verifies the provenance, then every file, between publishing the signatures and packaging', () => {
+    const verify = names.indexOf('Verify the provenance');
+    const check = names.indexOf('Check the files against the manifest');
+    expect(steps[verify]?.run).toBe('node scripts/provenance.ts verify dist');
+    expect(steps[check]?.run).toBe(
+      'node scripts/manifest.ts check dist dist/quality/manifest.sha256',
+    );
+    expect(verify).toBeGreaterThan(names.indexOf('Publish the signatures'));
+    expect(check).toBeGreaterThan(verify);
+    expect(names.indexOf('Package site for Pages')).toBeGreaterThan(check);
+  });
+
+  it('never continues past a failed step', () => {
+    for (const step of steps) {
+      expect((step as { 'continue-on-error'?: unknown })['continue-on-error'], step.name).toBe(
+        undefined,
+      );
+    }
+  });
+
+  it('packages for Pages as its last step', () => {
+    expect(steps.at(-1)?.name).toBe('Package site for Pages');
+    expect(steps.at(-1)?.uses).toMatch(/^actions\/upload-pages-artifact@/);
+    expect(steps.at(-1)?.with).toMatchObject({ path: 'dist' });
+  });
+});
+
+// 015:T014 The link check skips only the files that exist after signing (015:FR-010)
+describe('links check', () => {
+  it('skips external links and exactly the four signed-at-deploy paths', () => {
+    const skips = [...pkg.scripts['links']!.matchAll(/--skip "([^"]+)"/g)].map((m) => m[1]);
+    expect(skips).toEqual([
+      '^https?://(?!localhost|127\\.0\\.0\\.1)',
+      '/quality/manifest\\.sha256$',
+      '/quality/[^/]+\\.sigstore\\.json$',
+    ]);
   });
 });

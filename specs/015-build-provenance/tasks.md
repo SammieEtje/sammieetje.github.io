@@ -14,7 +14,7 @@ and every test is seen failing first. Code carries `015:T###` comments. Contract
 
 ## Phase 1: Setup
 
-- [ ] T001 Resolve and record the pin for `actions/attest` v4.2.2
+- [x] T001 Resolve and record the pin for `actions/attest` v4.2.2
   (`1e69f48acb82d1966a394da916b4c1698aa569d6`). Confirm with
   `gh api repos/actions/attest/commits/v4.2.2 --jq .sha` that the SHA still points at the tag.
   Nothing else changes in this task.
@@ -25,14 +25,14 @@ and every test is seen failing first. Code carries `015:T###` comments. Contract
 `sign` job signs the manifest and the SBOM and attests the SBOM over the manifest, with the
 job's own identity and no secret. Pull requests sign nothing.
 
-- [ ] T002 [P] [US1] Write failing tests in `tests/unit/manifest.test.ts` for `listFiles(dir)`
+- [x] T002 [P] [US1] Write failing tests in `tests/unit/manifest.test.ts` for `listFiles(dir)`
   and `renderManifest(entries)` against a temporary directory:
   - every file is listed with its SHA-256, sorted by path, with forward slashes and no leading `/`;
   - `quality/manifest.sha256` and `quality/*.sigstore.json` are excluded;
   - the output is `<64 hex>  <path>\n` per line ("two spaces between the digest and the path, as
     `sha256sum` writes it"), with a trailing newline;
   - a fixture line equals the output of `shasum -a 256` for the same file.
-- [ ] T003 [P] [US1] Write failing tests in `tests/unit/provenance.test.ts` for
+- [x] T003 [P] [US1] Write failing tests in `tests/unit/provenance.test.ts` for
   `src/site/provenance.ts`:
   - `statements` lists exactly the three rows of the data-model table: subject, predicate type
     and bundle path;
@@ -40,7 +40,7 @@ job's own identity and no secret. Pull requests sign nothing.
     <bundle> --repo SammieEtje/sammieetje.github.io --signer-workflow
     SammieEtje/sammieetje.github.io/.github/workflows/pipeline.yml --source-ref refs/heads/main
     --deny-self-hosted-runners --predicate-type <type>`.
-- [ ] T004 [P] [US1] Extend `tests/unit/workflow-policy.test.ts` with failing tests for the `sign`
+- [x] T004 [P] [US1] Extend `tests/unit/workflow-policy.test.ts` with failing tests for the `sign`
   job:
   - it exists between `quality-gate` and `deploy`, with `needs: quality-gate`, and has the same
     `if` as `deploy` (main only, never a pull request);
@@ -55,11 +55,11 @@ job's own identity and no secret. Pull requests sign nothing.
   Also replace the 009 and 011 assertions that pin Pages packaging to `report`. Now `report` ends
   with `Keep the site` (artifact `site`, under the deploy condition), and
   `actions/upload-pages-artifact` appears only in `sign`, as its last step.
-- [ ] T005 [US1] Implement `listFiles` and `renderManifest`, and the CLI `write <dir> <out>`, in
+- [x] T005 [US1] Implement `listFiles` and `renderManifest`, and the CLI `write <dir> <out>`, in
   `scripts/manifest.ts` (makes T002 pass).
-- [ ] T006 [US1] Implement `src/site/provenance.ts`: `repo`, `signerWorkflow`, `statements`,
+- [x] T006 [US1] Implement `src/site/provenance.ts`: `repo`, `signerWorkflow`, `statements`,
   `verifyArgs` (makes T003 pass).
-- [ ] T007 [US1] Change `.github/workflows/pipeline.yml` (`015:T007` comments):
+- [x] T007 [US1] Change `.github/workflows/pipeline.yml` (`015:T007` comments):
   - in `report`, replace `Package site for Pages` with `Keep the site`;
   - add the `sign` job with steps 1–7 and 10 of the contract;
   - make `deploy` `needs: sign`.
@@ -72,7 +72,7 @@ job's own identity and no secret. Pull requests sign nothing.
 named cause. The `sign` job verifies all three statements before packaging, so a failure skips
 `deploy`.
 
-- [ ] T008 [P] [US2] Write failing tests in `tests/unit/manifest.test.ts` for
+- [x] T008 [P] [US2] Write failing tests in `tests/unit/manifest.test.ts` for
   `checkTree(dir, manifestText)`. Each failure must produce exactly the named problem:
   - a file whose content changed → `<path>: changed`;
   - a listed file that is gone → `<path>: missing`;
@@ -82,22 +82,22 @@ named cause. The `sign` job verifies all three statements before packaging, so a
   Also cover the passing and exclusion rules:
   - an untouched tree passes;
   - the manifest and the bundles themselves are not reported as `not listed`.
-- [ ] T009 [P] [US2] Write failing tests in `tests/unit/provenance.test.ts` for the verify CLI's
+- [x] T009 [P] [US2] Write failing tests in `tests/unit/provenance.test.ts` for the verify CLI's
   plan, `verifyPlan(dir)`:
   - it gives one `gh` invocation per statement, with paths under `<dir>/quality/`, in data-model
     order;
   - it gives a result line naming the statement;
   - `scripts/provenance.ts` takes its arguments from `verifyArgs` (assert the import).
-- [ ] T010 [P] [US2] Extend `tests/unit/workflow-policy.test.ts` with failing tests:
+- [x] T010 [P] [US2] Extend `tests/unit/workflow-policy.test.ts` with failing tests:
   - `sign` has `Verify the provenance` (`node scripts/provenance.ts verify dist`) and then
     `Check the files against the manifest` (`node scripts/manifest.ts check dist
     dist/quality/manifest.sha256`), after `Publish the signatures` and before `Package site for
     Pages`;
   - no step in `sign` has `continue-on-error`.
-- [ ] T011 [US2] Implement `checkTree` and the CLI `check` in `scripts/manifest.ts`, and
+- [x] T011 [US2] Implement `checkTree` and the CLI `check` in `scripts/manifest.ts`, and
   `verifyPlan` plus the CLI `verify` in `scripts/provenance.ts` (makes T008 and T009 pass). The
   CLI exits 1 on the first failed `gh` call and names the statement.
-- [ ] T012 [US2] Add steps 8–9 of the contract to `sign` in `.github/workflows/pipeline.yml`
+- [x] T012 [US2] Add steps 8–9 of the contract to `sign` in `.github/workflows/pipeline.yml`
   (makes T010 pass). Run quickstart step 2 (tamper locally) by hand.
 
 ## Phase 4: User Story 3 - A visitor can verify the live site themselves (P2)
@@ -106,7 +106,7 @@ named cause. The `sign` job verifies all three statements before packaging, so a
 uses, download exactly the published paths, and contain the single-page check. They are proven
 live after merge (quickstart 6–8).
 
-- [ ] T013 [US3] Write failing tests in `tests/unit/provenance.test.ts` for `visitorCommands()`:
+- [x] T013 [US3] Write failing tests in `tests/unit/provenance.test.ts` for `visitorCommands()`:
   - it downloads exactly the five published paths under `https://sammieetje.github.io/quality/`;
   - it runs `gh` with `verifyArgs` for each statement, followed by `&& echo verified`;
   - it contains the single-page check (`curl -s https://sammieetje.github.io/career/ | shasum -a
@@ -114,7 +114,7 @@ live after merge (quickstart 6–8).
   - it uses no other tool than `curl`, `gh`, `shasum` and `grep`.
 
   Then implement `visitorCommands` in `src/site/provenance.ts`.
-- [ ] T014 [US3] Write a failing test in `tests/unit/workflow-policy.test.ts`: the `links` script
+- [x] T014 [US3] Write a failing test in `tests/unit/workflow-policy.test.ts`: the `links` script
   in `package.json` skips exactly `/quality/manifest\.sha256` and
   `/quality/[^/]+\.sigstore\.json` besides the existing external skip. Then update `links` in
   `package.json`.
@@ -124,27 +124,27 @@ live after merge (quickstart 6–8).
 **Independent test**: the scorecard page in EN and NL shows the explanation, the links and the
 commands, also without JavaScript. The README describes the provenance.
 
-- [ ] T015 [P] [US4] Write failing e2e tests in `tests/e2e/scorecard.spec.ts` for `/scorecard/`
+- [x] T015 [P] [US4] Write failing e2e tests in `tests/e2e/scorecard.spec.ts` for `/scorecard/`
   and `/nl/scorecard/`, in a context with `javaScriptEnabled: false`:
   - a section `data-spec="015:FR-010"` with a heading in the page's language;
   - links to `/quality/manifest.sha256` and the three bundle paths;
   - a `pre code` block whose text equals `visitorCommands()`.
-- [ ] T016 [P] [US4] Extend `tests/unit/repo-readme.test.ts` with failing tests:
+- [x] T016 [P] [US4] Extend `tests/unit/repo-readme.test.ts` with failing tests:
   - a `## Provenance` section mentions `manifest.sha256`, `sigstore.json`,
     `gh attestation verify` and `no account`;
   - the pipeline diagram shows `sign`;
   - the roadmap has 014 `live` and 015 `this PR`.
-- [ ] T017 [US4] Implement the scorecard section (makes T015 pass; axe stays at zero):
+- [x] T017 [US4] Implement the scorecard section (makes T015 pass; axe stays at zero):
   - add `scorecard.provenance.heading`, `.text`, `.files` and `.commands` in EN and NL to
     `src/i18n/ui.ts`, passing the style guard;
   - render the static section in `src/components/ScorecardPage.astro` with `015:T017`, using
     `statements` and `visitorCommands()`.
-- [ ] T018 [US4] Write the README: a `## Provenance` section, the pipeline diagram and text with
+- [x] T018 [US4] Write the README: a `## Provenance` section, the pipeline diagram and text with
   `sign`, and the roadmap (makes T016 pass).
 
 ## Phase 6: Polish & Cross-Cutting
 
-- [ ] T019 Run `npm run check` locally and see it pass end to end. Push the branch and confirm on
+- [x] T019 Run `npm run check` locally and see it pass end to end. Push the branch and confirm on
   the pull request that `sign` and `deploy` are skipped and `quality-gate` is green (quickstart
   4).
 - [ ] T020 Open the pull request. After the owner merges, run quickstart steps 5–9 against the
