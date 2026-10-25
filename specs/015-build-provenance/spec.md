@@ -35,6 +35,10 @@ can then check a live file against that statement with standard public tooling. 
 - Q: Must a visitor be able to verify without any account? → A: Yes. The Sigstore bundles are
   published next to the manifest and the SBOM, so verification needs no account and works
   offline; the attestations are also stored on the hosting platform.
+- Q: Is the SBOM also attested as describing the build? → A: Yes. A signed CycloneDX SBOM
+  attestation has the manifest as its subject, next to the provenance of the manifest and the SBOM.
+- Q: How does a visitor check a single page against the manifest? → A: With standard commands
+  (download, SHA-256, compare with the manifest line); no verification script is shipped.
 
 ## User Scenarios & Testing *(mandatory)*
 
@@ -158,13 +162,16 @@ to the manifest, and verification commands that work when copied as they are.
   publishes with its SHA-256 checksum, and MUST publish the manifest with the site at a stable
   address next to the quality report.
 - **FR-002**: Every such run MUST create signed SLSA build provenance for the manifest and for the
-  SBOM, naming the repository, commit, workflow and run that built them.
+  SBOM, naming the repository, commit, workflow and run that built them. It MUST also create a
+  signed SBOM attestation (CycloneDX) whose subject is the manifest, stating that the SBOM
+  describes that build.
 - **FR-003**: Signing MUST use the pipeline's own short-lived identity, MUST NOT use a stored key or
   secret, and MUST record the signature in a public transparency log.
 - **FR-004**: Pull request runs MUST NOT create provenance.
 - **FR-005**: Before deploying, the pipeline MUST verify the provenance of the manifest and the
-  SBOM: the signer MUST be this repository's pipeline workflow, the predicate MUST be SLSA build
-  provenance, and the subjects MUST match the files to be published.
+  SBOM, and the SBOM attestation of the manifest: the signer MUST be this repository's pipeline
+  workflow, the predicates MUST be SLSA build provenance and CycloneDX respectively, and the
+  subjects MUST match the files to be published.
 - **FR-006**: Before deploying, the pipeline MUST check that every file to be published matches its
   manifest entry and that the manifest lists no file that is not published.
 - **FR-007**: When any check in FR-005 or FR-006 fails, the deploy MUST NOT run, and the failure
@@ -174,7 +181,8 @@ to the manifest, and verification commands that work when copied as they are.
 - **FR-009**: A visitor MUST be able to verify the live manifest and SBOM with standard public
   tooling, without access to the repository, following the published instructions. The
   signature bundle of each signed file MUST be published next to it, so verification needs no
-  account and works offline.
+  account and works offline. To check a single page, the instructions MUST use standard commands only (download, SHA-256,
+  compare with the manifest); the site MUST NOT ship its own verification script.
 - **FR-010**: The scorecard page MUST explain, in English and Dutch, what the provenance proves,
   link to the manifest, and show the verification commands; all of it MUST work without
   JavaScript.
@@ -184,9 +192,10 @@ to the manifest, and verification commands that work when copied as they are.
 ### Key Entities
 
 - **Manifest**: per deploy; the commit, and every published file with its path and SHA-256.
-- **Provenance statement**: per signed file (manifest, SBOM); the subject checksum, the
-  repository, commit, workflow and run; signed, with a transparency log entry.
-- **Signature bundle**: per signed file; the provenance statement with its signature, certificate
+- **Provenance statement**: per signed file (manifest, SBOM), plus one SBOM attestation per deploy
+  with the manifest as subject and the SBOM as content. Each names the subject checksum and the
+  repository, commit, workflow and run, and is signed with a transparency log entry.
+- **Signature bundle**: per statement (three per deploy); the statement with its signature, certificate
   and transparency log proof, in the standard Sigstore bundle format, published next to the file.
 - **Verification result**: per deploy; passes when signer, predicate, subjects and every file
   check out, fails with a named cause otherwise.
