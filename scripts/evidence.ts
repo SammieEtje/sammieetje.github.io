@@ -319,10 +319,29 @@ function publish(dir: string): void {
   run(releaseArgs(evidence, files, notes));
 }
 
+// 016 fix: GitHub writes the release attestation shortly after publishing; try again until it is there
+export async function retry<T>(
+  attempt: () => T,
+  options: { attempts: number; delayMs: number; sleep?: (ms: number) => Promise<void> },
+): Promise<T> {
+  const sleep = options.sleep ?? ((ms) => new Promise<void>((done) => setTimeout(done, ms)));
+  for (let i = 1; ; i++) {
+    try {
+      return attempt();
+    } catch (error) {
+      if (i >= options.attempts) throw error;
+      await sleep(options.delayMs);
+    }
+  }
+}
+
 // 016:T009 Verify: GitHub's release attestation, and the record's own signature (015's signer rules)
-function verify(dir: string): void {
+async function verify(dir: string): Promise<void> {
   const evidence = readRecord(dir);
-  run(['release', 'verify', evidence.tag, '--repo', evidence.repository]);
+  await retry(() => run(['release', 'verify', evidence.tag, '--repo', evidence.repository]), {
+    attempts: 12,
+    delayMs: 10_000,
+  });
   run(
     verifyArgs({
       file: join(dir, 'evidence.json'),
@@ -377,7 +396,7 @@ if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) 
   }
   if (command === 'record' && dir) record(dir);
   else if (command === 'publish' && dir) publish(dir);
-  else if (command === 'verify' && dir) verify(dir);
+  else if (command === 'verify' && dir) await verify(dir);
   else {
     console.error('Usage: node scripts/evidence.ts record|publish|verify <dir> | clean-up');
     process.exitCode = 1;
