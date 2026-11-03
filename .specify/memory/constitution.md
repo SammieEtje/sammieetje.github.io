@@ -55,7 +55,8 @@ using assistive technology. Accessibility is cheap in the spec and expensive aft
 ### V. Fast and Light by Default
 
 - Pages MUST be pre-rendered static HTML. Client-side JavaScript is allowed only for an
-  explicitly specified interactive feature and MUST be scoped to that feature.
+  explicitly specified interactive feature, scoped to that feature, and for the single analytics
+  script that Principle VI permits.
 - Budgets, enforced in CI on every page: Lighthouse performance >= 0.90 and accessibility,
   best practices and SEO >= 0.95; total first-party JavaScript <= 50 KB compressed per page.
 - A new runtime dependency MUST be justified in `plan.md` under "Complexity Tracking".
@@ -65,8 +66,20 @@ engineering judgement.
 
 ### VI. Private and Secure by Default
 
-- The site MUST NOT use analytics, trackers, cookies or third-party runtime requests. Fonts and
-  other assets are self-hosted.
+- The site MUST NOT use trackers, cookies or third-party runtime requests. Fonts and other
+  assets are self-hosted.
+- The one exception is a single cookieless analytics service, allowed only while all of these
+  hold, each checked in CI where a machine can check it:
+  - it sets no cookies and writes nothing to local storage, session storage or IndexedDB;
+  - it collects no personal data, stores no IP addresses and uses no identifier that follows a
+    visitor across sites;
+  - it is self-hosted or hosted in the EU;
+  - its script loads from, and reports to, exactly one host named in the repository, and a CI
+    check MUST fail when a page makes a runtime request to any other host;
+  - it does not run in CI, tests or local development, so the figures contain real visits only;
+  - its script counts towards the JavaScript and Lighthouse budgets of Principle V.
+- A privacy statement in both languages MUST explain what is measured, by which service, where
+  the data is stored and that no cookies are used, and MUST be linked from every page.
 - Content MUST only contain information Sander has approved for public use. Private notes,
   assessments, performance agreements, family names and employment negotiations MUST NOT
   appear in the repository or on the site.
@@ -75,7 +88,8 @@ engineering judgement.
 - No secrets, local absolute paths or agent-session links may be committed.
 
 **Rationale**: a profile in a regulated sector must be trustworthy in what it shows and in how it
-is built.
+is built. Knowing which pages are read is worth having, but only in a form that needs no consent
+banner, tells the visitor openly what is counted, and can be verified from the pipeline.
 
 ### VII. Bilingual Parity
 
@@ -115,4 +129,4 @@ international.
 - Versioning follows semver: MAJOR when a principle is removed or redefined, MINOR when a
   principle or section is added or materially expanded, PATCH for clarifications.
 
-**Version**: 1.0.0 | **Ratified**: 2026-10-09 | **Last Amended**: 2026-10-09
+**Version**: 2.0.0 | **Ratified**: 2026-10-09 | **Last Amended**: 2026-11-03
