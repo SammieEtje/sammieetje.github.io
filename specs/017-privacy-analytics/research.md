@@ -109,9 +109,9 @@ the network. The existing localhost test keeps proving that tests send nothing a
 ## R7. Where does the article-click hook come from?
 
 **Decision**: at build time, every link whose `href` is a URL in `src/site/articles.ts` gets a
-`data-article="<id>"` attribute with the article's existing `id`, wherever it is rendered
+`data-count-article="<id>"` attribute with the article's existing `id`, wherever it is rendered
 (writing page; the method page already looks articles up with `articleById`). The script
-listens to clicks on `a[data-article]` and does not prevent navigation. A unit test scans the
+listens to clicks on `a[data-count-article]` and does not prevent navigation. A unit test scans the
 built HTML: every link to an article URL carries the attribute, and no other link does.
 
 **Rationale**: one source of truth for what an article is (spec 006), and no need to edit

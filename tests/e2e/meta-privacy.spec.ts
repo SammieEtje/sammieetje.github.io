@@ -7,6 +7,7 @@ import { routeMeta } from '../../src/site/meta.ts';
 import { pages } from './pages.ts';
 import { scriptBytes } from '../../src/site/script-size.ts';
 import { pageFile } from '../../scripts/quality-report.ts';
+import { endpoint } from '../../src/site/analytics.ts';
 
 for (const route of routes) {
   for (const locale of ['en', 'nl'] as const) {
@@ -65,14 +66,22 @@ for (const { path } of pages) {
     });
     await page.goto(path);
     await page.waitForLoadState('networkidle');
+    // 017:T011 On localhost the analytics script sends nothing (017:FR-005)
     expect(foreign).toEqual([]);
-    if (scriptPages.includes(path)) {
-      const scripts = page.locator('script');
-      await expect(scripts).toHaveCount(1);
-      await expect(scripts).toHaveAttribute('type', 'module');
-    } else {
-      await expect(page.locator('script')).toHaveCount(0);
-    }
+    // 017:T011 The analytics script on every page, plus the feature script where a spec allows one
+    const scripts = await page.locator('script').evaluateAll(
+      (els, host) =>
+        els.map((el) => ({
+          type: el.getAttribute('type'),
+          analytics: !!el.textContent?.includes(host),
+        })),
+      endpoint,
+    );
+    expect(scripts.filter((s) => s.analytics)).toEqual([{ type: 'module', analytics: true }]);
+    const others = scripts.filter((s) => !s.analytics);
+    expect(others).toEqual(
+      scriptPages.includes(path) ? [{ type: 'module', analytics: false }] : [],
+    );
     expect(await context.cookies()).toEqual([]);
   });
 }

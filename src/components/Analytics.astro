@@ -1,0 +1,44 @@
+---
+// 017:T009 The one analytics script: a page view on load, an event per article click (017:FR-001, 017:FR-013)
+// Sends only on the live site and never with an opt-out signal; stores nothing; never blocks a link.
+---
+
+<script>
+  import { articleClickUrl, pageViewUrl, shouldCount } from '../site/analytics.ts';
+
+  function send(url: string): void {
+    try {
+      if (navigator.sendBeacon?.(url)) return;
+    } catch {
+      // fall through to the image request
+    }
+    new Image().src = url;
+  }
+
+  const counting = shouldCount({
+    hostname: location.hostname,
+    gpc: (navigator as Navigator & { globalPrivacyControl?: boolean }).globalPrivacyControl,
+    dnt: navigator.doNotTrack,
+  });
+
+  if (counting) {
+    send(
+      pageViewUrl({
+        pathname: location.pathname,
+        referrer: document.referrer,
+        title: document.title,
+        width: screen.width,
+        ownOrigin: location.origin,
+      }),
+    );
+
+    const onClick = (event: MouseEvent): void => {
+      const link = (event.target as Element | null)?.closest?.('a[data-count-article]');
+      const id = link?.getAttribute('data-count-article');
+      if (!link || !id) return;
+      send(articleClickUrl({ id, title: link.getAttribute('data-count-title') ?? id }));
+    };
+    document.addEventListener('click', onClick);
+    document.addEventListener('auxclick', onClick);
+  }
+</script>

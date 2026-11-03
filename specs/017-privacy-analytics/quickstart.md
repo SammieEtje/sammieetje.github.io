@@ -27,6 +27,10 @@ Expect:
   schemes;
 - all Lighthouse budgets are met with the script included.
 
+Lighthouse, Playwright on `localhost`, `astro dev` and `astro preview` all run on `localhost`, so
+the hostname rule (research R4) keeps every one of them out of the figures. The analytics host
+appears in the built pages only inside the bundled script: no pixel, preconnect or vendor script.
+
 ## After deploy
 
 1. Open `https://sammieetje.github.io/` and `/nl/privacy/` in a normal browser window.

@@ -26,6 +26,7 @@ const { locale } = Astro.props;
 const two = (n: number) => String(n).padStart(2, '0');
 const history = routes.find((r) => r.id === 'career')!.paths[locale];
 const playground = routes.find((r) => r.id === 'playground')!.paths[locale];
+// 017:T008 Each further-reading link is an article link, counted as a click (017:FR-013)
 const further = {
   premise: articleById('elite-sports'),
   levers: articleById('golden-cage'),
@@ -44,7 +45,13 @@ const further = {
       <p class="diagnosis">{premise.diagnosis[locale]}</p>
       <p class="further" data-spec="006:FR-009">
         <span class="label mono">{t(locale, 'method.further')}</span>
-        <a href={further.premise.url} lang="en" rel="noopener">
+        <a
+          href={further.premise.url}
+          lang="en"
+          rel="noopener"
+          data-count-article={further.premise.id}
+          data-count-title={further.premise.title}
+        >
           {further.premise.title}
           <span class="visually-hidden" lang={locale}>
             {' '}
@@ -80,7 +87,13 @@ const further = {
     <p class="pragmatism">{pragmatism[locale]}</p>
     <p class="further" data-spec="006:FR-009">
       <span class="label mono">{t(locale, 'method.further')}</span>
-      <a href={further.levers.url} lang="en" rel="noopener">
+      <a
+        href={further.levers.url}
+        lang="en"
+        rel="noopener"
+        data-count-article={further.levers.id}
+        data-count-title={further.levers.title}
+      >
         {further.levers.title}
         <span class="visually-hidden" lang={locale}>
           {' '}
@@ -110,7 +123,13 @@ const further = {
     </ol>
     <p class="further" data-spec="006:FR-009">
       <span class="label mono">{t(locale, 'method.further')}</span>
-      <a href={further.assumptions.url} lang="en" rel="noopener">
+      <a
+        href={further.assumptions.url}
+        lang="en"
+        rel="noopener"
+        data-count-article={further.assumptions.id}
+        data-count-title={further.assumptions.title}
+      >
         {further.assumptions.title}
         <span class="visually-hidden" lang={locale}>
           {' '}
@@ -143,7 +162,13 @@ const further = {
           {phase.id === 'community' && (
             <p class="further" data-spec="006:FR-009">
               <span class="label mono">{t(locale, 'method.further')}</span>
-              <a href={further.community.url} lang="en" rel="noopener">
+              <a
+                href={further.community.url}
+                lang="en"
+                rel="noopener"
+                data-count-article={further.community.id}
+                data-count-title={further.community.title}
+              >
                 {further.community.title}
                 <span class="visually-hidden" lang={locale}>
                   {' '}

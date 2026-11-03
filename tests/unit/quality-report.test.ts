@@ -128,10 +128,12 @@ describe('report v2', () => {
         ]),
       );
     }
-    const merged = loadRuns([
-      join(root, 'shard-1', 'manifest.json'),
-      join(root, 'shard-2', 'manifest.json'),
-    ]);
+    // 017:T016 An empty build directory: since 017 every built page has an inline script, and this
+    // test must not depend on whatever the last local build left in dist/
+    const merged = loadRuns(
+      [join(root, 'shard-1', 'manifest.json'), join(root, 'shard-2', 'manifest.json')],
+      join(root, 'dist'),
+    );
     expect(buildQualityReport(merged, meta).pages).toEqual([
       { url: '/', scores: good, scriptBytes: 0, scripts: { external: 0, inline: 0 } },
       { url: '/nl/', scores: good, scriptBytes: 1300, scripts: { external: 1300, inline: 0 } },

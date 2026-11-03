@@ -13,7 +13,7 @@ sends the same documented requests itself.
 
 The script sends only on `sammieetje.github.io`, which keeps CI, tests and local development out
 of the figures (R4). It sends nothing when Global Privacy Control or Do Not Track is set, and it
-strips query strings and fragments (R5). Article links get a `data-article` attribute at build
+strips query strings and fragments (R5). Article links get a `data-count-article` attribute at build
 time from `articles.ts` (R7). A new privacy page in English and Dutch is linked from every
 footer. An end-to-end test serves the build under the production host and answers the analytics
 requests itself, so counting is proven without counting (R6). Details: [research.md](./research.md).
@@ -61,10 +61,10 @@ specs/017-privacy-analytics/
 
 ```text
 src/site/analytics.ts                 new: endpoint, productionHost, shouldCount, pageViewUrl, articleClickUrl
-src/components/Analytics.astro        new: the bundled <script>; page view on load, click listener on a[data-article]
+src/components/Analytics.astro        new: the bundled <script>; page view on load, click listener on a[data-count-article]
 src/layouts/PortalLayout.astro        + <Analytics /> on every page
-src/components/WritingPage.astro      + data-article on article links
-src/components/MethodPage.astro       + data-article on article links
+src/components/WritingPage.astro      + data-count-article on article links
+src/components/MethodPage.astro       + data-count-article on article links
 src/components/PrivacyPage.astro      new: the privacy statement (017:FR-010)
 src/pages/privacy.astro               new
 src/pages/nl/privacy.astro            new
@@ -73,7 +73,7 @@ src/components/SiteFooter.astro       + privacy link (017:FR-011)
 src/i18n/ui.ts                        + privacy.* and footer.privacy strings, EN and NL
 README.md                             Analytics section; roadmap 017
 tests/unit/analytics.test.ts          new: shouldCount, request builders, no ? or # in p and r
-tests/e2e/article-links.spec.ts       new: every built link to an article carries data-article and data-article-title, no other does
+tests/e2e/article-links.spec.ts       new: every built link to an article carries data-count-article and data-count-title, no other does
 tests/unit/repo-readme.test.ts        + Analytics section
 tests/e2e/meta-privacy.spec.ts        script rule: the analytics script on every page; localhost: zero foreign requests
 tests/e2e/analytics.spec.ts           new: production-host routing; one page view, article event, opt-out, one extra host, no storage

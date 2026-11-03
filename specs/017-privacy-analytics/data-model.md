@@ -36,17 +36,17 @@ One per page load on the live site (FR-001).
 
 | Parameter | Content | Rule |
 |---|---|---|
-| `p` | Article id from `data-article` | Must be an id from `src/site/articles.ts` |
+| `p` | Article id from `data-count-article` | Must be an id from `src/site/articles.ts` |
 | `t` | Article title | As in `articles.ts`, in the link's language |
 | `e` | `true` | Marks the request as an event |
 | `rnd` | Random string | Cache-buster |
 
-One per click on an `a[data-article]` (FR-013). Navigation is never prevented.
+One per click on an `a[data-count-article]` (FR-013). Navigation is never prevented.
 
 ## Article link (build time)
 
 Every `<a>` whose `href` equals an article URL in `src/site/articles.ts` carries
-`data-article="<id>"` and `data-article-title="<title>"`. No other link carries either. The
+`data-count-article="<id>"` and `data-count-title="<title>"`. No other link carries either. The
 script reads the title from the attribute, never from the link text, which can hold visually
 hidden extras.
 

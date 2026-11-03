@@ -11,6 +11,7 @@ interface Props {
 
 const { locale } = Astro.props;
 const scorecard = routes.find((r) => r.id === 'scorecard')!.paths[locale];
+const privacy = routes.find((r) => r.id === 'privacy')!.paths[locale];
 ---
 
 <footer data-spec="001:FR-012">
@@ -26,6 +27,12 @@ const scorecard = routes.find((r) => r.id === 'scorecard')!.paths[locale];
       <li>
         <a href={scorecard} data-spec="009:FR-010">
           {t(locale, 'footer.scorecard')}
+        </a>
+      </li>
+      <!-- 017:T016 What the site counts (017:FR-011) -->
+      <li>
+        <a href={privacy} data-spec="017:FR-011">
+          {t(locale, 'footer.privacy')}
         </a>
       </li>
       <li>

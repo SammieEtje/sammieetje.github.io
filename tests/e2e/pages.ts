@@ -24,4 +24,7 @@ export const pages = [
   // 009:T009 Scorecard joins every shared per-page suite
   { path: '/scorecard/', lang: 'en' },
   { path: '/nl/scorecard/', lang: 'nl' },
+  // 017:T015 The privacy page joins every shared per-page suite
+  { path: '/privacy/', lang: 'en' },
+  { path: '/nl/privacy/', lang: 'nl' },
 ] as const;

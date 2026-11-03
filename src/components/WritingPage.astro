@@ -39,7 +39,15 @@ const formatDate = (iso: string) => date.format(new Date(`${iso}T00:00:00Z`));
               <li data-article={a.id} data-spec="006:FR-004">
                 <article aria-labelledby={`a-${a.id}`}>
                   <h3 id={`a-${a.id}`}>
-                    <a href={a.url} lang={titleLang(a)} rel="noopener" data-spec="006:FR-005">
+                    {/* 017:T008 counted as an article click (017:FR-013) */}
+                    <a
+                      href={a.url}
+                      lang={titleLang(a)}
+                      rel="noopener"
+                      data-spec="006:FR-005"
+                      data-count-article={a.id}
+                      data-count-title={a.title}
+                    >
                       {/* 013:T008 the title in the language it is written in (013:FR-028) */}
                       <span data-spec="013:FR-028">{a.title}</span>
                       <span class="visually-hidden" lang={locale}>
