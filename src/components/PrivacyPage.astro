@@ -1,0 +1,57 @@
+---
+// 017:T016 What the site counts, by whom, where, for how long and how to switch it off (017:FR-010)
+import type { Locale, UiKey } from '../i18n/ui.ts';
+import { t } from '../i18n/utils.ts';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const sections = ['counted', 'service', 'storage', 'retention', 'optout'] as const;
+---
+
+<div class="privacy-page" data-spec="017:FR-010">
+  <header>
+    <p class="kind mono">privacy / analytics</p>
+    <h1>{t(locale, 'privacy.heading')}</h1>
+    <p class="intro">{t(locale, 'privacy.intro')}</p>
+  </header>
+
+  {sections.map((id) => (
+    <section aria-labelledby={`h-${id}`}>
+      <h2 id={`h-${id}`}>{t(locale, `privacy.${id}.heading` as UiKey)}</h2>
+      <p>{t(locale, `privacy.${id}.text` as UiKey)}</p>
+    </section>
+  ))}
+</div>
+
+<style>
+  .privacy-page {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-8);
+    max-width: 68ch;
+  }
+
+  header,
+  section {
+    display: grid;
+    gap: var(--space-2);
+  }
+
+  .kind {
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  h1 {
+    font-size: clamp(2rem, 1.6rem + 2vw, 2.75rem);
+  }
+
+  .intro {
+    color: var(--color-text-muted);
+    font-size: var(--text-lg);
+  }
+</style>

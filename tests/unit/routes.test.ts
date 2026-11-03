@@ -58,3 +58,12 @@ describe('navItems()', () => {
     expect(navItems('en', '/elsewhere/')[0]?.current).toBe(false);
   });
 });
+
+// 017:T015 The privacy page: in both languages, reached from the footer, not from the navigation (017:FR-010)
+describe('privacy route', () => {
+  it('has a page in each language and no navigation entry', () => {
+    const privacy = routes.find((r) => r.id === 'privacy');
+    expect(privacy?.paths).toEqual({ en: '/privacy/', nl: '/nl/privacy/' });
+    expect(privacy?.nav).toBeUndefined();
+  });
+});

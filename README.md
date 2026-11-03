@@ -63,8 +63,9 @@ Guardrails that are tested, not just agreed:
 - workflows grant no permissions at the top level and the minimum per job;
 - every third-party action is pinned to a full commit SHA;
 - the CI steps and `npm run check` cannot drift apart;
-- pages load no scripts (except the playground and the scorecard, within a 50 KB budget), make no
-  third-party requests and set no cookies;
+- pages load only the analytics script, plus their own script on the playground and the
+  scorecard, within a 50 KB budget; they contact no host besides the site and
+  `sammieetje.goatcounter.com`, and set no cookies;
 - dependency updates follow the policy below, and the workflow token is the only credential.
 
 ## Dependencies
@@ -175,6 +176,27 @@ included, so an auditor can follow any live version back to the pull request it 
   account. With a GitHub login, `gh release verify <tag>` also checks GitHub's attestation of the
   whole release. The scorecard shows the exact commands.
 
+## Analytics
+
+The site counts page views and article clicks with [GoatCounter](https://www.goatcounter.com),
+within the conditions of constitution principle VI (spec 017). Visitors read what is counted on
+the [privacy page](https://sammieetje.github.io/privacy/) (`/privacy/`, `/nl/privacy/`).
+
+- **One host**: a first-party script of under 1 KB, bundled into every page, sends to
+  `https://sammieetje.goatcounter.com/count` and nowhere else. GoatCounter's own `count.js` is
+  not used: it loads from a second host, uses local storage and sends query strings.
+- **Nothing stored, nothing personal**: no cookies and no browser storage. GoatCounter stores no
+  IP addresses and keeps its data in Finland and Germany (checked against its own documentation
+  on 2026-11-03, see [research](specs/017-privacy-analytics/research.md)).
+- **Real visits only**: the script sends only on `sammieetje.github.io`. Every test, Lighthouse
+  run, `astro dev` and `astro preview` runs on `localhost` and sends nothing.
+- **Opt-out respected**: with Do Not Track or Global Privacy Control in the browser, nothing is
+  sent, and nothing without JavaScript. Query strings and fragments are never sent.
+- **Checked by the gate**: the end-to-end suite serves the build under `sammieetje.github.io` and
+  answers the analytics host itself, so counting is proven without counting. It fails on a request
+  to any other host, on a cookie or stored item, on a count with an opt-out signal, and on any
+  count from `localhost`.
+
 ## Spec-driven
 
 Every feature is built with [Spec Kit](https://github.com/github/spec-kit):
@@ -205,7 +227,8 @@ nowhere.
 | 013  | Weekly article pipeline                   | live    |
 | 014  | Software bill of materials                | live    |
 | 015  | Signed build provenance                   | live    |
-| 016  | Immutable evidence of every deploy        | this PR |
+| 016  | Immutable evidence of every deploy        | live    |
+| 017  | Privacy-friendly analytics                | this PR |
 
 ## Stack
 

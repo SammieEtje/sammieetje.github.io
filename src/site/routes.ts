@@ -74,6 +74,13 @@ export const routes: readonly Route[] = [
     descriptionKey: 'page.scorecard.description',
     nav: { termKey: 'nav.scorecard.term', subtitleKey: 'nav.scorecard.subtitle' },
   },
+  // 017:T016 Privacy, reached from the footer (017:FR-010)
+  {
+    id: 'privacy',
+    paths: { en: '/privacy/', nl: '/nl/privacy/' },
+    titleKey: 'page.privacy.title',
+    descriptionKey: 'page.privacy.description',
+  },
 ];
 
 const withSlash = (path: string) => (path.endsWith('/') ? path : `${path}/`);

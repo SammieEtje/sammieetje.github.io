@@ -78,6 +78,35 @@ describe('README evidence', () => {
   it('lists 015 as live and 016 as this PR', () => {
     const roadmap = section('Roadmap');
     expect(roadmap).toMatch(/\| 015 +\|[^\n]*\| live +\|/);
-    expect(roadmap).toMatch(/\| 016 +\|[^\n]*\| this PR +\|/);
+    expect(roadmap).toMatch(/\| 016 +\|[^\n]*\| (this PR|live) +\|/);
+  });
+});
+
+// 017:T017 The README names the analytics service and how the gate checks it (017:FR-012)
+describe('README analytics', () => {
+  it('has an analytics section: the service, the one host, no cookies, the opt-out, the checks', () => {
+    const analytics = section('Analytics');
+    for (const term of [
+      'GoatCounter',
+      'sammieetje.goatcounter.com',
+      'no cookies',
+      'Global Privacy Control',
+      'Do Not Track',
+      'sammieetje.github.io',
+      '/privacy/',
+    ]) {
+      expect(analytics, term).toContain(term);
+    }
+  });
+
+  it('states the page guardrail with the analytics script and its one host', () => {
+    expect(section('Pipeline')).toMatch(/analytics script/);
+    expect(section('Pipeline')).toContain('sammieetje.goatcounter.com');
+  });
+
+  it('lists 016 as live and 017 as this PR', () => {
+    const roadmap = section('Roadmap');
+    expect(roadmap).toMatch(/\| 016 +\|[^\n]*\| live +\|/);
+    expect(roadmap).toMatch(/\| 017 +\|[^\n]*\| this PR +\|/);
   });
 });

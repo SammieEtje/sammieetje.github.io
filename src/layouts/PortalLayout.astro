@@ -11,6 +11,7 @@ import PrimaryNav from '../components/PrimaryNav.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 import LanguageSwitch from '../components/LanguageSwitch.astro';
 import SkipLink from '../components/SkipLink.astro';
+import Analytics from '../components/Analytics.astro';
 // 002:T017 Preload the Latin font files so text does not re-wrap after first paint (002:SC-002)
 import interLatin from '@fontsource-variable/inter/files/inter-latin-wght-normal.woff2?url';
 import monoLatin from '@fontsource-variable/jetbrains-mono/files/jetbrains-mono-latin-wght-normal.woff2?url';
@@ -67,6 +68,8 @@ const { locale, path, meta } = Astro.props;
       </main>
     </div>
     <SiteFooter locale={locale} />
+    <!-- 017:T009 Counted on the live site only (017:FR-001) -->
+    <Analytics />
   </body>
 </html>
 

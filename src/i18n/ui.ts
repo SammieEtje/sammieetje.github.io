@@ -222,6 +222,29 @@ const en = {
   'footer.source': 'Source',
   'footer.specs': 'Specifications',
   'footer.tagline': 'Built spec-first and shipped through a quality gate.',
+  // 017:T016 Privacy page and footer link (017:FR-010, 017:FR-011)
+  'footer.privacy': 'Privacy',
+  'page.privacy.title': 'Privacy: what this site counts',
+  'page.privacy.description':
+    "What Sander Ettema's site counts about your visit, who counts it, where it is stored and how to switch it off. No cookies.",
+  'privacy.heading': 'Privacy: what this site counts',
+  'privacy.intro':
+    'I want to know which pages people read and where they come from. This page lists exactly what the site counts about your visit, and how you can switch it off.',
+  'privacy.counted.heading': 'What is counted',
+  'privacy.counted.text':
+    "For every page you open: its address without anything after a question mark or hash, the site that linked you here, the page title and the width of your screen. When you open one of my articles on LinkedIn from this site, that click is counted with the article's name. From this, GoatCounter derives your country, browser and type of device, and shows them only as totals.",
+  'privacy.service.heading': 'Who counts it, and where',
+  'privacy.service.text':
+    'The counting is done by GoatCounter, run by Martin Tournoij from Ireland. Its servers are at Hetzner in Finland and Germany. GoatCounter stores no IP addresses and no identifier that follows you to other sites. To tell a returning visitor from a new one, it keeps your IP address and browser details in memory for at most eight hours, linked to a random number, and never writes them to disk.',
+  'privacy.storage.heading': 'Nothing on your device',
+  'privacy.storage.text':
+    'This site sets no cookies and stores nothing in your browser. That is why there is no cookie banner.',
+  'privacy.retention.heading': 'How long',
+  'privacy.retention.text':
+    'GoatCounter keeps the totals for as long as I use it and publishes no fixed period. I can delete all of it at any time, and backups disappear within 30 days after that. Only I can see the figures.',
+  'privacy.optout.heading': 'Switching it off',
+  'privacy.optout.text':
+    'If your browser sends Global Privacy Control or Do Not Track, the site sends nothing at all. Blocking sammieetje.goatcounter.com, for example with an ad blocker, has the same effect. Visits with JavaScript switched off are never counted. The site works the same either way.',
   'notfound.title': 'Page not found',
   'notfound.description':
     'This page does not exist. Continue on the English or Dutch home page of Sander Ettema.',
@@ -449,6 +472,28 @@ const nl: Record<UiKey, string> = {
   'footer.source': 'Broncode',
   'footer.specs': 'Specificaties',
   'footer.tagline': 'Spec-first gebouwd en uitgerold via een quality gate.',
+  'footer.privacy': 'Privacy',
+  'page.privacy.title': 'Privacy: wat deze site telt',
+  'page.privacy.description':
+    'Wat de site van Sander Ettema over je bezoek telt, wie dat doet, waar het staat en hoe je het uitzet. Geen cookies.',
+  'privacy.heading': 'Privacy: wat deze site telt',
+  'privacy.intro':
+    "Ik wil weten welke pagina's gelezen worden en waar bezoekers vandaan komen. Deze pagina zegt precies wat de site over je bezoek telt, en hoe je dat uitzet.",
+  'privacy.counted.heading': 'Wat er geteld wordt',
+  'privacy.counted.text':
+    'Voor elke pagina die je opent: het adres zonder alles na een vraagteken of hekje, de site die naar deze pagina linkte, de paginatitel en de breedte van je scherm. Open je vanaf deze site een van mijn artikelen op LinkedIn, dan telt die klik mee met de naam van het artikel. Daaruit leidt GoatCounter je land, browser en soort apparaat af, en toont die alleen als totalen.',
+  'privacy.service.heading': 'Wie telt, en waar',
+  'privacy.service.text':
+    'Het tellen doet GoatCounter, beheerd door Martin Tournoij vanuit Ierland. De servers staan bij Hetzner in Finland en Duitsland. GoatCounter slaat geen IP-adressen op en geen kenmerk dat je naar andere sites volgt. Om een terugkerende bezoeker van een nieuwe te onderscheiden, houdt het je IP-adres en browsergegevens hooguit acht uur in het geheugen, gekoppeld aan een willekeurig nummer, en schrijft die nooit weg.',
+  'privacy.storage.heading': 'Niets op je apparaat',
+  'privacy.storage.text':
+    'Deze site zet geen cookies en bewaart niets in je browser. Daarom is er ook geen cookiebanner.',
+  'privacy.retention.heading': 'Hoe lang',
+  'privacy.retention.text':
+    'GoatCounter bewaart de totalen zolang ik het gebruik en noemt zelf geen vaste termijn. Ik kan alles op elk moment verwijderen, en back-ups verdwijnen daarna binnen 30 dagen. Alleen ik zie de cijfers.',
+  'privacy.optout.heading': 'Uitzetten',
+  'privacy.optout.text':
+    'Stuurt je browser Global Privacy Control of Do Not Track mee, dan verstuurt de site helemaal niets. Blokkeer je sammieetje.goatcounter.com, bijvoorbeeld met een adblocker, dan werkt dat hetzelfde. Bezoeken met JavaScript uit worden nooit geteld. De site werkt in alle gevallen hetzelfde.',
   'notfound.title': 'Pagina niet gevonden',
   'notfound.description':
     'Deze pagina bestaat niet. Ga verder op de Engelse of Nederlandse startpagina van Sander Ettema.',
