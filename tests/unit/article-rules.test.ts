@@ -31,7 +31,9 @@ describe('articleProblems()', () => {
   });
 
   it('finds nothing wrong with a correct new article', () => {
-    expect(problems([fixture(), ...articles])).toEqual([]);
+    // Today in Amsterdam: the published articles keep growing past the fixed test date.
+    const now = todayIn('Europe/Amsterdam');
+    expect(articleProblems([fixture(), ...articles], { today: now, pillars, series })).toEqual([]);
   });
 
   it('names both articles when they share a URL or an id (FR-012)', () => {

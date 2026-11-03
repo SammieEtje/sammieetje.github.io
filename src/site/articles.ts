@@ -53,6 +53,9 @@ export const series = {
   'platform-as-product': {
     name: { en: 'Running the platform as a product', nl: 'Het platform runnen als product' },
   },
+  'compliance-as-speed': {
+    name: { en: 'Compliance as speed', nl: 'Compliance as speed' },
+  },
 } as const satisfies Record<string, { name: Text }>;
 
 export type SeriesId = keyof typeof series;
@@ -74,6 +77,20 @@ export interface Article {
 const pulse = (slug: string) => `https://www.linkedin.com/pulse/${slug}`;
 
 export const articles: readonly Article[] = [
+  {
+    id: 'board-five-questions',
+    title: 'Wat kun je direct laten zien als het misgaat?',
+    url: pulse('wat-kun-je-direct-laten-zien-als-het-misgaat-sander-ettema-jz6be'),
+    published: '2026-10-27',
+    minutes: 7,
+    pillar: 'regulated',
+    series: { id: 'compliance-as-speed', part: 1 },
+    excerpt: {
+      en: 'Since the Dutch Cybersecurity Act took effect, cyber risk is a board duty that directors can be held personally accountable for. I give boards and supervisors five questions on access, changes, incident reporting, suppliers and recovery, and explain why it counts whether the answer is already there to see.',
+      nl: 'Sinds de Cyberbeveiligingswet is cyberrisico een bestuurstaak waarop bestuurders persoonlijk kunnen worden aangesproken. Ik geef bestuur en toezicht vijf vragen over toegang, wijzigingen, melden, leveranciers en herstel, en laat zien waarom het telt of het antwoord al klaarligt.',
+    },
+    lang: 'nl',
+  },
   {
     id: 'intake-form',
     title: "Ninety percent of that intake form wasn't a customer question",
