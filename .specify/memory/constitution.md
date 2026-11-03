@@ -1,18 +1,3 @@
-<!--
-Sync Impact Report (remove before committing)
-- Version change: 1.0.0 → 2.0.0 (MAJOR: Principle VI redefined, analytics no longer banned outright)
-- Modified principles:
-  - VI. Private and Secure by Default: analytics ban replaced by one conditional exception for a
-    single cookieless, EU-hosted or self-hosted analytics service; bilingual privacy statement added
-  - V. Fast and Light by Default: JavaScript rule now also allows that one analytics script
-    (needed for consistency with VI; budgets unchanged)
-- Added sections: none
-- Removed sections: none
-- Templates: none changed (they read the constitution at runtime)
-- Follow-up: tests/e2e/meta-privacy.spec.ts still enforces "own origin only, no scripts outside
-  playground/scorecard"; it stays valid until the analytics spec adds the one named host and
-  the production-only script.
--->
 # sammieetje.github.io Constitution
 
 This site is Sander Ettema's public profile, and it is also a working example of how he builds
