@@ -43,7 +43,8 @@ visitors what is counted.
 
 Sander opens the statistics and sees, per day, week or month: how many page views and visitors
 the site had, which pages were read, which sites sent visitors (LinkedIn, search engines, GitHub),
-and the visitors' country, language, device type and browser at an aggregate level. Because the
+and the visitors' country, device type and browser at an aggregate level. He compares languages
+through the English and Dutch paths. Because the
 articles themselves live on LinkedIn, he also sees how often each article link on the site is
 clicked.
 
@@ -185,7 +186,7 @@ footer, and names the service, the data, the location, the retention and the opt
 ### Key Entities
 
 - **Page view**: one per page load on the live site; the path, the referring site, and the
-  aggregate visitor details the service derives (country, language, device type, browser). No
+  aggregate visitor details the service derives (country, device type, browser). No
   personal data.
 - **Article click**: one per click on a link to an article; the article's name, the page it was
   clicked on, and the same aggregate details as a page view. No personal data.

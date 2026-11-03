@@ -45,29 +45,32 @@ link sends one event named after the article while the link still opens.
     (contract C3);
   - `articleClickUrl({ id, title })` returns `endpoint` with `p=<id>`, `t=<title>`, `e=true` and
     `rnd`, and nothing else.
-- [ ] T005 [P] [US1] Write failing tests in `tests/unit/article-links.test.ts` that scan every HTML
-  file in `dist/`: every `<a>` whose `href` equals the `url` of an article in
-  `src/site/articles.ts` carries `data-article` equal to that article's `id`, and no other `<a>`
-  carries `data-article` (research R7).
+- [ ] T005 [P] [US1] Write failing tests in `tests/e2e/article-links.spec.ts` (end-to-end, because
+  only that suite runs after the build) that scan every HTML file in `dist/`: every `<a>` whose
+  `href` equals the `url` of an article in `src/site/articles.ts` carries `data-article` equal to
+  that article's `id` and `data-article-title` equal to its `title`, and no other `<a>` carries
+  either attribute (research R7).
 - [ ] T006 [P] [US1] Write failing tests in `tests/e2e/analytics.spec.ts` (research R6):
   - route `https://sammieetje.github.io/**` to the files in `dist/` and answer every request to
     `https://sammieetje.goatcounter.com/**` with status 204 and record it; abort and record
     anything else that is not the site's origin;
-  - for every page in `tests/e2e/pages.ts` plus `/privacy/` and `/nl/privacy/`: exactly one
-    request to the endpoint, with `p` equal to the page's path (contract C4);
+  - for every page in `tests/e2e/pages.ts`: exactly one request to the endpoint, with `p` equal
+    to the page's path (contract C4); the privacy pages join through `pages.ts` in T015;
   - loading `/writing/?utm_source=x#top` sends `p=/writing/` and no `q` (C3);
   - clicking an article link on `/writing/` and on `/nl/schrijven/` sends one request with `e=true`
     and `p` equal to the article's id, and the browser navigates to the article URL (C5); a click
     on a non-article external link sends nothing;
-  - the 404 page sends the missing path as `p`.
+  - the 404 page sends the missing path as `p`: the route answers a path with no file in `dist/`
+    with `dist/404.html` and status 404, as GitHub Pages does.
 - [ ] T007 [US1] Add `pageViewUrl` and `articleClickUrl` to `src/site/analytics.ts` (makes T004
   pass).
-- [ ] T008 [US1] Add `data-article={a.id}` to the article links in
-  `src/components/WritingPage.astro` and `src/components/MethodPage.astro`, with a `017:T008`
-  comment (makes T005 pass).
+- [ ] T008 [US1] Add `data-article={a.id}` and `data-article-title={a.title}` to the article
+  links in `src/components/WritingPage.astro` and `src/components/MethodPage.astro`, with a
+  `017:T008` comment (makes T005 pass).
 - [ ] T009 [US1] Create `src/components/Analytics.astro` with one bundled `<script>` that imports
   from `src/site/analytics.ts`: when `shouldCount` holds, it sends `pageViewUrl` once on load and
-  `articleClickUrl` on `click` and `auxclick` of `a[data-article]` (title from the link's text),
+  `articleClickUrl` on `click` and `auxclick` of `a[data-article]` (title from
+  `data-article-title`, never from the link's text, which holds visually hidden extras),
   via `navigator.sendBeacon`, falling back to `new Image().src`; it never calls
   `preventDefault` and catches every error. Include it once in
   `src/layouts/PortalLayout.astro` (makes T006 pass).
@@ -87,7 +90,14 @@ Privacy Control or Do Not Track set, nothing is sent.
   - after loading every page and clicking an article link: `context.cookies()` is empty, and
     `localStorage.length`, `sessionStorage.length` and `indexedDB.databases()` are all empty (C6);
   - with every request to the analytics host aborted, the page renders the same headings and
-    links, and an article link still navigates (C7).
+    links, and an article link still navigates (C7);
+  - with JavaScript disabled, `/writing/` renders the same headings and links and sends nothing
+    (FR-008).
+
+  These tests may pass at once, because T009 already implements the rules. Prove each guard by
+  breaking it on purpose and seeing its test fail, then revert: drop the GPC and DNT checks from
+  `shouldCount`; add a request to a second host in `Analytics.astro`; write one `localStorage`
+  item in `Analytics.astro`.
 - [ ] T011 [US2] Update `tests/e2e/meta-privacy.spec.ts`: on `localhost` every page still makes
   zero foreign requests and sets no cookies; the script rule becomes "the analytics script on
   every page, plus one module script on the playground and scorecard pages". Prove the zero-request
@@ -100,9 +110,10 @@ Privacy Control or Do Not Track set, nothing is sent.
 **Independent test**: a full `npm run check` and a session on `astro dev` and `astro preview`
 send nothing to the analytics host.
 
-- [ ] T013 [P] [US3] Extend `tests/unit/analytics.test.ts` with a failing test that the built
-  pages in `dist/` reference the analytics host only through the bundled script, never in an
-  `img`, `link` or `script src` (no pixel, no preconnect, no vendor script).
+- [ ] T013 [P] [US3] Extend `tests/e2e/analytics.spec.ts` (it runs after the build) with a test
+  that the built pages in `dist/` reference the analytics host only through the bundled script,
+  never in an `img`, `link` or `script src` (no pixel, no preconnect, no vendor script). Prove it
+  by adding a `<link rel="preconnect">` to the host on purpose, seeing it fail, then reverting.
 - [ ] T014 [US3] Make T013 pass if it fails. Record in `quickstart.md` that Lighthouse, Playwright
   on `localhost`, `astro dev` and `astro preview` are covered by the hostname rule (research R4).
 
@@ -150,7 +161,7 @@ no cookies and the opt-out, also without JavaScript.
 
 ## Parallel Examples
 
-- US1: T004 (`tests/unit/analytics.test.ts`), T005 (`tests/unit/article-links.test.ts`) and T006
+- US1: T004 (`tests/unit/analytics.test.ts`), T005 (`tests/e2e/article-links.spec.ts`) and T006
   (`tests/e2e/analytics.spec.ts`) together.
 - US4 with US1: T015 alongside T004–T006.
 

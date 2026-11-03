@@ -23,7 +23,7 @@ requests itself, so counting is proven without counting (R6). Details: [research
 **Language/Version**: TypeScript 6.0 strict on Node 24 LTS; Astro 7 for pages and the bundled script
 **Primary Dependencies**: none new. Hosted GoatCounter as an external service, reached only through its documented `/count` endpoint
 **Storage**: none in the site or the browser; aggregate counts at GoatCounter
-**Testing**: Vitest for `shouldCount`, the request builders and the built-HTML scan of article links; Playwright with axe for the privacy page, the localhost no-request check and the production-host counting test
+**Testing**: Vitest for `shouldCount` and the request builders; Playwright (which runs after the build) for the built-HTML scans, the privacy page with axe, the localhost no-request check and the production-host counting test
 **Target Platform**: GitHub Pages; evergreen browsers
 **Project Type**: static site with CI/CD
 **Performance Goals**: script under 1 KB gzip per page; Lighthouse budgets unchanged (SC-005)
@@ -73,7 +73,7 @@ src/components/SiteFooter.astro       + privacy link (017:FR-011)
 src/i18n/ui.ts                        + privacy.* and footer.privacy strings, EN and NL
 README.md                             Analytics section; roadmap 017
 tests/unit/analytics.test.ts          new: shouldCount, request builders, no ? or # in p and r
-tests/unit/article-links.test.ts      new: every built link to an article carries data-article, no other does
+tests/e2e/article-links.spec.ts       new: every built link to an article carries data-article and data-article-title, no other does
 tests/unit/repo-readme.test.ts        + Analytics section
 tests/e2e/meta-privacy.spec.ts        script rule: the analytics script on every page; localhost: zero foreign requests
 tests/e2e/analytics.spec.ts           new: production-host routing; one page view, article event, opt-out, one extra host, no storage

@@ -46,7 +46,9 @@ One per click on an `a[data-article]` (FR-013). Navigation is never prevented.
 ## Article link (build time)
 
 Every `<a>` whose `href` equals an article URL in `src/site/articles.ts` carries
-`data-article="<id>"`. No other link carries it.
+`data-article="<id>"` and `data-article-title="<title>"`. No other link carries either. The
+script reads the title from the attribute, never from the link text, which can hold visually
+hidden extras.
 
 ## Privacy statement (route `privacy`)
 
