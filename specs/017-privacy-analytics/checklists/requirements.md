@@ -37,5 +37,5 @@
   constitution's budgets and the visitor's opt-out are defined in those terms.
 - The plan must confirm from GoatCounter's own documentation that its data is hosted in the EU
   and that it stores no IP addresses; otherwise the choice of service returns to Sander.
-- Open for clarify: the privacy page's route names, and whether the 404 page should count the
-  missing path.
+- Clarify (2026-11-03) added article clicks (FR-013). Route names and counting on the 404 page
+  were settled as assumptions and edge cases without a question.

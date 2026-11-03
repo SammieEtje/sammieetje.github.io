@@ -33,6 +33,9 @@ visitors what is counted.
   open source). Plausible (paid) and self-hosted Umami were the alternatives.
 - Q: Should the statistics dashboard be public? → A: No, visible to Sander only. The privacy page
   describes what is measured.
+- Q: Should clicks on article links be counted, since the articles live on LinkedIn? → A: Yes,
+  clicks on links to articles are counted as events, named after the article; other outgoing
+  links are not counted.
 
 ## User Scenarios & Testing *(mandatory)*
 
@@ -40,7 +43,9 @@ visitors what is counted.
 
 Sander opens the statistics and sees, per day, week or month: how many page views and visitors
 the site had, which pages were read, which sites sent visitors (LinkedIn, search engines, GitHub),
-and the visitors' country, language, device type and browser at an aggregate level.
+and the visitors' country, language, device type and browser at an aggregate level. Because the
+articles themselves live on LinkedIn, he also sees how often each article link on the site is
+clicked.
 
 **Why this priority**: this is the reason for the feature; without it nothing is measured.
 
@@ -57,6 +62,11 @@ the referring site appear in the statistics within the service's normal delay.
    opens the statistics, **Then** both pages are counted separately, so he can compare languages.
 4. **Given** a page view, **When** Sander opens the statistics, **Then** no field identifies the
    visitor as a person.
+5. **Given** a visitor who clicks a link to an article, in either language, **When** Sander opens
+   the statistics, **Then** one article click is counted under that article's name, and the
+   article opens as before.
+6. **Given** a visitor who clicks any other outgoing link, **When** Sander opens the statistics,
+   **Then** no click is counted for it.
 
 ---
 
@@ -167,12 +177,18 @@ footer, and names the service, the data, the location, the retention and the opt
 - **FR-011**: The footer of every page MUST link to the privacy page in the same language.
 - **FR-012**: The README MUST name the analytics service and host, and explain how the pipeline
   checks the constitution's conditions.
+- **FR-013**: A click on a link to an article, on any page in either language, MUST send one
+  article click named after the article to the same analytics host, under the same conditions as
+  page views (FR-005 to FR-007). The link MUST open the article as before, also when the event
+  cannot be sent. Clicks on other outgoing links MUST NOT be counted.
 
 ### Key Entities
 
 - **Page view**: one per page load on the live site; the path, the referring site, and the
   aggregate visitor details the service derives (country, language, device type, browser). No
   personal data.
+- **Article click**: one per click on a link to an article; the article's name, the page it was
+  clicked on, and the same aggregate details as a page view. No personal data.
 - **Analytics host**: the single named host the script loads from and reports to; recorded in the
   repository and checked by the pipeline.
 - **Privacy statement**: one page per language; what is counted, by whom, where, for how long, and
@@ -183,7 +199,7 @@ footer, and names the service, the data, the location, the retention and the opt
 ### Measurable Outcomes
 
 - **SC-001**: Within a day of going live, Sander can see page views per page and per referring
-  site for the past day.
+  site for the past day, and article clicks per article.
 - **SC-002**: 0 cookies and 0 stored browser items on any page, in both languages.
 - **SC-003**: 0 runtime requests to any host other than the site and the one named analytics host.
 - **SC-004**: 0 page views counted from pipeline runs, tests or local development.
@@ -195,8 +211,11 @@ footer, and names the service, the data, the location, the retention and the opt
 
 - Visitor figures are aggregate. Individual visitor journeys, heatmaps, session recordings and
   conversion funnels are out of scope.
-- Counting clicks on outgoing links (for example to LinkedIn articles from the writing page) is
-  out of scope; it can follow in a later spec.
+- Counting clicks on outgoing links other than article links (LinkedIn profile, GitHub, other
+  sites) is out of scope.
+- The privacy page lives at `/privacy/` and `/nl/privacy/`, following the existing route table.
+- Visitors with JavaScript turned off are not counted, so that the opt-out signals (FR-006) are
+  always respected.
 - Sander's own visits are counted, because excluding them would require storing something in his
   browser.
 - The service's own retention period applies; the privacy page states it.
