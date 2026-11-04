@@ -42,6 +42,7 @@ describe('protected copy', () => {
 
   it('keeps the published article titles', () => {
     expect(articles.map((a) => a.title)).toEqual([
+      "Your supplier's incident is your incident",
       'Wat kun je direct laten zien als het misgaat?',
       "Ninety percent of that intake form wasn't a customer question",
       'The developer portal is the surface that observes what engineers actually do on your platform',
