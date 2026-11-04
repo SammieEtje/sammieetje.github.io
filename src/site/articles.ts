@@ -78,6 +78,19 @@ const pulse = (slug: string) => `https://www.linkedin.com/pulse/${slug}`;
 
 export const articles: readonly Article[] = [
   {
+    id: 'supplier-incident',
+    title: "Your supplier's incident is your incident",
+    url: pulse('your-suppliers-incident-sander-ettema-ewcie'),
+    published: '2026-11-03',
+    minutes: 6,
+    pillar: 'regulated',
+    series: { id: 'compliance-as-speed', part: 2 },
+    excerpt: {
+      en: 'When a critical PHP flaw broke in October, some organisations knew within minutes where they ran it while others emailed every team and took sites offline. I show how code, SBOMs, a runtime inventory and supplier SBOMs turn that question into one query, and why supplier risk also needs pipeline checks and a tested exit.',
+      nl: "Toen in oktober een kritieke kwetsbaarheid in PHP bekend werd, wisten sommige organisaties binnen minuten waar ze het draaiden, terwijl andere elk team mailden en websites offline haalden. Ik laat zien hoe code, SBOM's, een runtime-inventaris en SBOM's van leveranciers die vraag tot één query maken, en waarom leveranciersrisico ook controles in de pipeline en een geteste exit vraagt.",
+    },
+  },
+  {
     id: 'board-five-questions',
     title: 'Wat kun je direct laten zien als het misgaat?',
     url: pulse('wat-kun-je-direct-laten-zien-als-het-misgaat-sander-ettema-jz6be'),
