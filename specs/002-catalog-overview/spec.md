@@ -47,6 +47,13 @@ Out of scope (later specs): career history (003), method (004), "How I lead" (00
 - Q: How is the photo cropped? → A: Head only (hair to chin), shown as a rounded square. Source
   crop: 490 × 490 px at offset (45, 72) of the original 613 × 903 photo.
 
+### Session 2026-11-05
+
+- Q: Does the adoption number keep "without a mandate"? → A: No. It suggested working around
+  leadership, while adoption came from intrinsic motivation with leadership setting the
+  direction. Key number (1) now reads: 10,000 users in an IT organisation of 7,600 who chose
+  the CI/CD platform because it was the easier path — Rabobank, 2016–2020.
+
 ## User Scenarios & Testing *(mandatory)*
 
 ### User Story 1 - Put a face to the name (Priority: P1)
