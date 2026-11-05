@@ -23,7 +23,7 @@ Content:
 
 | id | value | label (EN) | context (EN) |
 |----|-------|------------|--------------|
-| adoption | 10000 | voluntary users on the CI/CD platform, in an IT organisation of 7,600 — without a mandate | Rabobank · 2016–2020 |
+| adoption | 10000 | users in an IT organisation of 7,600 who chose the CI/CD platform because it was the easier path | Rabobank · 2016–2020 |
 | scale | 5 × | infrastructure growth (500 → 2,500 Linux nodes) with a 15% smaller team | Rabobank · 2011–2016 |
 | volume | 2.5 × | service volume with minimal team growth | TenneT · Infrastructure, Integration & Cloud · 2023–2026 |
 

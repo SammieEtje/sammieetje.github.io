@@ -10,7 +10,7 @@ const expected = {
       'Rabobank · 2011–2016',
       'TenneT · Infrastructure, Integration & Cloud · 2023–2026',
     ],
-    firstLabel: 'voluntary users on the CI/CD platform',
+    firstLabel: 'users in an IT organisation of 7,600 who chose',
   },
   '/nl/': {
     title: 'Kerncijfers',
@@ -20,7 +20,7 @@ const expected = {
       'Rabobank · 2011–2016',
       'TenneT · Infrastructuur, Integratie & Cloud · 2023–2026',
     ],
-    firstLabel: 'vrijwillige gebruikers op het CI/CD-platform',
+    firstLabel: 'gebruikers in een IT-organisatie van 7.600 die zelf',
   },
 } as const;
 

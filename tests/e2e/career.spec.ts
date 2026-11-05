@@ -26,7 +26,7 @@ test.describe('deployment history (English)', () => {
     );
     await expect(first).toContainText('Rabobank · Utrecht · Oct 2016 – Aug 2020');
     await expect(first.locator('time').first()).toHaveAttribute('datetime', '2016-10');
-    await expect(first).toContainText('10,000 voluntary users in an IT organisation of 7,600');
+    await expect(first).toContainText('it reached 10,000 users who chose it');
   });
 
   test('marks exactly one release, the newest, as latest and current', async ({ page }) => {
@@ -172,7 +172,7 @@ test.describe('findability and Dutch', () => {
     await expect(page.locator('[data-spec="003:FR-001"] > li')).toHaveCount(10);
     const da = page.locator('li[data-release="rabo-da"]');
     await expect(da).toContainText('Rabobank · Utrecht · okt 2016 – aug 2020');
-    await expect(da).toContainText('10.000 vrijwillige gebruikers');
+    await expect(da).toContainText('10.000 gebruikers, die er zelf voor kozen');
     await expect(page.locator('[data-spec="003:FR-004"]')).toHaveText('actueel');
     await expect(page.locator('li[data-release="tennet-dap"]')).toContainText('mei 2026 – heden');
     await expect(page.locator('[data-spec="003:FR-007"] dt').first()).toHaveText('Consolideren');

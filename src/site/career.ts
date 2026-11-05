@@ -162,8 +162,8 @@ export const releases: readonly Release[] = [
     end: '2020-08',
     title: same('Manager Development Automation'),
     summary: {
-      en: "Founded and grew the department behind Rabobank's CI/CD platform. It reached 10,000 voluntary users in an IT organisation of 7,600, without a mandate.",
-      nl: 'Richtte de afdeling achter het CI/CD-platform van Rabobank op en bouwde die uit. Het platform kreeg 10.000 vrijwillige gebruikers in een IT-organisatie van 7.600, zonder mandaat.',
+      en: "Founded and grew the department behind Rabobank's CI/CD platform. In an IT organisation of 7,600, it reached 10,000 users who chose it because it was the easier path.",
+      nl: 'Richtte de afdeling achter het CI/CD-platform van Rabobank op en bouwde die uit. In een IT-organisatie van 7.600 kreeg het platform 10.000 gebruikers, die er zelf voor kozen omdat het de makkelijkste weg was.',
     },
     notes: {
       en: {

@@ -38,8 +38,8 @@ export const patterns: readonly PatternPhase[] = [
     id: 'community',
     name: { en: 'Grow the community', nl: 'Community laten groeien' },
     explanation: {
-      en: 'Let adoption grow through people and value they can see, without a mandate.',
-      nl: 'Adoptie laten groeien via mensen en zichtbare meerwaarde, zonder mandaat.',
+      en: 'Let adoption grow through people and value they can see, so teams join because they want to.',
+      nl: 'Adoptie laten groeien via mensen en zichtbare meerwaarde, zodat teams aansluiten omdat ze dat willen.',
     },
   },
 ];
