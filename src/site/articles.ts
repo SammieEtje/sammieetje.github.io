@@ -78,6 +78,19 @@ const pulse = (slug: string) => `https://www.linkedin.com/pulse/${slug}`;
 
 export const articles: readonly Article[] = [
   {
+    id: 'one-control-seven-laws',
+    title: 'One control, seven laws',
+    url: pulse('one-control-seven-laws-sander-ettema-xaipf'),
+    published: '2026-11-17',
+    minutes: 5,
+    pillar: 'regulated',
+    series: { id: 'compliance-as-speed', part: 4 },
+    excerpt: {
+      en: 'Most regulated organisations in Europe answer to at least four rulebooks, from NIS2 and DORA to ISO 27001 and GDPR, and their teams keep waiting on the same handful of compliance questions. I show how writing each control as an intent plus accepted options, and mapping every regime onto one control set, lets a team pick a route without asking and lets one piece of evidence serve every regime.',
+      nl: 'De meeste gereguleerde organisaties in Europa hebben met minstens vier regelboeken te maken, van NIS2 en DORA tot ISO 27001 en de AVG, en hun teams wachten steeds weer op dezelfde compliancevragen. Ik laat zien hoe je elke control beschrijft als doel plus geaccepteerde opties en elk regime op één controlset mapt, zodat een team zonder te vragen een route kiest en één stuk bewijs voor elk regime telt.',
+    },
+  },
+  {
     id: 'twice-dora',
     title: 'Twice DORA',
     url: pulse('twice-dora-sander-ettema-tb5ie'),
