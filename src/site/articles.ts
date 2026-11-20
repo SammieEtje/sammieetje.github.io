@@ -78,6 +78,19 @@ const pulse = (slug: string) => `https://www.linkedin.com/pulse/${slug}`;
 
 export const articles: readonly Article[] = [
   {
+    id: 'twice-dora',
+    title: 'Twice DORA',
+    url: pulse('twice-dora-sander-ettema-tb5ie'),
+    published: '2026-11-10',
+    minutes: 5,
+    pillar: 'regulated',
+    series: { id: 'compliance-as-speed', part: 3 },
+    excerpt: {
+      en: 'In European IT, DORA is both the research behind the State of DevOps reports and the regulation for banks and insurers, and I read them side by side to show they ask for the same thing: control you can demonstrate on every change. I explain why manual approval adds risk, what Article 17 of the technical standard asks about independent approval, and how one page with speed and control metrics gives the board and the auditor the same story.',
+      nl: 'In Europese IT betekent DORA zowel het onderzoek achter de State of DevOps-rapporten als de verordening voor banken en verzekeraars, en naast elkaar gelezen vragen ze hetzelfde: beheersing die je bij elke wijziging kunt aantonen. Ik leg uit waarom handmatige goedkeuring het risico vergroot, wat artikel 17 van de technische standaard vraagt over onafhankelijke goedkeuring, en hoe één pagina met snelheid en controle bestuur en auditor hetzelfde verhaal geeft.',
+    },
+  },
+  {
     id: 'supplier-incident',
     title: "Your supplier's incident is your incident",
     url: pulse('your-suppliers-incident-sander-ettema-ewcie'),
