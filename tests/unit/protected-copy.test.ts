@@ -42,6 +42,7 @@ describe('protected copy', () => {
 
   it('keeps the published article titles', () => {
     expect(articles.map((a) => a.title)).toEqual([
+      'One control, seven laws',
       'Twice DORA',
       "Your supplier's incident is your incident",
       'Wat kun je direct laten zien als het misgaat?',
